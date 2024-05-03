@@ -1,0 +1,271 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+    <div class="container-scroller">
+
+        <%- include('../layouts/adminsidebar.ejs') %>
+
+            <div class="container-fluid page-body-wrapper">
+
+
+
+                <!-- partial -->
+
+                <div class="main-panel">
+
+                    <div class="content-wrapper">
+
+                        <h1>welcome</h1>
+
+                        <div class="col-12 grid-margin stretch-card">
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">product add form</h4>
+                                    <!-- <p class="card-description"> Basic form elements </p> -->
+                                    <form action="/admin/addproduct" method="post" class="forms-sample"
+>
+                                        <div class="form-group">
+                                            <label for="exampleInputName1">Product Name</label>
+                                            <input type="text" class="form-control" id="exampleInputName1"
+                                                placeholder="Name" name="name">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword4">Price</label>
+                                            <input type="number" class="form-control" id="exampleInputPassword4" placeholder="Price" name="price">
+                                            <div id="price-error-message" style="color: red;"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleSelectGender"> Category</label>
+                                            <select class="form-control" id="exampleSelectGender" name="Category">
+                                                <option>Kid's</option>
+                                                <option>Women's</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>File upload</label>
+                                            <!-- <input type="file" name="img[]" class="file-upload-default"> -->
+                                            <div class="input-group col-xs-12">
+                                                <span class="input-group-append">
+                                                    <div for="images"
+                                                        class="image card d-flex align-items-center flex-column  justify-content-center "
+                                                        style="width: 100%; height: 9rem; border: 0px;">
+
+                                                        <div class=" border-0   aa d-flex align-items-center justify-content-center gap-3  h-100  position-relative "
+                                                            style="  gap:1rem">
+
+                                                            <% for(let i=0; i<3; i++) { %>
+
+                                                                <label for="images<%=i  %>"
+                                                                    class="img-co l position-relative d-flex align-items-center justify-content-center"
+                                                                    style="width: 6rem; height: 6.2rem; max-height: 90%;  cursor:pointer;  border: 2px dashed #ffffff40; border-radius: 15px;">
+
+                                                                    <input type="file" class="inp" accept="image/*"
+                                                                        onchange='hello(this,"<%= i %>"); upload(this,"<%=i%>")'
+                                                                        name='image<%=i  %>' id="images<%=i  %>" hidden>
+
+                                                                    <input type="text" id="imageU<%=i  %>" name="images"
+                                                                        style="display: none;">
+
+                                                                    <p class="opacity-50  text-center text-capitalize w-100  "
+                                                                        id="p<%= i %>" style="opacity: .7;"><i
+                                                                            class="ri-upload-cloud-2-line text-center "></i><br>uplaod
+                                                                        images</p>
+
+                                                                    <img src="" alt=""
+                                                                        id="i<%= i %>"
+                                                                        style="display: none;     border-radius: 15px;  width: 100% ; height: 100%; object-fit: cover; ">
+
+                                                                    <i class="ri-close-circle-line position-absolute fs-3 mt-1 "
+                                                                        id="icon<%= i %>" onclick="clear(this,'<%=i%>')"
+                                                                        style="opacity: 0;  top: -3px; right:0; z-index: 9999999999; scale: 1.5;"></i>
+
+                                                                    <div for="images<%= i %>" id="imageL<%= i %>"
+                                                                        class=" d-none position-absolute fs-3 mt-1  align-items-center justify-content-center pointer-event"
+                                                                        style="
+                                
+                                                                    width: 5.5rem;
+                                                                    background-color: rgba(24, 23, 23, 0.11);
+                                                                    backdrop-filter: blur(1px);
+                                                                    height: 6.2rem;
+                                                                    border-radius: 10px;
+                                                                    transition: all 0.3s ease 0s;
+                                                                    cursor: pointer;
+                                                                    letter-spacing: 0.1rem;
+                                                                    object-fit: cover;
+                                                                    
+                                
+                                                                ">Replace</div>
+
+                                                                </label>
+
+                                                                <% } %>
+
+                                                        </div>
+
+                                                        <div
+                                                            class="msg w-100 p-2 d-flex align-items-center justify-content-center ">
+                                                            <p id="msgP" class="text-danger "></p>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!-- <button class="file-upload-browse btn btn-primary" type="button">Upload</button> -->
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputCity1">Stock</label>
+                                            <input type="number" class="form-control" id="exampleInputCity1" placeholder="Stock" name="Stock">
+                                            <div id="error-message" style="color: red;"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleTextarea1">Description</label>
+                                            <textarea class="form-control" id="exampleTextarea1" rows="4"
+                                                name="Description"></textarea>
+                                        </div>
+                                        <button id="add" type="submit" class="btn btn-primary">Submit</button>
+                                        <button class="btn btn-dark">Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+    </div> <!--End container scroller-->
+
+    <script>
+        for (let i = 0; i < 3; i++) {
+
+            const icon = document.getElementById(`icon${i}`);
+
+            icon.addEventListener('click', (event) => {
+
+                event.stopPropagation();
+                event.preventDefault();
+                const text = document.getElementById(`p${i}`);
+                const im = document.getElementById(`i${i}`);
+                const imL = document.getElementById(`imageL${i}`);
+                const inp = document.getElementById(`images${i}`);
+
+
+                inp.value = '';
+                im.src = '';
+                im.style.display = 'none';
+                text.style.display = 'block';
+                imL.style.display = 'none';
+                icon.style.opacity = 0;
+
+            });
+
+        }
+
+
+        function hello(e, i) {
+
+            const text = document.getElementById(`p${i}`);
+            const im = document.getElementById(`i${i}`);
+            const imL = document.getElementById(`imageL${i}`);
+          
+            im.src = URL.createObjectURL(e.files[0]);
+
+            const icon = document.getElementById(`icon${i}`)
+
+            icon.style.opacity = 1;
+            im.style.display = 'block';
+            text.style.display = 'none';
+            imL.style.display = 'flex';
+
+        }
+
+
+
+
+
+        function upload(e, i) {
+            const add = document.getElementById('add');
+
+            add.disabled = true;
+            add.innerHTML = `submit <div class="spinner-border spinner-border-sm" role="status">
+  <span class="sr-only">Loading...</span>
+</div>`
+            const image = document.getElementById(`imageU${i}`)
+            // console.log(e.files)     
+            const pics = e.files[0];
+            const data = new FormData();
+            data.append("file", pics);
+            data.append("upload_preset", "glowing");
+            data.append("cloud_name", "dvlmfufbg");
+            fetch("https://api.cloudinary.com/v1_1/dvlmfufbg/image/upload", {
+                method: "post",
+                body: data,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+
+                    console.log(data.url.toString());
+                    image.value = data.url.toString()
+                    add.innerHTML = 'submit';
+                    add.disabled = false;
+                })
+                .catch((err) => {
+                    console.log(err);
+
+                });
+        }
+
+    </script>
+
+<script>
+    document.getElementById("exampleInputCity1").addEventListener("input", function() {
+        var stockInput = document.getElementById("exampleInputCity1").value;
+        var errorMessage = document.getElementById("error-message");
+    
+        if (stockInput < 0) {
+            errorMessage.textContent = "Error: Stock cannot be negative";
+        } else {
+            errorMessage.textContent = "";
+        }
+    });
+    </script>
+
+<script>
+    // Function to disable the button
+    function disableButton(disable) {
+        document.getElementById("add").disabled = disable;
+    }
+    
+    // Function to validate price input
+    function validatePrice() {
+        var priceInput = document.getElementById("exampleInputPassword4").value;
+        var errorMessage = document.getElementById("price-error-message");
+    
+        if (priceInput < 0) {
+            errorMessage.textContent = "Error: Price cannot be negative";
+            disableButton(true); // Disable the button if price is negative
+        } else {
+            errorMessage.textContent = "";
+            disableButton(false); // Enable the button if price is valid
+        }
+    }
+    
+    // Add event listener to price input
+    document.getElementById("exampleInputPassword4").addEventListener("input", validatePrice);
+    
+    // Call validatePrice initially to check the input
+    validatePrice();
+    </script>
+
+    <script defer src="https://cdn.crop.guide/loader/l.js?c=LHKWYD"></script>
+
+
+    <%- include('../layouts/footer.ejs') %>

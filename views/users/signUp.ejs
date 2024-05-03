@@ -1,0 +1,191 @@
+<%- include('../layouts/header.ejs') %>
+
+<div class="page-wrapper">
+	
+	<%- include('../layouts/navbar-2.ejs') %>
+	
+        <main class="main">
+
+			 <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Sign Up</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="login-page bg-image p-3" style="background-image: url('assets/images/zerac/aboutpage.jpg')">
+
+            	<div class="container">
+            		<div class="form-box">
+            			<div class="form-tab">
+
+	            			<ul class="nav nav-pills nav-fill" role="tablist">
+							    <li class="nav-item">
+							        <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">Sign Up</a>
+							    </li>
+							</ul>
+
+                            <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+
+								<form id="myForm" action="/signup" method="post">
+
+										<div class="text-center ">
+											<p class="text-danger ">
+												<% if(locals.msg) {%>
+
+													<%= msg %>
+
+													<% } %>
+											</p>
+										</div>
+
+									<div class="form-group">
+										<label for="register-fullname">Full Name *</label>
+										<input type="text" class="form-control" id="register-fullname" name="fullname" oninput="hello(this)" required>
+									</div><!-- End .form-group -->
+
+									<div class="form-group">
+										<label for="register-email-2">Email Address *</label>
+										<input type="email" class="form-control" id="register-email-2" name="email" oninput="hello(this)" required>
+									</div><!-- End .form-group -->
+									
+
+									<div class="form-group">
+										<label for="register-phone">Phone Number *</label> 
+										<input type="text" class="form-control" id="register-phone" minlength="10" pattern="[0-9]{10,}" name="phone" oninput="hello(this)" required>
+									</div><!-- End .form-group -->
+
+									<div class="form-group">
+										<label for="register-password-2">Password *</label>
+										<input type="password" class="form-control" id="register-password-2" name="password" oninput="hello(this)" required>
+									</div><!-- End .form-group -->
+									<div class="form-group">
+										<label for="register-password-2">confirmPassword *</label>
+										<input type="password" class="form-control" id="register-password-2" name="confirmpassword" oninput="hello(this)" required>
+									</div><!-- End .form-group -->
+									
+
+									<div class="form-footer">
+
+										<button type="submit" class="btn btn-outline-primary-2 submits">
+
+											<span>SIGN UP</span>
+
+											<i class="icon-long-arrow-right"></i>
+
+										</button>
+
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+											<label class="custom-control-label" for="register-policy-2">I agree to the <a href="#">privacy policy</a> *</label>
+										</div><!-- End .custom-checkbox -->
+									</div><!-- End .form-footer -->
+								</form>
+									
+
+							    	<div class="form-choice">
+								    	<p class="text-center">or sign in with</p>
+								    	<div class="row">
+								    		<div class="col-sm-6">
+								    			<a href="#" class="btn btn-login btn-g">
+								    				<i class="icon-google"></i>
+								    				Login With Google
+								    			</a>
+								    		</div><!-- End .col-6 -->
+								    		<div class="col-sm-6">
+								    			<a href="#" class="btn btn-login  btn-f">
+								    				<i class="icon-facebook-f"></i>
+								    				Login With Facebook
+								    			</a>
+								    		</div><!-- End .col-6 -->
+								    	</div><!-- End .row -->
+							    	</div><!-- End .form-choice -->
+							    </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+						</div><!-- End .form-tab -->
+
+            		</div><!-- End .form-box -->
+
+            	</div><!-- End .container -->
+
+            </div><!-- End .login-page section-bg -->
+        </main><!-- End .main -->
+
+		<!-- Connect Footer -->
+		<%- include('../layouts/footbar-2') %>
+		<!-- Connect Footer -->
+     
+	</div><!-- End .page-wrapper -->
+
+
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+		<!--Connect Mobaile View-->
+        <%- include('../layouts/mobileView.ejs') %>
+		<!--Connect Mobaile View-->
+		
+		<!-- Trim Validation -->
+		
+		<script>
+	const form=document.getElementById('myForm')
+	const pass=document.getElementById('register-password-2');
+	const conform=document.getElementById('register-confirm-password')
+	const form1=document.querySelector('form');
+	form.addEventListener('submit',(e)=>{
+		flag=true
+		const input=form.querySelectorAll('input');
+		input.forEach((elam)=>{
+			if(elam.value.trim()==''){
+				flag=false
+			}
+		})
+		if(!flag){
+
+			e.preventDefault()
+		}
+	})
+		const submits=document.querySelector('.submits');
+
+		function hello(e){
+			
+			if(e.value.trim()=='' ){
+				
+				submits.style.pointerEvents = 'none';
+				submits.style.opacity = 0.6;
+				
+			}else{
+				
+				submits.style.opacity = 1;
+				submits.style.pointerEvents = 'all'
+				
+			}
+
+			if(e.value.trim().length < 4){
+
+				submits.style.pointerEvents = 'none';
+				submits.style.opacity = 0.6;
+				
+			}else{
+				
+				submits.style.opacity = 1;
+				submits.style.pointerEvents = 'all'
+				
+			}
+		}
+		
+		</script>
+		
+		<!-- Plugins JS File -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/js/jquery.hoverIntent.min.js"></script>
+		<script src="assets/js/jquery.waypoints.min.js"></script>
+		<script src="assets/js/superfish.min.js"></script>
+		<script src="assets/js/owl.carousel.min.js"></script>
+		<!-- Main JS File -->
+		<script src="assets/js/main.js"></script>
+	
+	
+<%- include('../layouts/footer') %>

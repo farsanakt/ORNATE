@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #f8f9fa;
+        }
+        .page-wrapper {
+            position: relative;
+        }
+        .confetti {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 30px;
+            background: #ffd300;
+            top: 0;
+            opacity: 0;
+        }
+        /* Add more styles for confetti-pieces here */
+        .thanks-note {
+            text-align: center;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="confetti">
+        <!-- Confetti pieces -->
+        <div class="confetti-piece"></div>
+        <!-- Add more confetti pieces here -->
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="thanks-note">
+                    <h1>Thank You!</h1>
+                    <p>Your order has been successfully placed.</p>
+                    <a href="/" class="btn btn-outline-success rounded-pill">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // JavaScript for confetti animation
+    // Add animation logic here
+</script>
+
+</body>
+</html>
