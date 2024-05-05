@@ -27,9 +27,10 @@ const loadProfile=async(req,res)=>{
         const category = await Category.find({is_Listed : true})
         const msgg=req.flash('msg')
         const userId=req.session.user
+        const user=req.session.user
         console.log(userId);
         const userData=await User.findById({_id:userId})
-        res.render('profile',{categoryData:category,userData,msgg})
+        res.render('profile',{categoryData:category,userData,msgg,user})
     } catch (error) {
         console.log(error.message);
     }

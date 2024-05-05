@@ -1,0 +1,58 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+<div class="container-scroller">
+
+  <%- include('../layouts/adminsidebar.ejs') %>
+
+  <div class="container-fluid page-body-wrapper">
+
+    <!-- partial -->
+
+    <div class="main-panel">
+
+      <div class="content-wrapper">
+
+        <div class="table-responsive">
+          <table class="table custom-table">
+            <thead>
+              <tr>
+                <th class="text-center bold-red">Product ID</th>
+                <th class="text-center bold-red">Quantity</th>
+                <th class="text-center bold-red">Price</th>
+                <!-- <th class="text-center">Discount</th> -->
+                <th class="text-center bold-red">Name</th>
+                <th class="text-center bold-red">Total Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% order.forEach(orders => { %>
+                <% orders.products.forEach(product => { %>
+                  <tr>
+                    <td class="text-center"><%= product.productId %></td>
+                    <td class="text-center"><%= product.quantity %></td>
+                    <td class="text-center">$<%= product.price %></td>
+                    <!-- <td class="text-center"><%= product.discount %></td> -->
+                    <td class="text-center"><%= orders?.deliveryAddress?.name %></td>
+                    <td class="text-center">$<%= product.quantity * product.price %></td>
+                  </tr>
+                <% }); %>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div> <!-- End container scroller -->
+<style>
+.bold-red {
+  font-weight: bold !important;
+  color: red !important;
+}
+
+
+</style>

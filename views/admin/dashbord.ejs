@@ -159,8 +159,8 @@
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
-                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                    <i class="fas fa-user-shield"></i>
+                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin</p>
                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                   </div>
                 </a>
@@ -170,12 +170,17 @@
                   <a class="dropdown-item preview-item">
                     <div class="preview-thumbnail">
                       <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-settings text-success"></i>
+                        
+                        <i class="mdi mdi-chart-bar text-success"></i>
+
+
+
+
                       </div>
                     </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject mb-1">Settings</p>
-                    </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#salesReportModal">
+                      Sales Report
+                    </button>
                   </a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item preview-item">
@@ -198,6 +203,40 @@
             </button>
           </div>
         </nav>
+
+        <!--  Sales Report Modal  -->
+                <div class="modal fade" id="salesReportModal" tabindex="-1" aria-labelledby="salesReportModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content" style="width: 530px;">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="salesReportModalLabel">Download</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form id="salesReportForm" method="GET" action="/admin/filterOrders">
+                                
+                                  <div style="display: flex; justify-content: space-around;">
+                                      <a href="/admin/LoadDailyReport" class="btn btn-secondary" id="daily">Daily</a>
+                                      <a href="/admin/LoadWeeklyReport" class="btn btn-secondary" id="weekly">Weekly</a>
+                                      <a href="/admin/LoadMonthlyReport" class="btn btn-secondary" id="monthly">Monthly</a>
+                                      <a href="/admin/LoadYearlyReport" class="btn btn-secondary" id="yearly">Yearly</a>
+                                  </div>
+                                  <div class="mt-3">
+                                      <label for="startDate">Start Date:</label>
+                                      <input type="date" id="startDate" name="startDate" class="form-control">
+                                  </div>
+                                  <div class="mt-3">
+                                      <label for="endDate">End Date:</label>
+                                      <input type="date" id="endDate" name="endDate" class="form-control">
+                                  </div>
+                                  <div class="mt-3">
+                                      <button type="submit" class="btn btn-primary" id="filterButton">Filter</button>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
@@ -658,6 +697,8 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
+
+    <i class="fas fa-user-shield" style="font-size: 24px; color: #007bff;"></i>
     <script src="/ass/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->

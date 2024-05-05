@@ -3,13 +3,16 @@ const Address=require('../models/address_model');
 const Category=require('../models/category_model');
 const instance=require('../config/razorPay');
 
+const Coupen=require('../models/coupen_model')
+
 const User=require('../models/user_model')
 
 const loadCheckout=async(req,res)=>{
     try {
         const category = await Category.find({is_Listed : true})
          const user=req.session.user
-        
+         const msg=req.session.offer?'coupen applied':req.flash('msg'); 
+        const offer=req.session.offer
          if(req.session.user){
             const userIdd=req.session.user
             const cartData=await Cart.findOne({userId:userIdd}).populate('products.productId')
@@ -20,7 +23,8 @@ const loadCheckout=async(req,res)=>{
 
             console.log(addres);
 
-            res.render('checkout',{categoryData:category,cartData,addres,userData,user})
+
+            res.render('checkout',{categoryData:category,cartData,addres,userData,user,msg,offer})
          }else{
                  res.redirect('/login')
          }
@@ -68,8 +72,8 @@ const razor = async (req, res) => {
 
         const user = await User.findOne({ _id: req.session.user })
 
-        const amount = req.body.amount * 100
-
+        let amount = req.body.amount * 100
+        if(req.session.offer) amount=parseInt(amount/100*(100-req.session.offer))
         const options = {
             amount: amount,
             currency: "INR",
@@ -101,8 +105,44 @@ const razor = async (req, res) => {
     }
 }
 
+
+// add Coupen(post method)
+const addCoupen=async(req,res)=>{
+    try {
+        
+        const cpId=req.body.couponId
+
+        const findCoupon=await User.findOne({_id:req.session.user,'coupen._id':cpId},{'coupen.$':1}).populate('coupen.coupenId').catch((err)=>{
+            req.flash('msg','coupen not existing')
+      
+            res.redirect('/checkout')
+        })
+
+        if(!findCoupon){
+
+        req.flash('msg','coupen not existing')
+      
+        res.redirect('/checkout')
+
+       }else{
+        const currentCoupen=await Coupen.findOne({_id:findCoupon.coupen[0].coupenId._id})
+        req.session.offer=currentCoupen.discount;
+        console.log(currentCoupen.discount,'jjjjjjjj');
+        req.session.coupen=cpId
+        req.flash('msg','coupen applied')
+      
+        res.redirect('/checkout')
+       }
+       
+    } catch (error) {
+        
+        console.log(error.message);
+    }
+}
+
 module.exports={
     loadCheckout,
     addAddress,
+    addCoupen,
     razor
 }

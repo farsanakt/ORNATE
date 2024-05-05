@@ -130,7 +130,7 @@
 
                                                             <% orderDetails.products.forEach((val , ind)=> {  %>
                                             
-                                                                <% if(val?.orderProductStatus=='cancelled' || val?.orderProductStatus=='returned'){
+                                                                <% if(val?.orderProStatus=='cancelled' || val?.orderProStatus=='returned'){
                                                                     %>
                                                                     <tr class="fs-4" style="pointer-events: none;">
                         
@@ -142,7 +142,7 @@
                         
                                                                                 <td class="text-decoration-line-through"><del><%= val?.price %></del></td>
                         
-                                                                                <td class=""><%= val?.orderProductStatus %></td>
+                                                                                <td class=""><%= val?.orderProStatus %></td>
                         
                                                                                 <td>
                         
@@ -214,11 +214,11 @@
                                                                                         
                                                                                             <ul class="dropdown-menu bg-dark text-white" aria-labelledby="dropdownMenuLink">
                                                                                             
-                                                                                            <% if(val?.orderProductStatus == 'delivered'){
+                                                                                            <% if(val?.orderProStatus == 'delivered'){
                                                                                                 %>
                                                                                                 <li><a class="dropdown-item text-info" href="#" data-bs-toggle="modal" data-bs-target="#returnModal_<%= ind %>">Return</a></li>
                                                                                                 <%
-                                                                                            }else if(val?.orderProductStatus == 'Payment Failed'){
+                                                                                            }else if(val?.orderProStatus == 'Payment Failed'){
                                                                                                 %>
                                                                                                 <li><a id="placeOrderLink" class="dropdown-item text-success" href="#" data-bs-toggle="modal" data-bs-target="#confirmationModal">Place Order</a></li>
                                                                                                 <%

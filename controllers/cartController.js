@@ -1,6 +1,8 @@
 const Cart=require('../models/cart_model');
 const Products=require('../models/product_model');
-const Category=require('../models/category_model')
+const Category=require('../models/category_model');
+
+const Coupen=require('../models/coupen_model')
 
 
 // load cart
@@ -8,6 +10,8 @@ const loadCart=async(req,res)=>{
     try {
         const user=req.session.user
         const userIdd=req.session.user
+
+       
         
         const category = await Category.find({is_Listed : true})
       
@@ -109,13 +113,14 @@ const removeCart = async(req , res)=>{
 const cartupdate=async(req,res)=>{
     try {
 
-        const productId = req.body.proId
+        const productId = req.body.productId
 
         const cartId = req.body.cartId
 
         const quantity = req.body.quantity
         
         const product = await Products.findOne({ _id: productId });
+        
         
         const newValue = product.price * quantity;
   
@@ -133,9 +138,13 @@ const cartupdate=async(req,res)=>{
     }
 }
 
+
+
+
 module.exports={
     loadCart,
     addToCart,
     removeCart,
-    cartupdate
+    cartupdate,
+   
 }

@@ -58,11 +58,12 @@
 
                     <div class="d-flex ">
 
-                    <div class="form-group">
-                      <label for="exampleInputEmail3">Product Price ($) :</label>
-                      <input type="number" class="form-control text-white w-50 " name="price" id="price" placeholder="Price" value="<%= productData.price %>">
-                         <p id="price-error"class="text-danger "></p>
+                      <div class="form-group">
+                        <label for="exampleInputEmail3">Product Price ($):</label>
+                        <input type="number" class="form-control text-white w-50" name="price" id="price" placeholder="Price" value="<%= productData.price %>" onchange="checkForNegative()">
+                        <small id="priceErrorMessage" class="text-danger" style="display: none;">Please enter a positive price.</small>
                     </div>
+                    
 
                       <div class="input-group col-xs-12">
 
@@ -117,11 +118,14 @@
                       </div>
                     </div>
 
+                    
+
                     <div class="form-group">
                       <label for="exampleInputCity1">Stock:</label>
-                      <input type="number" class="form-control text-white" name="stock" id="stock" value="<%= productData.stock %>">
-                      <p id="stock-error"class="text-danger "></p>
-                    </div>
+                      <input type="number" class="form-control text-white" name="stock" id="stock" value="<%= productData.stock %>" onchange="checkStock()">
+                      <small id="stockErrorMessage" class="text-danger" style="display: none;">Please enter a non-negative value for stock.</small>
+                  </div>
+                  
 
                 
 
@@ -251,6 +255,36 @@
 
 
 </script>
+
+
+<script>
+  function checkForNegative() {
+      const input = document.getElementById('price');
+      const errorMessage = document.getElementById('priceErrorMessage');
+
+      if (input.value < 0) {
+          errorMessage.style.display = 'block';
+      } else {
+          errorMessage.style.display = 'none';
+      }
+  }
+</script>
+
+
+<script>
+    function checkStock() {
+        const input = document.getElementById('stock');
+        const errorMessage = document.getElementById('stockErrorMessage');
+
+        if (input.value < 0) {
+            errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
+        }
+    }
+</script>
+
+
 
 
  

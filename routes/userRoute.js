@@ -26,6 +26,10 @@ const express=require('express');
 
   const orderController=require('../controllers/orderController');
 
+  const coupenController=require('../controllers/coupenController');
+
+  const addressController=require('../controllers/addressController');
+
   // load home
   user_route.get('/',userController.loadhome);
 
@@ -119,6 +123,8 @@ const express=require('express');
 
 
 
+
+
   // ******** CHECKOUT *******
 
  // load checkout
@@ -126,6 +132,8 @@ const express=require('express');
 
  // add checkoutAddress
  user_route.post('/chekoutAddAddress',checkoutController.addAddress);
+
+ user_route.post('/addcoupen',checkoutController.addCoupen)
 
   // razor
   user_route.post('/razor',checkoutController.razor)
@@ -143,7 +151,7 @@ user_route.post('/addWishlist', wishlistController.addWishlist);
 // remove wishlist
 user_route.put('/removeWishlist', wishlistController.removeWishlist);
 
-
+// ******** ORDERS *******
 
 // load Oreders
 user_route.get('/orders',orderController.loadOrders);
@@ -152,7 +160,31 @@ user_route.get('/orders',orderController.loadOrders);
 user_route.post('/getOrder',orderController.placeOrder);
 
 // load orderdeteils
-user_route.get('/orderDetails',orderController.loadOrderDetails)
+user_route.get('/orderDetails',orderController.loadOrderDetails);
+
+// load Coupen
+user_route.get('/userCoupen',coupenController.loadCoupens);
+
+
+// ******** PROFILE ADDRESS *******
+user_route.get('/profileaddress',addressController.loadAddress);
+
+user_route.post('/addAddress',addressController.verifyProfileAddAddess);
+
+ // deleteaAdderss
+ user_route.post('/deleteAdd' , addressController.deleteaAdderss);
+
+ // editprofileaddress
+ user_route.put('/editAddress',addressController.editprofileaddress);
+ 
+ // verifyEditAddress
+ user_route.post('/verifyEditAddress',addressController.verifyEditAddress)
+
+
+
+
+
+
 
 
 

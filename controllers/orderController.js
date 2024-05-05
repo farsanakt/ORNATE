@@ -8,7 +8,9 @@ const Product=require('../models/product_model');
 
 const Cart=require('../models/cart_model');
 
-const Address=require('../models/address_model')
+const Address=require('../models/address_model');
+
+const Coupen=require('../models/coupen_model');
 
 
 // ******* USER ******
@@ -38,10 +40,12 @@ const loadOrders=async(req,res)=>{
 const placeOrder=async(req,res)=>{
     try {
         userIdd=req.session.user
-
+        
         const category=await Category.find({is_Listed:true})
 
         const cartData=await Cart.findOne({userId:userIdd});
+        let total=cartData.totalCartPrice;
+        if(req.session.offer)  total=parseInt(total/100*(100-req.session.offer));
 
         const addressData=await Address.findOne({userId:userIdd, 'addresss.status':true});
 
@@ -57,7 +61,7 @@ const placeOrder=async(req,res)=>{
 
             userId: userIdd,
 
-            orderAmount: cartData.totalCartPrice,
+            orderAmount:total ,
 
             payment: 'COD',
 
@@ -76,7 +80,30 @@ const placeOrder=async(req,res)=>{
             }))
         });
 
+        const coupen= await Coupen.find({above:{$lte:cartData.totalCartPrice}})
+    
+       
+        if(coupen.length>0 && !req.session.offer) {
+            coupen.forEach(async(e)=>{
+                const coupen1= await User.findOne({_id: userIdd ,coupen:{$elemMatch:{coupenId:e._id}}});
+                if(!coupen1){
+                    await User.findOneAndUpdate({_id: userIdd},{$addToSet:{coupen:{coupenId:e._id}}});
+                    return;
+                }
+
+            })
+        // console.log(coupen1)
+    }
+      
         await newOrder.save();
+        if(req.session.offer){
+               delete req.session.offer;
+               const user=await User.findOne({_id: userIdd });
+               console.log(req.session.coupen,user,'lllllll' );
+                const removeCoupen=await User.findOneAndUpdate({_id: userIdd },{$pull:{coupen:{_id:req.session.coupen}}})
+            console.log(removeCoupen,'removde')
+               delete req.session.coupen;      
+        }
 
         if(newOrder){
 
@@ -103,11 +130,12 @@ const placeOrder=async(req,res)=>{
 // loadOrderDetails
 const loadOrderDetails=async(req,res)=>{
     try {
+        const user=req.session.user
         const userIdd=req.session.user
         const category=await Category.find({is_Listed:true})
         const orderDetails=await Order.findOne({userId:userIdd}).populate('products.productId')
         console.log(orderDetails,'uuuuuuuuuuuuuuuuuuuu');
-        res.render('orderDetails',{categoryData:category,orderDetails})
+        res.render('orderDetails',{categoryData:category,orderDetails,user})
         
     } catch (error) {
         console.log(error.message);

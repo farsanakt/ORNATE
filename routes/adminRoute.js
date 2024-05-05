@@ -12,7 +12,9 @@ const admin_auth=require('../middleware/admin_auth')
 
   // set body parser
   const bodyparser=require('body-parser');
+
   admin_route.use(bodyparser.urlencoded({extended:true}));
+  
   admin_route.use(bodyparser.json());
 
   const adminController=require('../controllers/adminController');
@@ -21,7 +23,13 @@ const admin_auth=require('../middleware/admin_auth')
 
   const categoryController=require('../controllers/categoryController');
 
-  const ordersController=require('../controllers/orderController')
+  const ordersController=require('../controllers/orderController');
+
+  const coupenController=require('../controllers/coupenController');
+
+  const salesController=require('../controllers/salesController');
+
+  const offerController=require('../controllers/offerController');
 
 
   // load dashbord
@@ -83,7 +91,41 @@ const admin_auth=require('../middleware/admin_auth')
     admin_route.get('/order',ordersController.loadOrderss);
 
     // load orderDetails
-    admin_route.get('/orderDtails',ordersController.loadOrderDetaills)
+    admin_route.get('/orderDtails',ordersController.loadOrderDetaills);
+
+
+    // ******** COUPEN ********
+    admin_route.get('/coupen',coupenController.loadCoupen);
+
+    // add coupen 
+    admin_route.post('/addCoupen',coupenController.addCoupen);
+
+    //  Coupen Status Changing
+    admin_route.put('/copenAction',coupenController. changeCouponStatus);
+
+    // delete Coupen
+    admin_route.put('/deletCoupen',coupenController.removeCoupen);
+
+    // **** SALES REPORT ****
+    admin_route.get('/salesreport',salesController.loadSalesReport);
+
+    // load Daily report
+    admin_route.get('/LoadDailyReport',salesController.LoadDailyReport);
+
+    admin_route.get('/LoadWeeklyReport',salesController.LoadWeeklyReport);
+
+    admin_route.get('/LoadMonthlyReport',salesController.LoadMonthlyReport);
+ 
+    admin_route.get('/LoadYearlyReport',salesController.LoadYearlyReport);
+ 
+    admin_route.get('/filterOrders',salesController.LoadYearlyReport);
+    
+
+    // ***** OFFER *****
+    admin_route.get('/offer',offerController.loadOffer);
+
+    // add offer
+    admin_route.post('/addOffer',offerController.addOffer)
 
 
 

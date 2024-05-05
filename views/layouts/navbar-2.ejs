@@ -1,66 +1,69 @@
-     <header class="header">
+<header class="header">
 
-            <div class="header-middle sticky-header">
-                <div class="container">
-                    <div class="header-left">
-                        <button class="mobile-menu-toggler">
-                            <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
-                        </button>
+    <div class="header-middle sticky-header">
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                </button>
 
-                        <nav class="main-nav pt-1">
+                <nav class="main-nav pt-1">
 
-                            <ul class="menu sf-arrows">
+                    <ul class="menu sf-arrows">
 
-                                   <a href="/">
-                                    <img src="/assets/images/zerac/ornate.png" width="120px" class="pt-1" style="padding-right: 20px;">
-                                 </a>
+                        <a href="/">
+                            <img src="/assets/images/zerac/ornate.png" width="120px" class="pt-1"
+                                style="padding-right: 20px;">
+                        </a>
 
-                                <li class="megamenu-container active">
-                                    <a href="/" style="padding-right: 10px;">Home</a>
+                        <li class="megamenu-container active">
+                            <a href="/" style="padding-right: 10px;">Home</a>
 
-                                </li>
+                        </li>
 
-                                <li>
+                        <li>
 
-                                    <a href="#" class="sf-with-ul" style="padding-right: 10px;">Category</a>
-                                    
-                                    <ul class="p-2" style="border-radius: 10px;">                       
+                            <a href="#" class="sf-with-ul" style="padding-right: 10px;">Category</a>
 
-                                    <% categoryData.forEach(val => { %>
+                            <ul class="p-2" style="border-radius: 10px;">
 
-                                            <li><a  href="/category?id=<%= val.name %>"><%= val.name %></a></li> 
-                                                
-                                        <% }); %>
+                                <% categoryData.forEach(val=> { %>
 
-                                    </ul>
+                                    <li><a href="/category?id=<%= val.name %>">
+                                            <%= val.name %>
+                                        </a></li>
 
-                                </li>
+                                    <% }); %>
 
-                                <li>
-                                    <a href="/product" style="padding-right: 10px;">Product</a>
+                            </ul>
 
-                                </li>
+                        </li>
 
-                                <li>
+                        <li>
+                            <a href="/product" style="padding-right: 10px;">Product</a>
 
-                                    <a href="/aboutUs" style="padding-right: 10px;">About</a>
-                                       
-                                </li>
+                        </li>
 
-                                <li>
-                            
-                                    <a href="/contactUs" style="padding-right: 10px;">Contact</a>
+                        <li>
 
-                                </li>
+                            <a href="/aboutUs" style="padding-right: 10px;">About</a>
 
-                            </ul><!-- End .menu -->
-                        </nav><!-- End .main-nav -->
-                    </div><!-- End .header-left -->
+                        </li>
 
-                    <div class="header-right" >
+                        <li>
 
-                        <!-- <div class="user-icon-container" >
+                            <a href="/contactUs" style="padding-right: 10px;">Contact</a>
+
+                        </li>
+
+                    </ul><!-- End .menu -->
+                </nav><!-- End .main-nav -->
+            </div><!-- End .header-left -->
+
+            <div class="header-right">
+
+                <!-- <div class="user-icon-container" >
                         <img style="width:35% ;" src="assets/images/urban/userIcon.jpg" alt="User" class="user-icon" >
                         <div class="user-options">
                             <a href="">My Profile</a>
@@ -68,48 +71,54 @@
                         </div>
                         </div> -->
 
-                       <% if(locals.user){  %>
-                        <div class="dropdown cart-dropdown">
+                <% if(locals.user){ %>
+                    <div class="dropdown cart-dropdown">
 
-                            <a href="#" class="dropdown-toggle" style="padding-top: 5px;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="fa-solid fa-circle-user" style="font-size: 28px; padding-right: 25px; "></i>
-                            </a>
+                        <a href="#" class="dropdown-toggle" style="padding-top: 5px;" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <i class="fa-solid fa-circle-user" style="font-size: 28px; padding-right: 25px; "></i>
+                        </a>
 
-                            <div class="dropdown-menu dropdown-menu-right text-center rounded-2" style="display: flex; flex-direction: column; width: fit-content;">
+                        <div class="dropdown-menu dropdown-menu-right text-center rounded-2"
+                            style="display: flex; flex-direction: column; width: fit-content;">
 
-                             <a href="/profile" style="font-size: 15px;">Profile</a>
-<form action="/logout" method="post">
+                            <a href="/profile" style="font-size: 15px;">Profile</a>
+                            <form action="/logout" method="post">
 
-                            <button  type="submit" class="logout-button rounded-pill mt-1 text-white " style="background-color: gray; width: fit-content;">Logout</button>
-                        </form>
-                                
-                            </div><!-- End .dropdown-menu -->
-
-                        </div><!-- End .cart-dropdown -->
-
-                        <% }else{ %>
-                            
-                            <ul class="menu sf-arrows">
-                                <li>
-                                    <a class="text-dark" href="/login" style="padding-top: 3rem; padding-right: 20px;">LOGIN</a>
-
-                                </li>
-                            </ul>
-                            <% } %>
-                        <div class="header-search">
-
-                            <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
-
-                            <form action="#" method="get">
-                                <div class="header-search-wrapper">
-                                    <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
-                                </div><!-- End .header-search-wrapper -->
+                                <button type="submit" class="logout-button rounded-pill mt-1 text-white "
+                                    style="background-color: gray; width: fit-content;">Logout</button>
                             </form>
 
-                        </div><!-- End .header-search -->
+                        </div><!-- End .dropdown-menu -->
 
-                        <!-- <div class="dropdown compare-dropdown">
+                    </div><!-- End .cart-dropdown -->
+
+                    <% }else{ %>
+
+                        <ul class="menu sf-arrows">
+                            <li>
+                                <a class="text-dark" href="/login"
+                                    style="padding-top: 3rem; padding-right: 20px;">LOGIN</a>
+
+                            </li>
+                        </ul>
+                        <% } %>
+                            <div class="header-search">
+
+                                <a href="#" class="search-toggle" role="button" title="Search"><i
+                                        class="icon-search"></i></a>
+
+                                <form action="#" method="get">
+                                    <div class="header-search-wrapper">
+                                        <label for="q" class="sr-only">Search</label>
+                                        <input type="search" class="form-control" name="q" id="q"
+                                            placeholder="Search in..." required>
+                                    </div><!-- End .header-search-wrapper -->
+                                </form>
+
+                            </div><!-- End .header-search -->
+
+                            <!-- <div class="dropdown compare-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
                                 <i class="icon-random"></i>
                             </a> -->
@@ -131,71 +140,77 @@
                                     <a href="#" class="btn btn-outline-primary-2"><span>Compare</span><i class="icon-long-arrow-right"></i></a>
                                 </div>
                             </div>End .dropdown-menu -->
-                            
-                        <!-- </div>End .compare-dropdown -->
 
-                        <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
-                            </a>
+                            <!-- </div>End .compare-dropdown -->
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Waxed dress with belts</a>
-                                            </h4>
+                            <div class="dropdown cart-dropdown">
+                                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" data-display="static">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="cart-count">2</span>
+                                </a>
 
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <div class="dropdown-cart-products">
+                                        <div class="product">
+                                            <div class="product-cart-details">
+                                                <h4 class="product-title">
+                                                    <a href="product.html">Waxed dress with belts</a>
+                                                </h4>
 
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/zerac/womendemo2.jpg" alt="product" style="height: 50px;">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
+                                                <span class="cart-product-info">
+                                                    <span class="cart-product-qty">1</span>
+                                                    x $84.00
+                                                </span>
+                                            </div><!-- End .product-cart-details -->
 
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
+                                            <figure class="product-image-container">
+                                                <a href="product.html" class="product-image">
+                                                    <img src="assets/images/zerac/womendemo2.jpg" alt="product"
+                                                        style="height: 50px;">
+                                                </a>
+                                            </figure>
+                                            <a href="#" class="btn-remove" title="Remove Product"><i
+                                                    class="icon-close"></i></a>
+                                        </div><!-- End .product -->
 
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
+                                        <div class="product">
+                                            <div class="product-cart-details">
+                                                <h4 class="product-title">
+                                                    <a href="product.html">Blue utility pinafore denim dress</a>
+                                                </h4>
 
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/zerac/homedemo.jpg" alt="product" style="height: 50px;">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
+                                                <span class="cart-product-info">
+                                                    <span class="cart-product-qty">1</span>
+                                                    x $76.00
+                                                </span>
+                                            </div><!-- End .product-cart-details -->
 
-                                <div class="dropdown-cart-total">
-                                    <span>Total</span>
+                                            <figure class="product-image-container">
+                                                <a href="product.html" class="product-image">
+                                                    <img src="assets/images/zerac/homedemo.jpg" alt="product"
+                                                        style="height: 50px;">
+                                                </a>
+                                            </figure>
+                                            <a href="#" class="btn-remove" title="Remove Product"><i
+                                                    class="icon-close"></i></a>
+                                        </div><!-- End .product -->
+                                    </div><!-- End .cart-product -->
 
-                                    <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
+                                    <div class="dropdown-cart-total">
+                                        <span>Total</span>
 
-                                <div class="dropdown-cart-action">
-                                    <a href="cart" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-                    </div><!-- End .header-right -->
-                </div><!-- End .container -->
-            </div><!-- End .header-middle -->
-    </header><!-- End .header -->
+                                        <span class="cart-total-price">$160.00</span>
+                                    </div><!-- End .dropdown-cart-total -->
+
+                                    <div class="dropdown-cart-action">
+                                        <a href="cart" class="btn btn-primary">View Cart</a>
+                                        <a href="checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i
+                                                class="icon-long-arrow-right"></i></a>
+                                    </div><!-- End .dropdown-cart-total -->
+                                </div><!-- End .dropdown-menu -->
+                            </div><!-- End .cart-dropdown -->
+            </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-middle -->
+</header><!-- End .header -->

@@ -217,20 +217,51 @@ const loadLoginPage=async(req,res)=>{
 const verifyUser=async(req,res)=>{
     
     const verifymail=req.body.email
+
     const passData=req.body.password
-    const data=await User.findOne({email:verifymail})
     
+    const data=await User.findOne({email:verifymail})
+    console.log(data);
+
+    console.log('1');
     try {
-        const verifyPass=await bcrypt.compare(passData,data.password);
-        if(verifyPass){
-            req.session.userData=data;
-            req.session.user=data._id
-            console.log('verified successully');
-            res.redirect('/')
+        if(data){
+            console.log('2');
+            const verifyPass=await bcrypt.compare(passData,data.password);
+
+            
+            if(data.is_blocked){
+
+                req.flash('msg','your are blocked')
+
+                res.redirect('/login')
+            }
+             else if(verifyPass){
+                console.log('3');
+
+                req.session.userData=data
+
+                req.session.user=data._id
+
+                console.log('verified successully')
+
+                res.redirect('/')
+            }else{
+                console.log('1dc');
+
+                req.flash('msg','wrong password')
+
+                res.redirect('/login')
+            }
+
         }else{
-            req.flash('msg','wrong password')
+            console.log('1111');
+
+            req.flash('msg','email not existing')
+
             res.redirect('/login')
         }
+        
     } catch (error) {
         console.log(error.message);
     }
@@ -240,18 +271,25 @@ const verifyUser=async(req,res)=>{
 const loadAboutUs=async(req,res)=>{
     try {
         const user=req.session.user
+
         const category = await Category.find({is_Listed : true})
+
         res.render('aboutUs',{user,categoryData:category})
+
     } catch (error) {
+
         console.log(error.message);
     }
 }
 
 // load contactus
 const loadContactUs=async(req,res)=>{
+
     try {
         const category = await Category.find({is_Listed : true})
+
         const user=req.session.user
+        
         res.render('contactUs',{user,categoryData:category})
     } catch (error) {
         console.log(error.message);

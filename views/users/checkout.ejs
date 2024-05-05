@@ -138,15 +138,27 @@
 										</div>
 
 									</div>
-									<div class="checkout-discount">
-										<form action="#">
-											<input type="text" class="form-control" required
-												id="checkout-discount-input">
-											<label for="checkout-discount-input" class="text-truncate">Have a coupon?
-												<span>Click here to enter your code</span></label>
-										</form>
 
-									</div><!-- End .checkout-discount -->
+									<div class="cart-bottom">
+										<div class="cart-discount">
+											<form action="/addcoupen" method="post">
+												<div class="input-group">
+													<input type="text" name="couponId" class="form-control" required
+														placeholder="coupon code">
+													<div class="input-group-append">
+														<button class="btn btn-outline-primary-2" type="submit"><i
+																class="icon-long-arrow-right"></i></button>
+													</div><!-- .End .input-group-append -->
+												</div><!-- End .input-group -->
+											</form>
+											<% console.log(msg); %>
+												<p class="<%=msg=='coupen applied'?'text-success':'text-danger'%>">
+													<%=msg %>
+												</p>
+										</div><!-- End .cart-discount -->
+
+								
+									</div><!-- End .cart-bottom -->
 									<!-- Button to trigger modal -->
 
 
@@ -456,11 +468,7 @@
 																<span>Phone: <%= addres.addresss[i].phone %> </span>
 															</p>
 
-															<a herf="#"
-																style="cursor: pointer; color: rgb(207, 149, 77);"
-																data-bs-toggle="modal" data-bs-target="#exampleModal"
-																onclick="editAddress('<%= addres.addresss[i]._id %>')">Edit<i
-																	class="icon-edit"></i></a>
+														
 
 														</div><!-- End .card-body -->
 
@@ -712,11 +720,18 @@
 
 												<% }) %>
 
+
 													<tr class="summary-subtotal">
 														<td>Subtotal:</td>
 														<td>$<%= cartData?.totalCartPrice %>.00</td>
 													</tr><!-- End .summary-subtotal -->
 
+													<tr class="summary-subtotal">
+														<td>Coupen Offer:</td>
+														<td>
+															<%= offer?offer:0; %>%
+														</td>
+													</tr><!-- End .summary-subtotal -->
 													<tr>
 														<td>Shipping:</td>
 														<td>Free shipping</td>
@@ -724,7 +739,9 @@
 
 													<tr class="summary-total">
 														<td>Total:</td>
-														<td>$<%= cartData?.totalCartPrice %>.00</td>
+														<% const off=offer?offer:0; %>
+															<td>$<%= parseInt(cartData?.totalCartPrice/100*(100-off)) %>
+																	.00</td>
 													</tr><!-- End .summary-total -->
 
 										</tbody>
@@ -850,7 +867,7 @@
 					}
 
 				}
-				//  Add Address Section :-
+				//  Add razor Section :-
 
 				function razorpay(amount) {
 					console.log('reached razor' + amount);
@@ -886,6 +903,11 @@
 						}
 					})
 				}
+
+
+
+
+				//  Add Address Section :-
 				function addAddress(id) {
 
 					const form = document.getElementById('addform');

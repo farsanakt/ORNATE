@@ -80,6 +80,8 @@ const loadblock=async(req ,res)=>{
 const loadunblock=async(req,res)=>{
     try {
 
+
+        console.log('unblock');
         const unblockUserId=req.query.userId
         
         await User.findByIdAndUpdate({_id:unblockUserId},{$set:{is_blocked:false}})

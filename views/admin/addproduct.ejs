@@ -25,11 +25,12 @@
                                     <!-- <p class="card-description"> Basic form elements </p> -->
                                     <form action="/admin/addproduct" method="post" class="forms-sample"
 >
-                                        <div class="form-group">
-                                            <label for="exampleInputName1">Product Name</label>
-                                            <input type="text" class="form-control" id="exampleInputName1"
-                                                placeholder="Name" name="name">
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputName1">Product Name</label>
+                                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="name" onblur="checkForSpaces()">
+                                        <small id="nameErrorMessage" class="text-danger" style="display: none;">Please enter a valid product name.</small>
+                                    </div>
+
 
                                         <div class="form-group">
                                             <label for="exampleInputPassword4">Price</label>
@@ -41,6 +42,7 @@
                                             <select class="form-control" id="exampleSelectGender" name="Category">
                                                 <option>Kid's</option>
                                                 <option>Women's</option>
+                                                <option>Men 's</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -237,6 +239,20 @@
         }
     });
     </script>
+
+<script>
+    function checkForSpaces() {
+        const input = document.getElementById('exampleInputName1');
+        const errorMessage = document.getElementById('nameErrorMessage');
+
+        if (input.value.trim() === '') {
+            errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
+        }
+    }
+</script>
+
 
 <script>
     // Function to disable the button
