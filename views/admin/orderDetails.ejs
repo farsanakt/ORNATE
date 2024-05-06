@@ -147,7 +147,7 @@
 
                                                                     <td> 
                                                                        
-                                                                        <select id="s<%= product.productId._id %>" value="pending" class="badge bg-transparent <%= product.orderProStatus !='cancelled' ? 'badge-outline-success' : 'badge-outline-danger' %>" onchange="orderProductStatus(this,'<%= orderDetails._id  %>','<%= product.productId._id %>','<%= product.reasonOfReturn %>','<%= product.quantity %>')">
+                                                                        <select onchange="statusChange(this,'<%=product._id%>')" id="s<%= product.productId._id %>" value="pending" class="badge bg-transparent <%= product.orderProStatus !='cancelled' ? 'badge-outline-success' : 'badge-outline-danger' %>" onchange="orderProductStatus(this,'<%= orderDetails._id  %>','<%= product.productId._id %>','<%= product.reasonOfReturn %>','<%= product.quantity %>')">
 
                                                                             <%
                                                                             if(product.orderProStatus == 'returned requested'){
@@ -211,10 +211,19 @@
     </div>
 
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    
+    
+async function statusChange(e,pid){
+    const response=awaitaxios.put('/changStatus',{e})
+}
+    </script>
 
 <script>
 
-//  Order Handling :-
+
+
 
 function cancelOrder(ordId,proId){
     console.log('ejfsf');

@@ -1,12 +1,12 @@
-const express=require('express')
+const express=require('express');
+
 const admin_route=express();
 
-
-const admin_auth=require('../middleware/admin_auth')
+const admin_auth=require('../middleware/admin_auth');
 
 
  // set view engine
- admin_route.set('view engine', 'ejs')
+ admin_route.set('view engine', 'ejs');
  admin_route.set('views','./views/admin');
 
 
@@ -50,6 +50,11 @@ const admin_auth=require('../middleware/admin_auth')
    //loadunblock
    admin_route.get('/unblock',admin_auth.adminnotexist,adminController.loadunblock);
 
+   //logout
+   admin_route.post('/logout',adminController.logout);
+
+
+
    // ********PRODUCT********
 
    admin_route.get('/product',productController.loadProduct);
@@ -80,10 +85,13 @@ const admin_auth=require('../middleware/admin_auth')
     // addcategory
     admin_route.post('/addcategory',categoryController.addcategory);
 
+    // category action
     admin_route.put('/categoryAction',categoryController.categoryAction);
 
     // edit category
     admin_route.put('/categoryEdit',categoryController.editcategory);
+
+
 
     // ********ORDERS********
 
@@ -106,26 +114,37 @@ const admin_auth=require('../middleware/admin_auth')
     // delete Coupen
     admin_route.put('/deletCoupen',coupenController.removeCoupen);
 
+
+
     // **** SALES REPORT ****
     admin_route.get('/salesreport',salesController.loadSalesReport);
 
     // load Daily report
     admin_route.get('/LoadDailyReport',salesController.LoadDailyReport);
-
+   
+    // load Weekly report
     admin_route.get('/LoadWeeklyReport',salesController.LoadWeeklyReport);
 
+    // load Monthly report
     admin_route.get('/LoadMonthlyReport',salesController.LoadMonthlyReport);
  
+    // load Yearly report
     admin_route.get('/LoadYearlyReport',salesController.LoadYearlyReport);
- 
+
+    // load random days report
     admin_route.get('/filterOrders',salesController.LoadYearlyReport);
     
+
+
 
     // ***** OFFER *****
     admin_route.get('/offer',offerController.loadOffer);
 
     // add offer
-    admin_route.post('/addOffer',offerController.addOffer)
+    admin_route.post('/addOffer',offerController.addOffer);
+
+    // removee Offer
+    admin_route.put('/offerRemove',offerController.offerRemove);
 
 
 

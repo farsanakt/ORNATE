@@ -97,11 +97,25 @@ const loadunblock=async(req,res)=>{
     }
 }
 
+// logout
+const logout = async ( req , res ) => {
+    try {
+    
+        req.session.admin = undefined
+
+        res.redirect('/admin')
+    
+    } catch (error) {
+        
+    }
+}
+
 module.exports={
     loadDashbord,
     loadUserList,
     loadLogin,
     verifyAdmin,
     loadblock,
-    loadunblock
+    loadunblock,
+    logout
 }

@@ -1,5 +1,5 @@
 const express=require('express');
- const user_route=express();
+const user_route=express();
 
   // set view engine
   user_route.set('view engine', 'ejs');
@@ -29,6 +29,8 @@ const express=require('express');
   const coupenController=require('../controllers/coupenController');
 
   const addressController=require('../controllers/addressController');
+
+
 
   // load home
   user_route.get('/',userController.loadhome);
@@ -183,12 +185,5 @@ user_route.post('/addAddress',addressController.verifyProfileAddAddess);
 
 
 
-
-
-
-
-
-
- 
 
   module.exports=user_route;

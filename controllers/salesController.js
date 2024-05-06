@@ -3,8 +3,8 @@ const Order=require('../models/order_model');
 const loadSalesReport=async(req,res)=>{
     try {
 
-
         const order=await Order.find({})
+
         res.render('salesReport',{order})
         
     } catch (error) {
@@ -26,10 +26,15 @@ const LoadDailyReport=async(req,res)=>{
         endOfToday.setHours(23, 59, 59, 999)
 
         const DailyReport = await Order.find({
-        
-        orderDate: { $gte: startOfToday, $lte: endOfToday }
-
+            orderStatus: 'delivered',
+            $expr: {
+                $and: [
+                    { $gte: ["$orderDate", startOfToday] },
+                    { $lte: ["$orderDate", endOfToday] }
+                ]
+            }
         });
+        
 
         res.render('salesreport',{order:DailyReport})
 
@@ -79,8 +84,6 @@ const LoadWeeklyReport = async (req, res) => {
         
     }
 }
-
-
 
 // load monthly report
 const LoadMonthlyReport = async (req, res) => {

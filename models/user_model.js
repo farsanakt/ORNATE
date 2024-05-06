@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     fullname: {
 
         type: String,
-        required:true
+        
     },
 
     email: {
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     phone: {
         
         type: String,
-        required:true
+     
 
     },
 

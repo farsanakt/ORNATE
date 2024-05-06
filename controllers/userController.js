@@ -1,7 +1,10 @@
  const User=require('../models/user_model');
+
  const Otp=require('../models/otp_model');
+
  const nodemailer = require('nodemailer');
- const Category=require('../models/category_model')
+
+ const Category=require('../models/category_model');
 
  //  securely hash passwords :-
 const bcrypt = require('bcrypt');
@@ -79,11 +82,16 @@ const sendmail = async(fullname,email,sendotp,res) =>{
 
 // load home
 const loadhome=async(req,res)=>{
+
     try {
         const user=req.session.user
+
         const category = await Category.find({is_Listed : true})
+
         res.render('home',{categoryData : category,user})
+
     } catch (error) {
+
         console.log(error.message);
     }
 }
@@ -93,35 +101,49 @@ const loadSignUp=async(req,res)=>{
     try {
 
         const category = await Category.find({is_Listed : true})
+
         const msg=req.flash('msg')
+
         res.render('signUp',{categoryData:category,msg:msg})
+
     } catch (error) {
-        console.log();
+
+        console.log(error.message);
     }
 }
 
 // verify signup
 const verifySignUp=async(req,res)=>{
+
     const {fullname,email,phone,password,confirmpassword}=req.body
+
      const exitmail=await User.findOne({email:req.body.email})
-    
-    
     
     try {
            if(exitmail){
+
             req.flash('msg','this email is already exited')
+
             res.redirect('/signup')
+
            }else if(password!==confirmpassword){
+
             req.flash('msg', 'Password and confirm password do not match');
+
             return res.redirect('/signup');
+
            }else{
             
             req.session.userData={fullname,email,phone,password,confirmpassword}
+
             const otp=generateotp();
+
             req.session.otp=otp
+
             console.log('otp='+otp);
 
-                       // sending otp to email
+              // sending otp to email
+
                await sendmail(fullname,email,otp)
 
                // otp schema adding 
@@ -129,17 +151,14 @@ const verifySignUp=async(req,res)=>{
                    email:email,
                    otp: otp,         
                });
+
            await userOTP.save()
+
                console.log("this is otpdoc",userOTP)
            
                res.redirect('/loadotp');
 
            }
-            
-       
-            
-                
-        
         
     } catch (error) {
         console.log(error.message);
@@ -152,52 +171,71 @@ const loadotp=async(req,res)=>{
 
     const category = await Category.find({is_Listed : true})
         try {
+
            if(req.session.otp || req.session.forget){
               
-               
                req.session.forgot=undefined
+
                const msg=req.flash('msg')
+
                const forget =req.session.forget || false
+
                res.render('otp',{categoryData:category,msg,forget})
+
            }else{
              
                res.redirect('/login')
            }
         } catch (error) {
+
            console.log(error.message);
         }
    }
    
-   
 // verify otp(post method)
 const verifyotp = async (req, res) => {
+
     try {
+
         console.log(req.session.userData.email);
+
         const { inp1, inp2, inp3, inp4, email } = req.body;
+
         const bodyotp = inp1 + inp2 + inp3 + inp4;
+
         const otp = await Otp.findOne({ email: req.session.userData.email });
         
         const hashedpassword = await securePassword(req.session.userData.password);
        
       
          if(otp.otp == bodyotp) {
+
             const user = new User({
                 fullname: req.session.userData.fullname, 
                 email: req.session.userData.email,
                 phone: req.session.userData.phone,
                 password: hashedpassword
             });
-            console.log(req.session.userData.fullname, req.session.userData.email, req.session.userData.phone, hashedpassword); 
+
             const data = await user.save();
+
             req.session.User = data._id;
+
             delete req.session.otp;
+
             console.log(user);
+
             return res.redirect('/login');
+
         } else {
+
             req.flash('msg', 'Invalid OTP');
+
             return res.redirect('/loadotp');
+
         }
     } catch (error) {
+
         console.log(error.message);
     }
 };
@@ -205,11 +243,17 @@ const verifyotp = async (req, res) => {
 // load login
 const loadLoginPage=async(req,res)=>{
     try {
+
         const msg=req.flash('msg')
+
         const category = await Category.find({is_Listed : true})
+
         res.render('login',{categoryData:category,msg})
+
     } catch (error) {
+
         console.log(error.message)
+
     }
 }
 
@@ -221,22 +265,23 @@ const verifyUser=async(req,res)=>{
     const passData=req.body.password
     
     const data=await User.findOne({email:verifymail})
-    console.log(data);
 
-    console.log('1');
     try {
+
         if(data){
-            console.log('2');
+
             const verifyPass=await bcrypt.compare(passData,data.password);
 
-            
             if(data.is_blocked){
 
                 req.flash('msg','your are blocked')
 
                 res.redirect('/login')
+
             }
+
              else if(verifyPass){
+
                 console.log('3');
 
                 req.session.userData=data
@@ -246,7 +291,9 @@ const verifyUser=async(req,res)=>{
                 console.log('verified successully')
 
                 res.redirect('/')
+
             }else{
+
                 console.log('1dc');
 
                 req.flash('msg','wrong password')
@@ -255,6 +302,7 @@ const verifyUser=async(req,res)=>{
             }
 
         }else{
+
             console.log('1111');
 
             req.flash('msg','email not existing')
@@ -263,6 +311,7 @@ const verifyUser=async(req,res)=>{
         }
         
     } catch (error) {
+
         console.log(error.message);
     }
 }
@@ -291,7 +340,9 @@ const loadContactUs=async(req,res)=>{
         const user=req.session.user
         
         res.render('contactUs',{user,categoryData:category})
+
     } catch (error) {
+
         console.log(error.message);
     }
 }
@@ -299,7 +350,9 @@ const loadContactUs=async(req,res)=>{
 // logout
 const logout=async(req,res)=>{
     try {
+
         req.session.destroy()
+
         res.redirect('/')
         
     } catch (error) {
@@ -310,24 +363,35 @@ const logout=async(req,res)=>{
 // loadforgotpassword
 const loadForGotpassword=async(req,res)=>{
     try {
+
         const category=await Category.find({is_Listed:true})
+
         const msg=req.flash('msg')
+
         res.render('forgotpassword',{categoryData:category,msg})
+
     } catch (error) {
+
         console.log(error.message);
     }
 }
 
 // post method(forgotpassword)
 const forgotpasswordOtp=async(req ,res)=>{
+
     console.log('ethiiiiiiiiii');
     try {
+
         const getemail=req.body.email
+
         console.log(getemail);
+
         const finduser=await User.findOne({email:getemail})
+
         if(finduser){
 
             req.session.forgot=true;
+
             const otp= generateotp();
 
             const userOTP = new Otp({
@@ -341,12 +405,15 @@ const forgotpasswordOtp=async(req ,res)=>{
             console.log(otp);
             req.session.forget=true
             res.redirect('/loadotp')
+
         }else{
             
             req.flash('msg','email not exit')
+
             res.redirect('/forgotpassword')
         }
     } catch (error) {
+
         console.log(error.message);
     }
 }
@@ -354,19 +421,28 @@ const forgotpasswordOtp=async(req ,res)=>{
 // forgotpass otp verifiy
 const verifiyPassOtp=async(req ,res)=>{
     try {
+
         const {inp1,inp2,inp3,inp4}=req.body;
+
         const passotp=inp1+inp2+inp3+inp4;
+
         const checkotp=await Otp.findOne({email:req.session.email})
+
         console.log(checkotp);
+
         if(checkotp?.otp==passotp){
+
             res.redirect(`/newpassword?email=${req.session.email}`)
+
         }else{
             
             req.flash('msg','otp is wrong')
+
             res.redirect('/loadotp')
         }
         
     } catch (error) {
+
         console.log(error.message);
     }
 }
@@ -376,11 +452,15 @@ const loadnewpassword=async(req,res)=>{
     try {
 
         const category = await Category.find({is_Listed : true})
+
         const msg=req.flash('msg');
+
         const sessEmail = req.session.email
+
         res.render('newpassword',{categoryData:category , sessEmail})
 
     } catch (error) {
+
         console.log(error.message);
     }
 }
@@ -391,19 +471,27 @@ const updatepassword=async(req,res)=>{
     try {
         
         const pass=req.body.password;
+
         const newpass=req.body.re_password
+
         const queryemail=req.body.email;
         
         if(pass==newpass){
             
             const hashedpassword = await securePassword(newpass);
+
             const update = await User.findOneAndUpdate({email :queryemail},{$set:{password : hashedpassword}});
+
             console.log(update);
+
             res.redirect('/login')
 
         }else{
+
             req.flash('msg','otp is wrong')
+
             res.redirect('/newpassword')
+
         }
 
     

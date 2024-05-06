@@ -1,5 +1,7 @@
 const Cart=require('../models/cart_model');
+
 const Products=require('../models/product_model');
+
 const Category=require('../models/category_model');
 
 const Coupen=require('../models/coupen_model')
@@ -8,16 +10,17 @@ const Coupen=require('../models/coupen_model')
 // load cart
 const loadCart=async(req,res)=>{
     try {
+
         const user=req.session.user
+
         const userIdd=req.session.user
 
-       
-        
         const category = await Category.find({is_Listed : true})
       
         if(req.session.user){
            
             const cartData = await Cart.findOne({userId:userIdd}).populate('products.productId');
+
             if( category && cartData && cartData.products && cartData.products.length > 0){
 
                 const total = cartData.products.reduce((acc, product) => {
@@ -55,9 +58,9 @@ const addToCart=async(req,res)=>{
         const userIdd=req.session.user
         
         const qty = req.body.qty || 1
+
         const productData=await Products.findOne({_id:proId})
 
-        
         const exist=await Cart.findOne({userId:userIdd, products:{$elemMatch:{productId:proId}}});
         
          if(!exist){

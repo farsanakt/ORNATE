@@ -715,7 +715,7 @@
 													<td><a href="#">
 															<%=product.productId.name %>
 														</a></td>
-													<td>$<%=product.price%>.00</td>
+													<td>₹<%=product.price%>.00</td>
 												</tr>
 
 												<% }) %>
@@ -723,7 +723,7 @@
 
 													<tr class="summary-subtotal">
 														<td>Subtotal:</td>
-														<td>$<%= cartData?.totalCartPrice %>.00</td>
+														<td>₹<%= cartData?.totalCartPrice %>.00</td>
 													</tr><!-- End .summary-subtotal -->
 
 													<tr class="summary-subtotal">
@@ -740,7 +740,7 @@
 													<tr class="summary-total">
 														<td>Total:</td>
 														<% const off=offer?offer:0; %>
-															<td>$<%= parseInt(cartData?.totalCartPrice/100*(100-off)) %>
+															<td>₹<%= parseInt(cartData?.totalCartPrice/100*(100-off)) %>
 																	.00</td>
 													</tr><!-- End .summary-total -->
 
