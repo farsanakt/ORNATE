@@ -51,9 +51,9 @@
 											<br><br>
         									
 							    		</div><!-- End .form-group -->
-
+										<div id="timer"></div> 
 							    		<div class="form-footer justify-content-center ">
-
+											
 							    			<button class="btn btn-outline-primary-2 text-warning" type="submit">
 													<span id="verifyBtn">verify</span>
 			            						<i class="icon-long-arrow-right"></i>
@@ -62,7 +62,8 @@
 
 											<div class="justify-content-center text-warning ">
 												
-												<a href="#" id="resendLink">Resend OTP</a>
+
+												<a href="/resendotp" id="resendLink" style="display: none;">Resend OTP</a>
 
 											</div>
 											
@@ -148,6 +149,36 @@
         });
 
 </script>
+<script>
+    window.onload = function() {
+        var timerElement = document.getElementById('timer');
+        var resendLink = document.getElementById('resendLink');
+        var timeLeft = localStorage.getItem('timeLeft') || 120; // Get remaining time from localStorage or set it to 120 seconds if it doesn't exist
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                localStorage.setItem('timeLeft', timeLeft); // Store remaining time in localStorage
+                var minutes = Math.floor(timeLeft / 60);
+                var seconds = timeLeft % 60;
+                timerElement.innerHTML = 'Time left: ' + minutes + 'm ' + seconds + 's';
+            } else {
+                timerElement.innerHTML = 'Time expired';
+                resendLink.style.display = 'inline'; // Show the resend link
+                clearInterval(timerInterval); // Stop the timer
+            }
+        }
+
+        updateTimer(); // Call updateTimer to immediately show the current time
+
+        // Call updateTimer function every second
+        var timerInterval = setInterval(updateTimer, 1000);
+    };
+</script>
+<a href="/resendotp" id="resendLink" style="display: none;">Resend OTP</a>
+
+
+
 
 
 

@@ -19,6 +19,23 @@
 							<!-- <li class="breadcrumb-item"><a href="#">Shop</a></li> -->
 							<li class="breadcrumb-item active" aria-current="page">All Products</li>
 						</ol>
+					</div>
+					<div class="toolbox-right">
+									
+						<div class="toolbox-sort">
+							<label for="sortby">Sort by: price</label>
+							<div class="select-custom">
+								<select name="sortby" id="sortby" class="form-control">
+									<option value="popularity" id="priceLow-High" >Low-High</option>
+									<option value="rating" id="priceHigh-Low">High-Low</option>
+									<option value="rating" id="nameA-Z">A - Z</option>
+									<option value="rating" id="nameZ-A">Z - A</option>
+									<option value="rating" id="newArrivals">New Arrivals</option>
+
+								</select>
+							</div>
+						</div><!-- End .toolbox-sort -->
+						<!-- End .toolbox-layout -->
 					</div><!-- End .container -->
 				</nav><!-- End .breadcrumb-nav -->
 
@@ -92,7 +109,7 @@
                 			</div>End .toolbox -->
 
 								<div class="products mb-3">
-									<div class="row justify-content-center">
+									<div class="row justify-content-center " id="productList">
 
 
 										<% for (let i=0; i < products.length; i++) { %>
@@ -103,7 +120,13 @@
 											<div class="col-6 col-md-4 col-lg-4">
 												<div class="product product-7 text-center">
 													<figure class="product-media">
-														<span class="product-label label-new">New</span>
+														<% offerData.forEach(offr =>{ %>
+														<%	if (products[i].category===offr.category.name)  { %>
+																<span style="background-color: rgb(194, 55, 55);" class="product-label label-new"><%= offr.offer  %>%</span>
+															
+														<%}else {%>
+															<span class="product-label label-new">New</span>
+												<%	}}) %>
 														<a href="/productdetails?id=<%= products[i]._id %>">
 															<img src="<%= products[i].images[0] %>"
 																alt="Product image xxxxxxx" class="product-image">
@@ -133,9 +156,20 @@
 														<h3 class="product-title"><a href="product.html">
 																<%= products[i].name %>
 															</a></h3><!-- End .product-title -->
-														<div class="product-price">
+														<% if(products[i].offerPrice==null) {%>
+															<div class="product-price">
 															<%= products[i].price %>
-														</div><!-- End .product-price -->
+														</div><% } else { %>
+															
+																<div style="text-decoration: line-through;" class="product-price">
+																	<%= products[i].price %>
+																</div>
+															<div class="product-price">
+																<%=  products[i].offerPrice%>
+															</div>
+														
+													<%	} %>
+														<!-- End .product-price -->
 														<div class="ratings-container">
 															<div class="ratings">
 																<div class="ratings-val" style="width: 20%;"></div>
@@ -563,8 +597,178 @@
 				});
 		}
 	</script>
+
+
+<!-- sorting by criterias fucntionality -->
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+        var dropdown = document.getElementById('sortby');
+
+        dropdown.addEventListener('change', handleSortChange);
+
+        function handleSortChange() {
+            var selectedOption = dropdown.options[dropdown.selectedIndex];
+            var criteria = selectedOption.id;
+			
+            fetch(`/sort/${criteria}`)
+                .then(response => response.json())
+                .then(data => {
+					console.log('fetch'+data);
+                    updateProductList(data.productDAta);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+		function updateProductList(data) {
+    var productList = document.getElementById('productList');
+    productList.innerHTML = ''; // Clear the existing content
+
+    data.forEach(product => { // Iterate over each product in the data array
+        const productItem = `
+            <div class="col-6 col-md-4 col-lg-4">
+                <div class="product product-7 text-center">
+                    <figure class="product-media">
+                        <span class="product-label label-new">New</span>
+                        <a href="/productdetails?id=${product._id}">
+                            <img src="${product.images[0]}"
+                                alt="Product image xxxxxxx" class="product-image">
+                        </a>
+
+                        <div class="product-action-vertical">
+                            <a onclick="addWishlist('${product._id}')"
+                                class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                    to wishlist</span></a>
+                        </div><!-- End.product-action-vertical -->
+
+                        <div class="product-action">
+                            <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
+                        </div><!-- End.product-action -->
+
+                    </figure><!-- End.product-media -->
+
+                    <div class="product-body">
+                        <div class="product-cat">
+                            <a href="#">
+                                ${product.brand}
+                            </a>
+                        </div><!-- End.product-cat -->
+                        <h3 class="product-title"><a href="product.html">
+                                ${product.name}
+                            </a></h3><!-- End.product-title -->
+                        <div class="product-price">
+                            ${product.price}
+                        </div><!-- End.product-price -->
+                        <div class="ratings-container">
+                            <div class="ratings">
+                                <div class="ratings-val" style="width: 20%;"></div>
+                                <!-- End.ratings-val -->
+                            </div><!-- End.ratings -->
+                            <span class="ratings-text">( 2 Reviews )</span>
+                        </div><!-- End.rating-container -->
+
+                    </div><!-- End.product-body -->
+                </div><!-- End.product -->
+            </div><!-- End.col-sm-6 col-lg-4 -->
+        `;
+        productList.innerHTML += productItem; // Append the generated HTML to the productList
+    });
+}
+
+
+       
+    });
+</script>
 	
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
+
+<!-- searching product by names -->
+<script>
+	document.getElementById('searchForm').addEventListener('submit', function(event) {
+		event.preventDefault(); 
+		const query = document.getElementById('q').value; 
+		searchproducts(query); 
+	});
+	
+	function searchproducts(query) {
+		fetch('/search', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ q: query }),
+		})
+	   .then(response => response.json()) 
+	   .then(data => {
+			if (data.message === "No product found matching your Search query") {
+				console.log("No product found");
+			} else {
+				
+				searchProductList(data);
+				
+			}
+		})
+	   .catch(error => console.error('Error:', error));
+	}
+	
+
+	function searchProductList(data){
+		var searchList = document.getElementById('productList');
+		searchList.innerHTML = '';
+
+
+    data.forEach(product => { // Iterate over each product in the data array
+        const productItem = `
+            <div class="col-6 col-md-4 col-lg-4">
+                <div class="product product-7 text-center">
+                    <figure class="product-media">
+                        <span class="product-label label-new">New</span>
+                        <a href="/productdetails?id=${product._id}">
+                            <img src="${product.images[0]}"
+                                alt="Product image xxxxxxx" class="product-image">
+                        </a>
+
+                        <div class="product-action-vertical">
+                            <a onclick="addWishlist('${product._id}')"
+                                class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                    to wishlist</span></a>
+                        </div><!-- End.product-action-vertical -->
+
+                        <div class="product-action">
+                            <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
+                        </div><!-- End.product-action -->
+
+                    </figure><!-- End.product-media -->
+
+                    <div class="product-body">
+                        <div class="product-cat">
+                            <a href="#">
+                                ${product.brand}
+                            </a>
+                        </div><!-- End.product-cat -->
+                        <h3 class="product-title"><a href="product.html">
+                                ${product.name}
+                            </a></h3><!-- End.product-title -->
+                        <div class="product-price">
+                            ${product.price}
+                        </div><!-- End.product-price -->
+                        <div class="ratings-container">
+                            <div class="ratings">
+                                <div class="ratings-val" style="width: 20%;"></div>
+                                <!-- End.ratings-val -->
+                            </div><!-- End.ratings -->
+                            <span class="ratings-text">( 2 Reviews )</span>
+                        </div><!-- End.rating-container -->
+
+                    </div><!-- End.product-body -->
+                </div><!-- End.product -->
+            </div><!-- End.col-sm-6 col-lg-4 -->
+        `;
+        productList.insertAdjacentHTML('beforeend', productItem) ; // Append the generated HTML to the productList
+
+    });
+}
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
 
 
 

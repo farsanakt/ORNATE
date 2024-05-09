@@ -1,521 +1,631 @@
-<%- include('../layouts/header.ejs') %>
+<%- include('../layouts/header') %>
 
-<div class="container-scroller">
+  <div class="page-wrapper">
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
 
+      .modal-content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        max-width: 50%;
+        max-height: 80%;
+        overflow: auto;
+      }
 
-    <div class="container-fluid page-body-wrapper">
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 28px;
+        cursor: pointer;
+      }
 
-        <%- include('../layouts/navbar-2.ejs') %>
-              
-    <div class="main-panel ">
+      .returnClose {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 28px;
+        cursor: pointer;
+      }
 
-        <div class="row">
+      /* Style the button inside the modal */
+      .modal-content button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
 
-                    <div class="col-lg-12 ">
+      /* Close button hover effect */
+      .modal-content button:hover {
+        background-color: #0056b3;
+      }
+    </style>
 
-                        <div id="addproduct-accordion" class="custom-accordion">
+    <%- include('../layouts/navbar-2.ejs') %>
 
-                            <div class="card border-light " style="background-color: #3c0340; margin-top: 20px;">
+      <main class="main">
 
-                                <a href="" class="text-white " data-bs-toggle="collapse" aria-expanded="true" aria-controls="addproduct-billinginfo-collapse">
-                                    
-                                    <div class="p-4">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+          <div class="container">
+            <h1 class="page-title">My Profile</h1>
+          </div><!-- End .container -->
+        </div><!-- End .page-header -->
 
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="">
-                                                <h4 class="font-size-14 mb-1 text-white">Date: <%= orderDetails.orderDate.toString().split(' ').slice(0,4).join(' ') %></h4>
-                                                <p class="text-white text-truncate mb-0">Order Id: #<%= orderDetails._id %></p>
-                                            </div>
-                                        
-                                            <div>
-                                                <a href="/invoice/<%= orderDetails._id %>"><button class="btn btn-secondary rounded-pill">Invoice</button></a>
-                                            </div>
-                                        </div>
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+          <div class="container">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="">Home</a></li>
+              <!-- <li class="breadcrumb-item"><a href="#"></a></li> -->
+              <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+            </ol>
+          </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
 
-                                    </div>
-                                </a>
+        <section class="">
 
-                                <div id="addproduct-billinginfo-collapse" class="collapse show"
-                                    data-bs-parent="#addproduct-accordion">
-                                    <div class="p-4 border-top w-100 border-light">
+          <div class="container-fluid  py-5 h-100 position-relative ">
 
-                                            <div class="row">
+            <div class="row d-flex align-items-start  h-100" style="gap: 10rem;">
 
-                                                <div class=" col-md-4 d-flex">
+              <aside class="col-md-2 col-lg-2  ">
 
-                                                    <div class=" text-center " style="width: 3rem;">
-                                                            <i class="ri-user-fill" style="font-size: 25px;"></i>
-                                                    </div>
+                <!-- profile nave -->
 
-                                                    <div class=" w-75">
+                <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
 
-                                                        <h5 class="mt-1 text-white">Customer</h5>
-                                                        <span class="text-white"><%= orderDetails.userId.name %></span><br>
-                                                        <span class="text-white"><%= orderDetails.userId.email %></span><br>
-                                                        <span class="text-white"><%= orderDetails.userId.phone %></span>
+                  <li class="nav-item">
+                    <a class="nav-link active" id="tab-orders-link" href="/orders" aria-selected="true">Back to
+                      Orders</a>
+                  </li>
 
+                </ul>
 
-                                                    </div>
+                <br>
 
-                                                </div>
+                <% if (order.products[0].orderProStatus=='delivered' ) { %>
 
-                                                <br>
+                  <div class="mb-2">
 
-                                                <div class=" col-md-4 d-flex ">
-                                                    <div  style="width: 3rem;">
-                                                        <i class="ri-truck-fill"style="font-size: 30px;" ></i>
-                                                </div>
+                    <button class="btn border"><a href="/downloadInvoice?id=<%= order._id %>">Download
+                        Invoice</a></button>
 
-                                                <div class="w-75">
+                  </div>
 
-                                                    <h5 class="mt-1 text-white">Order info</h5>
+                  <% } %>
 
-                                                    <span class="text-white">Pay Method: <%= orderDetails.payment %></span><br>
-                                                    <span class="text-white">Payment Status: <%= orderDetails.orderStatus %></span>
+                    <div class="card"
+                      style="border:.1rem solid #ebebeb !important; border-radius: 8px; padding-left: 20px;">
 
-                                                </div>
+                      <div class="card-body">
 
-                                                </div>
+                        <div class="hedaer d-flex align-items-center justify-content-center w-100">
 
-                                                <br>
+                          <h5 class="card-title mb-2">
 
-                                                <div class=" col-md-4 d-flex">
+                            address
 
-                                                    <div style="width: 3rem;">
-                                                        <i class="ri-map-pin-line" style="font-size: 30px;"></i>
-                                                    </div>
+                          </h5>
 
-                                                <div class=" w-75">
-
-                                                    <h5 class="mt-1 text-white">Deliver to</h5>
-
-                                                    <span class="text-white"><%= orderDetails.deliveryAddress.name %></span><br>
-                                                    <span class="text-white"><%= orderDetails.deliveryAddress.phone %></span><br>
-                                                    <span class="text-white"><%= orderDetails.deliveryAddress.city %></span><br>
-                                                    <span class="text-white"><%= orderDetails.deliveryAddress.state %></span>
-                                                    <span class="text-white"><%= orderDetails.deliveryAddress.pincode %></span><br>
-
-                                                </div>
-
-                                                </div>
-
-                                                <br>
-
-                                            </div>
-
-                                            <br>
-
-                                            <div class="row">
-
-                                                <div class="col-md-12">
-
-                                                    <table class="table align-middle table-nowrap table-check text-white text-center ">
-
-                                                        <thead >
-
-                                                            <tr class="bg-transparent ">
-
-                                                                <td style="font-size: 16px;">Sl.No</td>
-                                                                <td style="font-size: 16px;">Product</td>
-                                                                <td style="font-size: 16px;">Quantity</td>
-                                                                <td style="font-size: 16px;">Total</td>
-                                                                <td style="font-size: 16px;">Status</td>
-                                                                <td style="font-size: 16px;">Actions</td>
-
-                                                            </tr>
-
-                                                        </thead>
-
-                                                        <thead class="text-center">
-
-                                                            <% orderDetails.products.forEach((val , ind)=> {  %>
-                                            
-                                                                <% if(val?.orderProStatus=='cancelled' || val?.orderProStatus=='returned'){
-                                                                    %>
-                                                                    <tr class="fs-4" style="pointer-events: none;">
-                        
-                                                                                <td><%= ind + 1 %></td>
-                        
-                                                                                <td><%= val?.productId.name %></td>
-                        
-                                                                                <td><%= val?.quantity %></td>
-                        
-                                                                                <td class="text-decoration-line-through"><del><%= val.price %></del></td>
-                        
-                                                                                <td class=""><%= val?.orderProStatus %></td>
-                        
-                                                                                <td>
-                        
-                                                                                    <div class="dropdown">
-                                                                                        <a
-                                                                                        href="#"
-                                                                                        style="
-                                                                                            border-radius: 5px;
-                                                                                            border: 0px solid transparent;
-                                                                                            outline: 0px;
-                                                                                            transition: all ease 0.5s;
-                                                                                            background-color: rgb(122, 122, 125);
-                                                                                        "
-                                                                                        class="p-3 rounded-2 text-white dropdown-toggle"
-                                                                                        role="button"
-                                                                                        id="dropdownMenuLink"
-                                                                                        data-bs-toggle="dropdown"
-                                                                                        aria-expanded="false"
-                                                                                        >
-                                                                                        Actions
-                                                                                        </a>
-                                                                                    
-                                                                                      
-                        
-                                                                                </td>
-                                                                     </tr>
-                        
-                                                                            
-                        
-                        
-                                                                                
-                                                                    <%
-                                                                }
-                                                                else{
-                                                                    %>
-                        
-                                                                         <tr class="fs-4">
-                        
-                                                                                    <td><%= ind + 1 %></td>
-                        
-                                                                                    <td><%= val?.productId.name %></td>
-                        
-                                                                                    <td><%= val?.quantity %></td>
-                        
-                                                                                    <td class=""><%= val?.price %></td>
-                        
-                                                                                    <td class=""><%= val?.orderProStatus %></td>
-                        
-                                                                                    <td>
-                        
-                                                                                        <div class="dropdown">
-                                                                                            <a
-                                                                                            href="/orderDetails?id=<%= val?._id %>"
-                                                                                            style="
-                                                                                                border-radius: 5px;
-                                                                                                border: 0px solid transparent;
-                                                                                                outline: 0px;
-                                                                                                transition: all ease 0.5s;
-                                                                                                background-color: rgb(54, 6, 247);
-                                                                                            "
-                                                                                            class="p-3 rounded-2 text-white dropdown-toggle"
-                                                                                            role="button"
-                                                                                            id="dropdownMenuLink"
-                                                                                            data-bs-toggle="dropdown"
-                                                                                            aria-expanded="false"
-                                                                                            >
-                                                                                            Actions
-                                                                                            </a>
-                                                                                        
-                                                                                            <ul class="dropdown-menu bg-dark text-white" aria-labelledby="dropdownMenuLink">
-                                                                                            
-                                                                                            <% if(val?.orderProStatus == 'delivered'){
-                                                                                                %>
-                                                                                                <li><a class="dropdown-item text-info" href="#" data-bs-toggle="modal" data-bs-target="#returnModal_<%= ind %>">Return</a></li>
-                                                                                                <%
-                                                                                            }else if(val?.orderProStatus == 'Payment Failed'){
-                                                                                                %>
-                                                                                                <li><a id="placeOrderLink" class="dropdown-item text-success" href="#" data-bs-toggle="modal" data-bs-target="#confirmationModal">Place Order</a></li>
-                                                                                                <%
-                                                                                            }
-                                                                                            else{
-                                                                                                %>
-                                                                                                <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#cancelModal_<%= ind %>">Cancel</a></li>
-                                                                                                <%
-                                                                                            }
-                                                                                            %>
-                                                                                            
-                        
-                                                                                            
-                                                                                            </ul>
-
-                                                                                            <!-- Bootstrap Modal -->
-                                                                                            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                                                                                            <div class="modal-dialog">
-                                                                                                <div class="modal-content">
-                                                                                                <div class="modal-header">
-                                                                                                    <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                                </div>
-                                                                                                <div class="modal-body text-dark">
-                                                                                                    Are you sure you want to place the order?
-                                                                                                </div>
-                                                                                                <div class="modal-footer">
-                                                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                                                    <button onclick="failedPaymentRetry('<%= orderDetails._id %>','<%= orderDetails.orderAmount %>')" id="confirmOrderButton" type="button" class="btn btn-primary">Yes, Place Order</button>
-                                                                                                </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            </div>
-
-
-
-                                                                                            <!-- Conformation modal for cancelling an order -->
-                                                                                            
-
-                                                                                            <div class="modal fade" id="cancelModal_<%= ind %>" tabindex="-1" aria-labelledby="cancelModalLabel_<%= ind %>" aria-hidden="true">
-                                                                                                <div class="modal-dialog">
-                                                                                                    <div class="modal-content">
-                                                                                                        <div class="modal-header">
-                                                                                                            <h5 class="modal-title" id="cancelModalLabel_<%= ind %>">Return Order Confirmation</h5>
-                                                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                                        </div>
-                                                                                                        <div class="modal-body">
-                                                                                                            
-                                                                                                        </div>
-                                                                                                        <div class="modal-footer">
-                                                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                                                            <button type="button" class="btn btn-danger" onclick="cancelProduct('<%= val.productId._id  %>','<%= orderDetails._id  %>','<%= ind %>')">Cancel Product</button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-
-
-
-
-                                                                                            
-                                                                                            <!-- Return modal -->
-                                                                                            <div class="modal fade" id="returnModal_<%= ind %>" tabindex="-1" aria-labelledby="returnModalLabel_<%= ind %>" aria-hidden="true">
-                                                                                                <div class="modal-dialog">
-                                                                                                    <div class="modal-content">
-                                                                                                        <div class="modal-header">
-                                                                                                            <h5 class="modal-title" id="returnModalLabel_<%= ind %>">Return Order Confirmation</h5>
-                                                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                                        </div>
-                                                                                                        <div class="modal-body">
-                                                                                                            <form id="returnForm_<%= ind %>">
-                                                                                                                <div class="mb-3">
-                                                                                                                    <label for="returnReason_<%= ind %>" class="form-label">Reason for Return:</label>
-                                                                                                                    <select class="form-select" id="returnReason_<%= ind %>" name="returnReason_<%= ind %>">
-                                                                                                                        <option value="size_not_match">Size not match</option>
-                                                                                                                        <option value="product_defect">Product defect</option>
-                                                                                                                        <option value="wrong_material">Wrong material</option>
-                                                                                                                        <option value="other">Other</option>
-                                                                                                                    </select>
-                                                                                                                </div>
-                                                                                                                <div class="mb-3">
-                                                                                                                    <label for="customReason_<%= ind %>" class="form-label">Custom Reason:</label>
-                                                                                                                    <input type="text" class="form-control" id="customReason_<%= ind %>" name="customReason_<%= ind %>" placeholder="Enter custom reason">
-                                                                                                                </div>
-                                                                                                            </form>
-                                                                                                        </div>
-                                                                                                        <div class="modal-footer">
-                                                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                                                            <button type="button" class="btn btn-danger" onclick="returnProduct('<%= val.productId._id  %>','<%= orderDetails._id  %>','<%= ind %>')">Return Product</button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                        
-                        
-                                                                                            
-                        
-                                                                                        </div>
-                                                                                        
-                        
-                                                                                    </td>
-                                                                                    </tr>
-                        
-                                                                                   
-                        
-                                                                                    
-                        
-                                                                    <%
-                                                                }
-                        
-                                                                 %>
-                        
-                                                           <% }); %>
-
-                                                        </thead>
-
-                                                    </table>
-
-                                                </div>
-
-                                            </div>
-                                    </div>
-                                </div>
-
-                            </div> <!-- container-fluid -->
                         </div>
 
+                        <div class="mb-3">
+
+                          <label class="form-label"> name:-&nbsp;<%= order?.deliveryAddress?.name %></label>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                          <label class="form-label"> city:-&nbsp;<%= order?.deliveryAddress?.city %></label>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                          <label class="form-label"> state:-&nbsp;<%= order?.deliveryAddress?.state %></label>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                          <label class="form-label"> pincode:-&nbsp;<%= order?.deliveryAddress?.pincode %></label>
+
+                        </div>
+
+
+                      </div>
+
                     </div>
-                    <!-- end main content-->
+
+              </aside>
+
+              <aside class="col col-lg-6 mb-4 mb-lg-0">
+
+                <div class="row w-100" style="gap: 2rem;">
+
+                  <div class="container">
+
+                    <table class="table table-wishlist table-mobile text-center" style="width: 960px;">
+
+                      <thead>
+
+                        <tr>
+
+                          <th>Product</th>
+                          <th>Name</th>
+                          <th>Price</th>
+                          <th>Quantity </th>
+                          <th>Delivery </th>
+                          <th>Total Price</th>
+                          <th class="<%= order.products[0].orderProStatus == 'canceled' ? 'disabled' : '' %>">
+                            <%= order.products[0].orderProStatus=='canceled' ? '' : 'options' %>
+                          </th>
+
+                        </tr>
+
+                      </thead>
+
+                      <tbody class="text-center ">
+
+                        <% if(locals.order) { %>
+
+                          <% order.products.slice().reverse().forEach((product, index)=>{ %>
+
+                            <% if (product.orderProStatus=='canceled' ) { %>
+
+                              <tr>
+
+                                <td class="product-col">
+
+                                  <figure class="product-media">
+
+                                    <a href="/productDetails?proId=<%= product?.productId?._id %>">
+                                    <%=console.log(product.productId.images[0],'product')%>
+
+                                      <img src="<%= product?.productId?.images[0] %> " alt="Product image">
+
+                                    </a>
+
+                                  </figure>
+
+                                </td>
+
+                                <td>
+
+                                  <a href="/productDetails?proId=<%= product?.productId?._id %>"
+                                    style="text-decoration:line-through;">
+                                    <%= product?.productId?.name %>
+
+                                  </a>
+
+                                  <!-- End .product -->
+                                </td>
+
+                                <td class="stock-col ms-3 " style="text-decoration:line-through;">$<%=
+                                    order.orderAmount %>
+                                </td>
+
+                                <td class="stock-col">
+
+                                  <span class="in-stock" style="text-decoration:line-through;">
+
+                                    <%=product?.quantity %>
+
+                                  </span>
+
+                                </td>
+
+                                <td>
+
+                                  <span
+                                    class="<%= product?.orderProStatus == 'canceled' ? 'text-danger' : 'text-primary' %>">
+                                    <%= product?.orderProStatus %>
+                                  </span>
+
+                                </td>
+
+                                <td class="price-col" style="text-decoration:line-through;">
+
+                                  $<%=  order.orderAmount %>
+
+                                </td>
+
+                              </tr>
+
+                              <% } else { %>
+
+                                <tr>
+
+                                  <td class="product-col">
+
+                                    <figure class="product-media">
+
+                                      <a href="/productDetails?proId=<%= product.productId._id %>">
+
+                                        <img src="<%= product.productId.images[0] %> "
+                                          alt="Product image">
+
+                                      </a>
+
+                                    </figure>
+
+                                  </td>
+
+                                  <td>
+
+                                    <a href="/productDetails?proId=<%= product.productId._id %>">
+                                      <%=console.log(product,'product')%>
+                                      <%= product.productId.name %>
+
+                                    </a>
+
+                                    <!-- End .product -->
+                                  </td>
+
+                                  <td class="stock-col ms-3 ">$<%= order.orderAmount %>
+                                  </td>
+
+                                  <td class="stock-col">
+
+                                    <span class="in-stock">
+
+                                      <%= product.quantity %>
+
+                                    </span>
+
+                                  </td>
+
+                                  <td>
+
+                                    <span
+                                      class="<%= product.orderProStatus === 'canceled' ? 'text-danger' : ( product.orderProStatus === 'returned' ? 'text-success' : 'text-primary') %>">
+                                      <%= product.orderProStatus %>
+                                    </span>
+
+                                  </td>
+
+                                  <td class="price-col">
+
+                                    $<%=  order.orderAmount %>
+ 
+                                    
+
+                                  </td>
+
+
+                                  <td>
+
+                                    <div class="d-flex align-items-center justify-content-between w-100">
+
+                                      <% if (product.orderProStatus=='payment pending' ) { %>
+
+                                        <button type="button" class="btn btn-primary"
+                                          onclick="razorPayy('<%= order.userId %>' , '<%= order.orderAmount %>' , '<%= order._id %>')">
+
+                                          <span>Place Order</span>
+
+                                        </button>
+
+
+                                        <% } else { %>
+
+                                          <% if(product.orderProStatus !='canceled' && product.orderProStatus !='delivered' &&
+                                            product.orderProStatus !='returned' ) { %>
+                                            <button class="btn btn-danger openModalBtn" type="button"
+                                              data-order-id='<%= order._id %>'
+                                              data-product-id="<%= product.productId._id %>"> Cancel</button>
+
+                                            </button>
+
+                                            <% } else if (product.orderProStatus=='delivered' && order.apporved==0 ){ %>
+                                              <button class="btn btn-danger openReturnModalBtn" type="button"
+                                                data-order-id='<%= order._id %>'
+                                                data-product-id="<%= product.productId._id %>" id="openModalBtn">Return
+                                              </button>
+
+                                              <% } else if (order.apporved==1){ %>
+                                                
+                                                <p class="text-danger">request sended</p> 
+                                                
+                                                
+                                            <%  } %>
+
+                                                <% } %>
+
+                                    </div>
+
+                                  </td>
+
+                                </tr>
+
+                                <% } %>
+
+                                  <% })} %>
+
+                      </tbody>
+
+                    </table>
+
+                    <% if(locals.order ) {%>
+
+                      <div class="wishlist-share">
+
+                        <div class="social-icons social-icons-sm mb-2">
+
+                          <label class="social-label">Total:</label>
+
+                          $<%= locals.order.orderAmount %>
+
+                        </div><!-- End .soial-icons -->
+
+                      </div>
+
+                      <% } %>
+
+                  </div>
 
                 </div>
+              </aside>
+            </div>
 
-        </div>
+          </div>
 
-    </div>
+        </section>
 
-</div>
+      </main>
 
-<%- include('../layouts/footbar-2.ejs') %>
+      <!-- Connect Footer -->
+      <%- include('../layouts/footbar-2') %>
+        <!-- Connect Footer -->
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </div>
 
-<script>
 
-    function cancelProduct(Idd, ordId , index) {
+                          // return modal
+                          <div id="myModalReturn" class="modal">
+                      <div class="modal-content">
+                          <span class="returnClose">&times;</span>
+                          <h2 style="margin-left: 110px; color: black;">Select Return Reason</h2>
+                          <hr>
+                          <select id="selectBoxx" style="width: 100%; height: 40px;">
+                              <option value="Recieved Wrong Item">Recieved Wrong Item</option>
+                              <option value="Defective or Damaged Product">Defective or Damaged Product</option>
+                              <option value="Wrong Size or Fit">Wrong Size or Fit</option>
+                              <option value="Unsatisfactory Quality">Unsatisfactory Quality</option>
+                              <option value="Late Delivery">Late Delivery</option>
+                              <option value="Other">Other</option>
+                              Other options 
+                          </select>
+                          <button class="btn btn-Success"
+                              style="width: 90px; margin-left: 200px; margin-top: 10px;"
+                              id="submitModalButtonreturn">Submit</button>
 
-    console.log('reached cancel product');
-    console.log(Idd, ordId, index);
-
-    fetch(`/cancelProduct?id=${Idd}`&ordId=${ordId}&index=${index}, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-    })
-    .then(res => res.json()) // Corrected: Missing parentheses after res.json
-    .then(result => {
-        if (result === true) {
-            console.log('Product cancelled successfully');
-            var myModalElement = document.getElementById('cancelModal_' + index);
-
-            var modal = bootstrap.Modal.getInstance(myModalElement);
-            if (modal) {
-                modal.hide();
-            }
-            // Reload the page or table here
-            location.reload(); // Reloads the entire page
-            // Or call a function to reload the specific table
-            // reloadTable(); // Call a function to reload the specific table
-        } else {
-            console.error('Failed to cancel product:', result);
-        }
-    })
-    .catch(error => {
-        console.error('Error cancelling product:', error);
-    });
-}
+                      </div>
+                  </div>
 
 
 
 
-function returnProduct(idd, ordId, index){
-    console.log(idd, ordId, index);
+                    // cancel modal
+                    <div id="myModal" class="modal">
+                      <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 style="margin-left: 110px; color: black;">Select Cancellation Reason</h2>
+                        <hr>
+                        <select id="selectBox" style="width: 100%; height: 40px;">
+                          <option value="Order Created by Mistake">Order Created by Mistake</option>
+                          <option value="Items Would Not Arrive on Time">Items Would Not Arrive on
+                            Time</option>
+                          <option value="Item Price Too High">Item Price Too High</option>
+                          <option value="Need to Change Shipping Address">Need to Change Shipping
+                            Address</option>
+                          <option value="Need to Change Payment Method">Need to Change Payment Method
+                          </option>
+                          <option value="Other">Other</option>
+                          <!-- Other options -->
+                        </select>
+                        <button class="btn btn-Success" style="width: 90px; margin-left: 200px; margin-top: 10px;"
+                          id="submitModalButton">Submit</button>
 
-        var returnReason = document.getElementById('returnReason_' + index).value;
-        var customReason = document.getElementById('customReason_' + index).value;
+                      </div>
+                    </div>
 
-        var reason = returnReason === 'other' ? customReason : returnReason;
+  <button id="scroll-top" title="Back to Top">
 
-        console.log('Return Reason:', reason);
+    <i class="icon-arrow-up"></i>
 
-    fetch(/returnProduct?id=${idd}&ordId=${ordId}&index=${index}, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:JSON.stringify({reason})
-    })
-    .then(res => res.json()) // Corrected: Missing parentheses after res.json
-    .then(result => {
-        if (result === true) {
-            console.log('Product returned successfully');
-            var myModalElement = document.getElementById('returnModal_' + index);
+  </button>
 
-            var modal = bootstrap.Modal.getInstance(myModalElement);
-            if (modal) {
-                modal.hide();
-            }
-            // Reload the page or table here
-            location.reload(); // Reloads the entire page
-            // Or call a function to reload the specific table
-            // reloadTable(); // Call a function to reload the specific table
-        } else {
-            console.error('Failed to return product:', result);
-        }
-    })
-    .catch(error => {
-        console.error('Error returning product:', error);
-    });
-}
+  <!--Connect Mobaile View-->
+  <%- include('../layouts/mobileView.ejs') %>
+    <!--Connect Mobaile View-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/superfish.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
 
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    var placeOrderLink = document.getElementById('placeOrderLink');
-    var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-
-    placeOrderLink.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default action of link click
-        confirmationModal.show(); // Show the confirmation modal
-    });
-
-    var confirmOrderButton = document.getElementById('confirmOrderButton');
-    confirmOrderButton.addEventListener('click', function() {
-        // Here you can write code to handle order placement
-        // For now, let's just close the modal
-        confirmationModal.hide();
-    });
-});
-
-
-
-function failedPaymentRetry( ordId , amount){
-    console.log(ordId , amount);
-
-    fetch('/failedPaymentRetry',{
-        method:"POST",
-        headers:{'Content-type':'application/json'},
-        body: JSON.stringify({ amount })
-    }).then(res=> res.json()).then(data=>{
-        if (data.succes) {
-                    console.log(data)
-                    let options = {
-                                    "key": ${data.key_id},
-                                    "amount": ${data.amount},
-                                    "currency": "INR",
-                                    "name": "ShoeChic",
-                                    "order_id": ${data.order_id},
-                                    "handler": function (response) {
-                                        // Call the second fetch on successful payment
-                                        fetch('/changeStatusRetry', {
-                                            method: 'POST',
-                                            headers: { 'Content-type': 'application/json' },
-                                            body: JSON.stringify({ ordId })
-                                        })
-                                        .then(res => res.json())
-                                        .then(data => {
-                                            if (data.success) {
-                                                location.reload();
-                                            }
-                                        });
-                                    },
-                                    "profile": {
-                                        "name": ${data.name},
-                                        "email": ${data.email}
-                                    }
-                                }
-								let razorpayObject = new Razorpay(options);
-                    // razorpayObject.on('payment.success', (response) => {
-
-                    //     console.log('reached payment success');
-                    //     fetch('/changeStatusRetry',{
-                    //         method:'POST',
-                    //         headers:{'Content-type':'application/json'},
-                    //         body: JSON.stringify({ordId})
-                    //     }).then(res => res.json())
-                    //     .then(data => {
-                    //         if(data.success){
-                    //             location.reload()
-                    //         }
-                    //     })
-                    // });
-                    razorpayObject.on('payment.failed', (response) => {
-                        location.reload();
-                    });
-                    razorpayObject.open();
-    }})
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     
-}
+    <script>
 
 
-</script>
+      // cancel 
+      function openModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+      }
 
+      function closeModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+      }
+
+
+      function submitCancellation(orderId, productId) {
+        console.log(orderId,'lllll888');
+        console.log(productId,'000');
+
+        const selectedReason = document.getElementById('selectBox').value;
+        console.log(selectedReason, 'selectedReason');
+
+        Swal.fire({
+          title: `Are you sure?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText:` Yes`
+
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetch('/cancelOrder', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                orderId: orderId,
+                productId: productId,
+                selectedReason: selectedReason
+              })
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  window.location.href = '/orders'
+                }
+              })
+
+          }
+        })
+      }
+
+
+      document.addEventListener('DOMContentLoaded', function () {
+
+        var openModalBtns = document.querySelectorAll('.openModalBtn');
+        var closeModalBtn = document.querySelector('.close');
+
+
+        openModalBtns.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var orderId = this.getAttribute('data-order-id');
+            var productId = this.getAttribute('data-product-id');
+            openModal();
+
+            document.getElementById('submitModalButton').onclick = function () {
+              submitCancellation(orderId, productId)
+            }
+          })
+
+        });
+
+        if (closeModalBtn) {
+          closeModalBtn.addEventListener('click', closeModal);
+        }
+      });
+
+    </script>
+
+    <script>
+      
+
+
+      function openModalreturn(){
+                var modal = document.getElementById('myModalReturn')
+                modal.style.display = 'block';
+            }
+
+            function closeModal(){
+                var modal = document.getElementById('myModalReturn')
+                modal.style.display = 'none'
+            }
+
+
+            function submitReturn(orderId,productId){
+
+                const selectedReason = document.getElementById('selectBoxx').value;
+
+                Swal.fire({
+                    title: `Are you sure?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText:` Yes`
+
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/returnOrder', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                orderId:orderId,
+                                productId:productId,
+                                selectedReason:selectedReason
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.reload()
+                            }
+                        })
+
+                    }
+                })
+
+
+            }
+
+            document.addEventListener('DOMContentLoaded',function(){
+
+                var openModalBtnReturn = document.querySelectorAll('.openReturnModalBtn');
+                var closeModalBtnReturn = document.querySelector('.returnClose');
+                
+                openModalBtnReturn.forEach(function(btn){
+                    btn.addEventListener('click',function(){
+                        var orderId = this.getAttribute('data-order-id');
+                        var productId = this.getAttribute('data-product-id');
+                        openModalreturn();
+
+                        document.getElementById('submitModalButtonreturn').onclick = function(){
+                            submitReturn(orderId,productId)
+                        }
+                    })
+                })
+
+                if(closeModalBtnReturn){
+                    closeModalBtnReturn.addEventListener('click', closeModal)
+                }
+
+
+            })
+
+      </script>
+
+    <%- include('../layouts/footer') %>

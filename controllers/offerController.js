@@ -28,13 +28,23 @@ const loadOffer = async (req, res) => {
 
       const { offname, category, offer } = req.body;
 
-      await Offer.create({
+      const newOffr=new Offer({
 
         name: offname,
         category,
         offer,
 
-      });
+
+      })
+
+      
+      await newOffr.save();
+      const catName=await Catogory.findOne({_id:category});
+      const produ=await Product.find({category:catName.name})
+      for(const key of produ){
+        const offerPrice=parseInt(key.price/100*(100-offer))
+        await Product.findOneAndUpdate({_id:key._id},{$set:{offerPrice}})
+      }
 
       res.redirect("/admin/offer");
 
@@ -56,11 +66,11 @@ const loadOffer = async (req, res) => {
         
         const removed = await Offer.findOneAndDelete({ _id: offerId });
 
-        const cateId = removed.category._id
-
+        const cateId = removed.category
+        const catName=await Catogory.findOne({_id:cateId});
         if (removed) {
-            
-            const r = await Product.updateMany({ category: cateId }, { $set: { discount: 0, discount_price: 0 } });
+            console.log('skskskskks');
+            const r = await Product.updateMany({ category: catName.name }, { $set: {offerPrice:null } });
 
             res.send({ succ: true })
 

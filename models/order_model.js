@@ -32,12 +32,7 @@ const Order = mongoose.Schema({
     
     },
 
-    orderStatus: {
-        
-        type: String,
-        enum: ['pending', 'shipped', 'delivered', 'canceled'],
-        default: 'pending'
-    },
+   
 
     deliveryAddress: {
       
@@ -80,15 +75,20 @@ const Order = mongoose.Schema({
                 
             type: String,
             required: true,
-            enum: ['pending', 'shipped', 'delivered', 'canceled','requested to return'],
+            enum: ['pending', 'shipped', 'delivered', 'canceled','returned','requested to return'],
             default: 'pending',
 
         },
         reason:{
             type:String,
             default:null
-        }
+        },
+    
     }],
+    apporved:{
+        type:Number,
+        default:0
+    }
 
 });
 

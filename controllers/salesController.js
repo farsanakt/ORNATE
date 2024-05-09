@@ -26,14 +26,12 @@ const LoadDailyReport=async(req,res)=>{
         endOfToday.setHours(23, 59, 59, 999)
 
         const DailyReport = await Order.find({
-            orderStatus: 'delivered',
-            $expr: {
-                $and: [
-                    { $gte: ["$orderDate", startOfToday] },
-                    { $lte: ["$orderDate", endOfToday] }
-                ]
-            }
-        });
+
+            'products.orderProStatus': 'delivered',
+        
+            orderDate: { $gte: startOfToday, $lte: endOfToday } 
+    
+            });
         
 
         res.render('salesreport',{order:DailyReport})
@@ -66,14 +64,16 @@ const LoadWeeklyReport = async (req, res) => {
         endOfWeek.setHours(23, 59, 59, 999)
 
         
-        const weeklyOrders = await Order.find({
+        const WeeklyReport = await Order.find({
+
+            'products.orderProStatus': 'delivered',
 
             orderDate: { $gte: startOfWeek, $lte: endOfWeek }
-
-        })
+            
+        });
 
         
-        res.render('salesreport', { order: weeklyOrders });
+        res.render('salesreport', { order: WeeklyReport });
 
         console.log(weeklyOrders)
 
@@ -99,6 +99,8 @@ const LoadMonthlyReport = async (req, res) => {
 
        
         const monthlyOrders = await Order.find({
+
+            'products.orderProStatus': 'delivered',
 
             orderDate: { $gte: startOfMonth, $lte: endOfMonth }
         })
@@ -129,6 +131,8 @@ const LoadYearlyReport = async (req, res) => {
         
         const yearlyOrders = await Order.find({
 
+            'products.orderProStatus': 'delivered',
+
             orderDate: { $gte: startOfYear, $lte: endOfYear }
         })
 
@@ -155,6 +159,8 @@ const filerdate =    async (req, res) => {
             endDate.setHours(23, 59, 59, 999)
     
             const salesReport = await Order.find({
+
+                'products.orderProStatus': 'delivered',
 
                 orderDate: { $gte: startDate, $lte: endDate }
             });

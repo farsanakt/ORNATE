@@ -19,6 +19,8 @@ const productSchema=new mongoose.Schema({
     
     images:{type:Array,required:true},
 
+    offerPrice:{type:Number, default:null},
+
 });
 
 module.exports=mongoose.model("product",productSchema);

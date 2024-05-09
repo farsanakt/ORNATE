@@ -1,5 +1,49 @@
 
 <%- include('../layouts/header.ejs') %>
+<style>
+    .text-animation {
+    text-align: center;
+}
+
+.text-animation h2,
+.text-animation p {
+    animation: fadeInOut 4s infinite alternate;
+    opacity: 0;
+}
+
+.text-animation h2 {
+    font-size: 36px;
+    color: #333; /* Change color to your preference */
+}
+
+.text-animation p {
+    font-size: 18px;
+    color: #666; /* Change color to your preference */
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+</style>
+<style>
+    @keyframes rotateText {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 
 <body>
 
@@ -13,7 +57,7 @@
 
             <div class="intro-slider-container">
                 <div class="intro-slider owl-carousel owl-simple owl-nav-inside owl-light" data-toggle="owl" data-owl-options='{"nav":false, "dots": false, "loop": false}'>
-                    <div class="intro-slide" style="background-image: url(assets/images/zerac/home.jpg);">
+                    <div class="intro-slide" style="background-image: url(assets/images/zerac/homeornate.jpg);">
                         <div class="container intro-content text-center">
                             <!-- <h3 class="intro-subtitle">Want to know what's hot?</h3>End .h3 intro-subtitle -->
                             <h2 class="text-white">"Elevate your stride, elevate your style"</h2><!-- End .intro-title -->
@@ -35,7 +79,7 @@
                         <div class="col-lg-6 order-lg-last">
                             <div class="banner banner-overlay" style="border-radius: 20px;">
                                 <a href="#">
-                                    <img src="assets/images/zerac/homezerac1.jpg" alt="Banner" style="border-radius: 20px; height: 500px;">
+                                    <img src="assets/images/zerac/homeimg2.jpg" alt="Banner" style="border-radius: 20px; height: 500px;">
                                 </a>
 
                                 <div class="banner-content men">
@@ -72,87 +116,27 @@
                                 <p class="title-desc">
                                     We work with monitoring programmes to ensure compliance with our social, environmental and health and safety standards for our products. To assess compliance, we have developed a programme of audits and continuous improvement plans..</p><!-- End .title-desc -->
                             </div><!-- End .heading -->
-
                             <div class="row">
                                 <div class="col-lg-8 offset-lg-2">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="product product-4">
-                                                <figure class="product-media" style="border-radius: 10px;">
-                                                    <a href="product.html">
-                                                        <img src="assets/images/zerac/newhome1.jpg" style="border-radius: 10px; height: 180px; "  alt="Product image" class="product-image" >
-                                                        <!-- <img src="assets/images/urban/newBalanceShow.png" alt="Product image" class="product-image-hover"> -->
-                                                    </a>
-
-                                                    <div class="product-action-vertical">
-                                                        <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                        <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                        <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                                    </div><!-- End .product-action -->
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                                    </div><!-- End .product-action -->
-                                                </figure><!-- End .product-media -->
-
-                                                <div class="product-body">
-                                                    <h3 class="product-title text-center "><a href="product.html">Side View</a></h3><!-- End .product-title -->
-                                                    <div class="product-price">
-                                                        <!-- <span class="new-price">Now $1,298.00</span>
-                                                        <span class="old-price">Was $1,400.00</span> -->
-                                                    </div><!-- End .product-price -->
-                                                </div><!-- End .product-body -->
-                                            </div><!-- End .product -->
-                                        </div><!-- End .col-sm-6 -->
-
-                                        <div class="col-6">
-                                            <div class="product product-4">
-                                                <figure class="product-media" style="border-radius: 10px;">
-                                                    <a href="product.html">
-                                                        <img src="assets/images/zerac/newhome.jpg" style="border-radius: 10px; "   alt="Product image" class="product-image" >
-                                                        <!-- <img src="assets/images/urban/newBalanceShow.png" alt="Product image" class="product-image-hover"> -->
-
-                                                    </a>
-
-                                                    <div class="product-action-vertical">
-                                                        <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                        <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                        <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                                    </div><!-- End .product-action -->
-
-                                                    <div class="product-action">
-                                                        <!-- <a href="#" class="btn-product btn-cart"><span>add to cart</span></a> -->
-                                                    </div><!-- End .product-action -->
-                                                </figure><!-- End .product-media -->
-
-                                                <div class="product-body">
-                                                    <h3 class="product-title text-center "><a href="product.html">Top View</a></h3><!-- End .product-title -->
-                                                    <div class="product-price">
-                                                        <!-- $448.00 -->
-                                                    </div><!-- End .product-price -->
-
-                                                    <div class="product-nav product-nav-dots">
-                                                        <!-- <a href="#" class="active" style="background: #917f4d;"><span class="sr-only">Color name</span></a>
-                                                        <a href="#" style="background: #c55858;"><span class="sr-only">Color name</span></a> -->
-                                                    </div><!-- End .product-nav -->
-                                                </div><!-- End .product-body -->
-                                            </div><!-- End .product -->
-                                        </div><!-- End .col-sm-6 -->
-                                    </div><!-- End .row -->
+                                    <div class="text-animation">
+                                        <h2 class="text-center">Explore Our Men's Collection</h2>
+                                        <p class="text-center">Discover the latest trends and styles for men.</p>
+                                    </div>
                                 </div><!-- End .col-lg-8 offset-lg-2 -->
                             </div><!-- End .row -->
+                            
                         </div><!-- End .col-lg-6 -->
                     </div><!-- End .row -->
                 </div><!-- End .container-fluid -->
             </div><!-- End .display-row -->
 
-            <div class="display-row" style="background-color: #c0c0c0;">
+            <div class="display-row" style="background-color: #fffcfc;">
                 <div class="container-fluid">
                     <div class="row align-items-center">
-                        <div class="col-lg-6">
+                        <div class="col-lg-">
                             <div class="banner banner-light banner-overlay" style="border-radius: 20px;">
                                 <a href="#">
-                                    <img src="assets/images/zerac/mendemo3.jpg" style="border-radius: 20px;" alt="Banner">
+                                    <img src="assets/images/zerac/homeimg1.jpg" style="border-radius: 20px;" alt="Banner">
                                 </a>
 
                                 <div class="banner-content women">
@@ -179,287 +163,64 @@
                                 </div><!-- End .banner-content -->
                             </div><!-- End .banner -->
                         </div><!-- End .col-lg-6 -->
-
-                        <div class="col-lg-6">
-                            <div class="heading text-center">
-                                <h2 class="title text-white">About This Look</h2><!-- End .title text-center -->
-                                <p class="title-desc">Dress featuring an asymmetric neckline with opening and metal appliqué on the shoulder. Side gathered details. Back zip fastening.</p><!-- End .title-desc -->
-                            </div><!-- End .heading -->
-
-                            <div class="row">
-                                <div class="col-6 col-md-4">
-                                    <div class="product product-4">
-
-                                        <figure class="product-media" style="border-radius: 10px;" >
-
-                                            <a href="product.html" >
-                                                <!-- <img src="assets/images/urban/nikeScaiDemo-1.jpg" style="border-radius: 10px;"  alt="Product image" class="product-image"> -->
-                                                <!-- <img src="assets/images/urban/nikeScaiDemo-1.jpg" alt="Product image" class="product-image-hover"> -->
-                                            </a>
-
-                                            <div class="product-action-vertical">
-                                                <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                            </div><!-- End .product-action -->
-
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                            </div><!-- End .product-action -->
-
-                                        </figure><!-- End .product-media -->
-
-                                        
-                                    </div><!-- End .product -->
-                                </div><!-- End .col-sm-6 -->
-
-                                <div class="col-6 col-md-4">
-                                    <div class="product product-4">
-                                        <figure class="product-media" style="border-radius: 10px;" >
-                                            <a href="product.html">
-                                                <img src="assets/images/zerac/mendemo2.jpg" style="border-radius: 10px;"  alt="Product image" class="product-image">
-                                                <!-- <img src="assets/images/urban/nikeScaiDemo-2.jpg" alt="Product image" class="product-image-hover"> -->
-                                            </a>
-
-                                            <div class="product-action-vertical">
-                                                <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                            </div><!-- End .product-action -->
-
-                                            <div class="product-action">
-                                                <!-- <a href="#" class="btn-product btn-cart"><span>add to cart</span></a> -->
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <h3 class="product-title text-center "><a href="product.html"></a></h3><!-- End .product-title -->
-
-                                            <!-- <div class="product-price">
-                                                $20.00
-                                            </div>End .product-price -->
-
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
-                                </div><!-- End .col-sm-6 -->
-
-                                <div class="col-6 col-md-4">
-                                    <div class="product product-4">
-                                        <figure class="product-media" style="border-radius: 15px;" >
-                                            <a href="product.html">
-                                                <img src="assets/images/zerac/mendemo.jpg" style="border-radius: 10px; height: 100%;"  alt="Product image" class="product-image">
-                                                <!-- <img src="assets/images/urban/nikeScaiDemo-3.jpg" alt="Product image" class="product-image-hover"> -->
-                                            </a>
-
-                                            <div class="product-action-vertical">
-                                                <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                            </div><!-- End .product-action -->
-
-                                            <div class="product-action">
-                                                <!-- <a href="#" class="btn-product btn-cart"><span>add to cart</span></a> -->
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <h3 class="product-title text-center "><a href="product.html"></a></h3><!-- End .product-title -->
-
-                                            <!-- <div class="product-price">
-                                                $96.00
-                                            </div>End .product-price -->
-
-                                            <!-- <div class="product-nav product-nav-dots">
-                                                <a href="#" class="active" style="background: #99523e;"><span class="sr-only">Color name</span></a>
-                                                <a href="#" style="background: #333333;"><span class="sr-only">Color name</span></a>
-                                            </div>End .product-nav -->
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
-                                </div><!-- End .col-sm-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .col-lg-6 -->
+                        <div class="col-lg-2"> <!-- Adjusted class to col-lg-4 offset-lg-8 -->
+                            
+                            <!-- Add more content or offers here -->
+                        </div>
+                        <div class="col-lg-4"> <!-- Adjusted class to col-lg-4 offset-lg-8 -->
+                            <a href="#">
+                                <video src="assets/images/zerac/homevideo.mp4" style="border-radius: 20px; width: 100%; height: auto;" alt="Banner" autoplay loop muted></video>
+                            </a>
+                            <!-- Add more content or offers here -->
+                        </div>
+                        
+                        
+                        
                     </div><!-- End .row -->
                 </div><!-- End .container-fluid -->
             </div><!-- End .display-row .bg-light -->
 
-            <div class="video-banner video-banner-bg video-fullheight bg-image text-center" style="background-image: url(assets/images/urban/mainImageGirl.jpg)">
+            <!-- <div class="intro-slide" style="background-ima2e: url(assets/images/zerac/homeimgg.jpg);"> -->
+                <video src="assets/images/zerac/homevideo2.mp4" style="border-radius: 20px; width: 100%; height: auto;" alt="Banner" autoplay loop muted></video>
+               
+        </div>
+            ><!-- End .video-banner bg-image -->
 
-                <div class="container">
-
-                    <h3 class="video-banner-title h1 text-danger"><span></span>The New Romantic Collection 2024</h3><!-- End .video-banner-title -->
-
-                    <!-- <a href="https://www.youtube.com/watch?v=vBPgmASQ1A0" class="btn-video btn-iframe"><i class="icon-play"></i></a> -->
-
-                    <a href="#scroll-to-content" class="btn btn-outline-primary-2 scroll-to">
-                        <span>Start scrolling</span>
-                        <i class="icon-long-arrow-down"></i>
-                    </a>
-
-                </div><!-- End .container -->
-                
-            </div><!-- End .video-banner bg-image -->
-
-            <div class="display-row" style="background-color: #c0c0c0;">
-                <div class="container-fluid">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 order-lg-last">
-                            <div class="banner banner-overlay" style="border-radius: 20px;">
-                                <a href="#">
-                                    <img src="assets/images/zerac/homedemo.jpg" alt="Banner" style="border-radius: 20px;">
-                                </a>
-
-                                <div class="banner-content men">
-
-                                    <h2 class="banner-title" style="color: #f7f3f3;">03. From Sunrise to Soiree: <br>Dresses That  -<br>Define You.</h2><!-- End .banner-title -->
-
-                                    <h3 class="banner-subtitle"  style="font-weight: 600; color:#f7f3f3">IN THIS LOOK</h3><!-- End .banner-subtitle -->
-
-                                    <ul class="text-white ">
-
-                                        <p style="font-weight: 500; color: #f7f3f3;">Model : DENIM JACKET</p>
-                                        <li style="color :#f7f3f3; font-weight: 500;">Long sleeve jacket </li>
-                                        <li style="color: #f7f3f3; font-weight: 500;"> Button-up fron</li>
-
-                                        <p class="pt-2" style="font-weight: 600; color: #f7f3f3;">Color: Black</p>
-
-
-                                    </ul>
-
-                                    <div class="banner-text" style="color: #828282; font-weight: 500;">$1,241</div><!-- End .banner-text -->
-
-                                    <!-- <a href="#" class="btn btn-outline-primary-2"><span>Buy Now</span><i class="icon-long-arrow-right"></i></a> -->
-
-                                     <div class="d-flex">
-                                        <a href="#" class="btn btn-outline-primary-2"><span>Buy Now</span><i class="icon-long-arrow-right"></i></a>
-                                        <span href="#" class="btn-product-icon btn-wishlist" style="cursor: pointer;  margin-left: 13px; margin-top: 8px;"><span>add to wishlist</span></span>
-                                    </div>
-
-                                </div><!-- End .banner-content -->
-                            </div><!-- End .banner -->
-                        </div><!-- End .col-lg-6 -->
-
-                        <div class="col-lg-6">
-                            <div class="heading text-center">
-                                <h2 class="title text-white ">About This Look</h2><!-- End .title text-center -->
-                                <p class="title-desc">Sleeveless top with a round neck. Buttoned teardrop opening at the back. Ruffle appliqués on the front</p><!-- End .title-desc -->
-                            </div><!-- End .heading -->
-
-                            <div class="row">
-                                <div class="col-6 col-md-4">
-                                    <div class="product product-4">
-                                        <figure class="product-media" style="border-radius: 10px;">
-                                            <a href="product.html">
-                                                <img src="assets/images/zerac/kidsdemo1.jpg" style="border-radius: 10px;" alt="Product image" class="product-image">
-                                                <!-- <img src="assets/images/urban/addidasDemo-1.webp" alt="Product image" class="product-image-hover"> -->
-                                            </a>
-
-                                            <div class="product-action-vertical">
-                                                <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                            </div><!-- End .product-action -->
-
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <h3 class="product-title text-center"><a href="product.html">Top View</a></h3><!-- End .product-title -->
-                                            <!-- <div class="product-price">
-                                                $165.00
-                                            </div>End .product-price -->
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
-                                </div><!-- End .col-sm-6 -->
-
-                                <div class="col-6 col-md-4">
-                                    <div class="product product-4">
-                                        <figure class="product-media" style="border-radius: 10px;">
-                                            <a href="product.html">
-                                                <img src="assets/images/zerac/kidsdemo2.jpg" style="border-radius: 10px;" alt="Product image" class="product-image">
-                                                <!-- <img src="assets/images/urban/addidasDemo-2.webp" alt="Product image" class="product-image-hover"> -->
-                                            </a>
-
-                                            <div class="product-action-vertical">
-                                                <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                            </div><!-- End .product-action -->
-
-                                            <div class="product-action">
-                                                <!-- <a href="#" class="btn-product btn-cart"><span>add to cart</span></a> -->
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <h3 class="product-title text-center "><a href="product.html">Back View</a></h3><!-- End .product-title -->
-                                            <!-- <div class="product-price">
-                                                $130.00
-                                            </div>End .product-price -->
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
-                                </div><!-- End .col-sm-6 -->
-
-                                <div class="col-6 col-md-4">
-                                    <div class="product product-4">
-                                        <figure class="product-media" style="border-radius: 10px;">
-                                            <a href="product.html">
-                                                <img src="assets/images/zerac/kidsdemo3.jpg" style="border-radius: 10px; height: 184px;"  alt="Product image" class="product-image" >
-                                                <!-- <img src="assets/images/urban/addidasDemo-3.webp" alt="Product image" class="product-image-hover"> -->
-                                            </a>
-
-                                            <div class="product-action-vertical">
-                                                <!-- <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a> -->
-                                                <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                            </div><!-- End .product-action -->
-
-                                            <div class="product-action">
-                                                <!-- <a href="#" class="btn-product btn-cart"><span>add to cart</span></a> -->
-                                            </div><!-- End .product-action -->
-                                        </figure><!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <h3 class="product-title text-center "><a href="product.html">Angle View</a></h3><!-- End .product-title -->
-                                            <!-- <div class="product-price">
-                                                $358.00
-                                            </div>End .product-price -->
-
-                                            <!-- <div class="product-nav product-nav-dots">
-                                                <a href="#" class="active" style="background: #333;"><span class="sr-only">Color name</span></a>
-                                                <a href="#" style="background: #c55858;"><span class="sr-only">Color name</span></a>
-                                            </div>End .product-nav -->
-                                        </div><!-- End .product-body -->
-                                    </div><!-- End .product -->
-                                </div><!-- End .col-sm-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .col-lg-6 -->
-                    </div><!-- End .row -->
-                </div><!-- End .container-fluid -->
-            </div><!-- End .display-row .bg-light -->
+            
 
             <div class="display-row">
                 <div class="container-fluid">
                     <div class="row align-items-center">
+
+                        <div class="col-lg-6">
+                            <div class="heading text-center">
+                                <h2 class="title">Men's Style</h2>
+                            </div><!-- End .heading -->
+                        
+                            <div class="poster">
+                                <h3 class="text-center animated" style="font-size: 48px; font-weight: bold; color: #333; animation: fadeInOut 5s infinite;">Elevate Your Look</h3>
+                                <p class="text-center animated" style="font-size: 24px; color: #666;">Discover the latest trends and essentials for men's style. From classic looks to modern fashion, find everything you need to elevate your wardrobe.</p>
+                                <p class="text-center animated" style="font-size: 20px; color: #999;">Visit us today to explore our collection.</p>
+                            </div><!-- End .poster -->
+                        </div><!-- End .col-lg-6 -->
                         <div class="col-lg-6">
                             <div class="banner banner-light banner-overlay" style="border-radius: 20px;">
                                 <a href="#">
-                                    <img src="assets/images/zerac/womendemo1.jpg" class="h-50 " style="border-radius: 20px;"  alt="Banner">
+                                    <img src="assets/images/zerac/homeimg4.jpg" class="h-50 " style="border-radius: 20px;"  alt="Banner">
                                 </a>
 
                                 <div class="banner-content women">
-                                    <h2 class="banner-title" style="color: #000000;">04.Dress the Moment,  <br>Own the<br> Spotlighth2><!-- End .banner-title -->
-                                    <h3 class="banner-subtitle" style="font-weight: 600; color:rgb(0, 0, 0);">IN THIS LOOK</h3><!-- End .banner-subtitle -->
+                                    <h2 class="banner-title" style="color: #efebeb;">04.Dress the Moment,  <br>Own the<br> Spotlighth2><!-- End .banner-title -->
+                                    <h3 class="banner-subtitle" style="font-weight: 600; color:rgb(246, 242, 242);">IN THIS LOOK</h3><!-- End .banner-subtitle -->
 
-                                    <ul style="color: rgb(0, 0, 0);">
+                                    <ul style="color: rgb(254, 252, 252);">
 
-                                        <p class="" style="color:#000000; font-weight: 500;" >Model : WAXED DRESS WITH BELTS</p>
+                                        <p class="" style="color:#f3efef; font-weight: 500;" >Model : WAXED DRESS WITH BELTS</p>
 
                                         <li> waxed fabric</li>
                                         <li>metal buckles and invisible back zip</li>
 
-                                        <p class="pt-2" style="font-weight: 500; color: rgb(0, 0, 0)">Color:light Green</p>
+                                        <p class="pt-2" style="font-weight: 500; color: rgb(253, 249, 249)">Color:light Green</p>
 
 
                                     </ul>
@@ -476,81 +237,8 @@
                                 </div><!-- End .banner-content -->
                             </div><!-- End .banner -->
                         </div><!-- End .col-lg-6 -->
-
-                        <div class="col-lg-6">
-                            <div class="heading text-center">
-                                <h2 class="title">About This Look</h2><!-- End .title text-center -->
-                                <p class="title-desc">Short sleeveless dress made of waxed fabric. Featuring a round neck, belt details with metal buckles and invisible back zip fastening</p><!-- End .title-desc -->
-                            </div><!-- End .heading -->
-
-                            <div class="row">
-                                <div class="col-lg-8 offset-lg-2">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="product product-4">
-                                                <figure class="product-media" style="border-radius: 10px;">
-                                                    <a href="product.html">
-                                                        <img src="assets/images/zerac/womendemo3.jpg" style="border-radius: 10px; height: 185px;" alt="Product image" class="product-image" style="border-radius: 10px;">
-                                                        <!-- <img src="assets/images/urban/PumaDemo-2.png" alt="Product image" class="product-image-hover" style="border-radius: 20px;"> -->
-                                                    </a>
-
-                                                    <!-- <div class="product-action-vertical">
-                                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                        <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                                                        <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
-                                                    </div>End .product-action -->
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                                    </div><!-- End .product-action -->
-                                                </figure><!-- End .product-media -->
-
-                                                <div class="product-body">
-
-                                                    <h3 class="product-title text-center "><a href="product.html">Side View</a></h3><!-- End .product-title -->
-
-                                                    <!-- <div class="product-price">
-                                                        $120.00
-                                                    </div>End .product-price -->
-
-                                                </div><!-- End .product-body -->
-                                            </div><!-- End .product -->
-                                        </div><!-- End .col-sm-6 -->
-
-                                        <div class="col-6">
-                                            <div class="product product-4">
-                                                <figure class="product-media" style="border-radius: 10px;">
-                                                    <a href="product.html">
-                                                        <img src="assets/images/zerac/womendemo2.jpg" style="border-radius: 10px;" alt="Product image" class="product-image" style="border-radius: 10px;">
-                                                        <!-- <img src="assets/images/urban/pumaDemo-1.png" alt="Product image" class="product-image-hover" style="border-radius: 10px;"> -->
-                                                    </a>
-
-                                                    <!-- <div class="product-action-vertical">
-                                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                        <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                                                        <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
-                                                    </div>End .product-action -->
-
-                                                    <!-- <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                                    </div>End .product-action -->
-
-                                                </figure><!-- End .product-media -->
-
-                                                <div class="product-body">
-                                                    <h3 class="product-title text-center "><a href="product.html">Back View</a></h3><!-- End .product-title -->
-
-                                                    <!-- <div class="product-price">
-                                                        $36.00
-                                                    </div>End .product-price -->
-                                                    
-                                                </div><!-- End .product-body -->
-                                            </div><!-- End .product -->
-                                        </div><!-- End .col-sm-6 -->
-                                    </div><!-- End .row -->
-                                </div><!-- End .col-lg-8 offset-lg-2 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .col-lg-6 -->
+                      
+                        
                     </div><!-- End .row -->
                 </div><!-- End .container-fluid -->
             </div><!-- End .display-row -->

@@ -101,6 +101,13 @@ const admin_auth=require('../middleware/admin_auth');
     // load orderDetails
     admin_route.get('/orderDtails',ordersController.loadOrderDetaills);
 
+    // change status
+    admin_route.post('/changeStatus',ordersController.orderStatus);
+
+    admin_route.post('/approve',ordersController.approveReturn);
+
+    admin_route.post('/decline', ordersController.decalinReturn)
+
 
     // ******** COUPEN ********
     admin_route.get('/coupen',coupenController.loadCoupen);

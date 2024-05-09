@@ -6,8 +6,13 @@
 
  const Category=require('../models/category_model');
 
+ const Cart=require('../models/cart_model');
+
+ const Wallet=require('../models/wallet_model');
+
  //  securely hash passwords :-
 const bcrypt = require('bcrypt');
+const { deleteMany } = require('../models/offer_modal');
 const securePassword = async (password) => {
     
     try {
@@ -118,7 +123,7 @@ const verifySignUp=async(req,res)=>{
     const {fullname,email,phone,password,confirmpassword}=req.body
 
      const exitmail=await User.findOne({email:req.body.email})
-    
+     
     try {
            if(exitmail){
 
@@ -165,7 +170,6 @@ const verifySignUp=async(req,res)=>{
     }
 }
 
-   
 // load otp (get method)
 const loadotp=async(req,res)=>{
 
@@ -323,7 +327,7 @@ const loadAboutUs=async(req,res)=>{
 
         const category = await Category.find({is_Listed : true})
 
-        res.render('aboutUs',{user,categoryData:category})
+        res.render('aboutUs',{user,categoryData:category,cartData})
 
     } catch (error) {
 
@@ -447,6 +451,42 @@ const verifiyPassOtp=async(req ,res)=>{
     }
 }
 
+// Resend otp
+
+const resendotp = async(req,res)=>{
+    try{
+
+        const otp=generateotp();
+
+        req.session.otp=otp
+
+        console.log('otp='+otp);
+
+          // sending otp to email
+          const {fullname,email}=req.session.userData
+
+           await sendmail(fullname,email,otp)
+
+           await Otp.deleteOne({email:email})
+           // otp schema adding 
+           const userOTP = new Otp({
+               email:email,
+               otp: otp,         
+           });
+
+       await userOTP.save()
+
+           console.log("this is otpdoc",userOTP)
+       
+           res.redirect('/loadotp');
+
+
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
 // load newpassword
 const loadnewpassword=async(req,res)=>{
     try {
@@ -503,12 +543,44 @@ const updatepassword=async(req,res)=>{
 
 };
 
+//  LoadWallet (Get Method) :-
+
+const loadWallet = async (req, res , next) => {
+    
+    try {
+
+        const categoryData = await Category.find({ is_Listed: true });
+
+        if (req.session.user) {
+
+            const walletData = await Wallet.findOne({ userId: req.session.user });
+
+            console.log(walletData,'wallet');
+
+            res.render('wallet', { login: req.session.user, categoryData, walletData });
+
+        } else {
+
+            res.redirect('/login')
+
+        }
+        
+    } catch (error) {
+
+        next(error,req,res);
+
+        
+    }
+
+};
+
 module.exports={
     loadhome,
     loadSignUp,
     verifySignUp,
     verifyotp,
     loadotp,
+    resendotp,
     loadLoginPage,
     verifyUser,
     loadAboutUs,
@@ -518,6 +590,7 @@ module.exports={
     forgotpasswordOtp,
     loadnewpassword,
     updatepassword,
-    verifiyPassOtp
+    verifiyPassOtp,
+    loadWallet
 
 }

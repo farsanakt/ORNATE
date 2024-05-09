@@ -12,6 +12,8 @@ const Address=require('../models/address_model');
 
 const Coupen=require('../models/coupen_model');
 
+const Wallet=require('../models/wallet_model')
+
 
 // ******* USER ******
 
@@ -41,10 +43,12 @@ const placeOrder=async(req,res)=>{
     try {
         userIdd=req.session.user
         
-        const category=await Category.find({is_Listed:true})
+        const category=await Category.find({is_Listed:true});
 
         const cartData=await Cart.findOne({userId:userIdd});
+
         let total=cartData.totalCartPrice;
+
         if(req.session.offer)  total=parseInt(total/100*(100-req.session.offer));
 
         const addressData=await Address.findOne({userId:userIdd, 'addresss.status':true});
@@ -63,7 +67,7 @@ const placeOrder=async(req,res)=>{
 
             orderAmount:total ,
 
-            payment: 'COD',
+            payment: req.body.paymentmethod,
 
             deliveryAddress: addressData.addresss[0],
 
@@ -78,30 +82,49 @@ const placeOrder=async(req,res)=>{
                 orderProStatus: 'pending' 
 
             }))
+
         });
+
+        //  For Wallet :-
+
+        const wallett = await Wallet.findOne({userId : userIdd});
+
+        if(req.body.paymentmethod=='wallet' &&  total <= wallett.balance || null){
+
+            const walletData = await Wallet.findOneAndUpdate({userId:userIdd }, {$inc : {balance : -total} , $push : {transaction : {amount : total , creditOrDebit : 'debit'}}} , {new : true , upsert : true});
+            
+
+        }
 
         const coupen= await Coupen.find({above:{$lte:cartData.totalCartPrice}})
     
-       
         if(coupen.length>0 && !req.session.offer) {
+
             coupen.forEach(async(e)=>{
+
                 const coupen1= await User.findOne({_id: userIdd ,coupen:{$elemMatch:{coupenId:e._id}}});
+
                 if(!coupen1){
+
                     await User.findOneAndUpdate({_id: userIdd},{$addToSet:{coupen:{coupenId:e._id}}});
+
                     return;
                 }
 
             })
-        // console.log(coupen1)
+       
     }
       
         await newOrder.save();
+
         if(req.session.offer){
+
                delete req.session.offer;
+
                const user=await User.findOne({_id: userIdd });
-               console.log(req.session.coupen,user,'lllllll' );
+
                 const removeCoupen=await User.findOneAndUpdate({_id: userIdd },{$pull:{coupen:{_id:req.session.coupen}}})
-            console.log(removeCoupen,'removde')
+
                delete req.session.coupen;      
         }
 
@@ -111,9 +134,9 @@ const placeOrder=async(req,res)=>{
 
                 const productData=await Product.findOne({_id:e.productId});
 
-                const newStock=productData.quantity-e.quantity;
+                productData.stock-=e.quantity;
 
-                await Product.findOneAndUpdate({_id:e.productId},{$set:{quantity:newStock}});
+                await productData.save()
                 
             });
         }
@@ -131,47 +154,247 @@ const placeOrder=async(req,res)=>{
 const loadOrderDetails=async(req,res)=>{
     try {
         const user=req.session.user
-        const userIdd=req.session.user
+
+        const userIdd=req.query.id
+
+        const userData=await User.findById({_id:userIdd})
+    
         const category=await Category.find({is_Listed:true})
-        const orderDetails=await Order.findOne({userId:userIdd}).populate('products.productId')
-        console.log(orderDetails,'uuuuuuuuuuuuuuuuuuuu');
-        res.render('orderDetails',{categoryData:category,orderDetails,user})
+
+        const order=await Order.findOne({_id:userIdd}).populate('products.productId')
+
+        res.render('orderDetails',{categoryData:category,order,user,userData})
         
     } catch (error) {
         console.log(error.message);
     }
 }
 
+// cancel order
+const cancelOrder = async (req, res) => {
+    try {
+        const { orderId, productId, selectedReason } = req.body;
+
+        const cancelData = await Order.findOneAndUpdate(
+
+            { _id: orderId, 'products.productId': productId }, 
+
+            {
+                $set: {
+                    'products.$.orderProStatus': 'canceled', 
+                    'products.$.reason': selectedReason 
+                }
+            },
+            { new: true }
+        )
+       
+        if(cancelData){
+
+            const canceledItem = cancelData.products.find(item => item.productId.equals(productId))
+            
+            const canceledQuantity = canceledItem.quantity;
+            
+            const product = await Product.findById(productId)
+            
+            product.stock += canceledQuantity;
+           
+            await product.save();
+
+            res.json({ success: true });
+        }
+        
+    } catch (error) {
+
+        console.log(error.message);
+       
+    }
+};
+
+// return order
+const returnOrder= async (req,res)=>{
+    try {
+         
+        const userIdd=req.session.user
+
+        const { orderId,productId,selectedReason}=req.body
+        
+        const returnData=await Order.findOneAndUpdate(
+
+            {_id:orderId,'products.productId':productId},
+
+            {$set:{'products.$.reason':selectedReason,apporved:1}},
+
+            {new :true} 
+        )
+      
+        
+
+        if(returnData){
+           res.json({success:true})
+
+        }
+
+    } catch (error) {
+
+        console.log(error.message);
+    }
+}
+
+
 
 // ********* ADMIN SIDE *******
 const loadOrderss=async(req,res)=>{
     try {
+
         const orderData=await Order.find({})
+
         res.render('order',{orderData})
+
     } catch (error) {
+
         console.log(error.message);
     }
 }
 
+// load orderdetails
 const loadOrderDetaills=async(req,res)=>{
     try {
         const userIdd=req.session.user
-        const orderDetails=await Order.findOne({_id:req.query.id}).populate('products.productId')
 
-        console.log(orderDetails);
-
+        const ordId = req.query.id
+        
+        const ordDettails=await Order.findOne({_id:req.query.id}).populate('products.productId');
+ 
         const Userdetail=await User.findOne({_id:userIdd})
-        console.log(orderDetails);
-        res.render('orderDetails',{orderDetails,Userdetail})
+     
+        res.render('orderDetails',{ordDettails,Userdetail,ordId})
+
+    } catch (error) {
+
+        console.log(error.message);
+
+    }
+}
+
+// order Status
+const orderStatus=async(req,res)=>{
+    try {
+        
+        const {orderDetailsId, productId, newStatus}=req.body
+        
+        const changeStatus = await Order.findOneAndUpdate(
+            {
+                _id: orderDetailsId,
+                'products.productId': productId
+            },
+            {
+                $set: {
+                    'products.$.orderProStatus': newStatus
+                }
+            },
+            {
+                new: true
+            }
+        );
+        
+        if (changeStatus) {
+            res.json({success:true})
+        }
+
     } catch (error) {
         console.log(error.message);
     }
 }
+
+// aprove order 
+const approveReturn=async(req,res)=>{
+    try {
+        const { orderId,productId}=req.body;
+
+        console.log(typeof orderId,typeof productId);
+
+
+        const approvedData = await Order.findOneAndUpdate(
+
+            { _id: orderId, 'products.productId': productId },
+
+            {$set:{'products.$.orderProStatus':"returned",apporved:2}},
+
+            {new :true} 
+        );
+
+                if(approvedData.payment=="online payment"){
+
+                const walletData=await Wallet.findOneAndUpdate({userId:userIdd},{$set:{balance:approvedData.orderAmount},$push:{transaction:{amount:approvedData.orderAmount,creditOrDebit:'credit'}}},{new:true,upsert:true})
+                console.log(walletData);
+                }
+
+        if(approvedData){
+
+            const returnedItem = approvedData.products.find(item => item.productId.equals(productId))
+
+            const returnedQuantity = returnedItem.quantity;
+
+            const reason=returnedItem.reason
+
+            if(reason!=='Defective or Damaged Product'){
+
+                const product = await Product.findById(productId)
+            
+                product.stock += returnedQuantity;
+
+                await product.save();
+
+            }
+
+            res.json({success:true})
+            
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+
+}
+
+
+// decalin order 
+const decalinReturn=async(req,res)=>{
+    try {
+        const { orderId,productId}=req.body
+
+        console.log(typeof orderId,typeof productId);
+
+        const decalinedData = await Order.findOneAndUpdate(
+
+            { _id: orderId, 'products.productId': productId },
+
+            {$set:{apporved:3}},
+
+            {new :true} 
+        );
+
+        if(decalinedData){
+
+       res.json({success:true})
+
+}
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 
 module.exports={
     loadOrders,
     placeOrder,
     loadOrderDetails,
     loadOrderss,
-    loadOrderDetaills
+    loadOrderDetaills,
+    cancelOrder,
+    orderStatus,
+    returnOrder,
+    approveReturn,
+    decalinReturn
+    
 }

@@ -761,7 +761,7 @@
 											</div>
 											<div class="card-body">
 												<label>
-													<input type="radio" name="paymentmethod" id="cod" value="cod">
+													<input checked type="radio" name="paymentmethod" id="cod" value="cod">
 													Cash on Delivery
 												</label><br>
 												<label>
@@ -770,7 +770,7 @@
 												</label><br>
 												<label>
 													<input type="radio" name="paymentmethod" id="razorpay"
-														value="razorpay">
+														value="online payment">
 													Razorpay
 												</label>
 											</div>
@@ -859,7 +859,7 @@
 
 					console.log(Radio);
 
-					if (Radio == 'razorpay') {
+					if (Radio == 'online payment') {
 						razorpay(amount);
 					}
 					else {
@@ -883,7 +883,7 @@
 								"key": `${data.key_id}`,
 								"amount": `${data.amount}`,
 								"currency": "INR",
-								"name": "ZERAC",
+								"name": "ORNATE",
 								"order_id": `${data.order_id}`,
 								"handler": function (response) {
 									form.submit();

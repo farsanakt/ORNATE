@@ -72,9 +72,19 @@
                                     <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
                                 </div> -->
 
-                                <div class="product-price">
-                                    $<%=productDetails.price%>.00
-                                </div><!-- End .product-price -->
+                                <% if(productDetails.offerPrice==null) {%>
+                                    <div class="product-price">
+                                    <%= productDetails.price %>
+                                </div><% } else { %>
+                                    
+                                        <div style="text-decoration: line-through;" class="product-price">
+                                            <%= productDetails.price %>
+                                        </div>
+                                    <div class="product-price">
+                                        <%=  productDetails.offerPrice%>
+                                    </div>
+                                
+                            <%	} %><!-- End .product-price -->
 
                                 <div class="product-content">
                                     <p><%=productDetails.description%> </p>

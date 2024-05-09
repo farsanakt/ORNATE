@@ -38,13 +38,14 @@
                                             <div id="price-error-message" style="color: red;"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleSelectGender"> Category</label>
+                                            <label for="exampleSelectGender">Category</label>
                                             <select class="form-control" id="exampleSelectGender" name="Category">
-                                                <option>Kid's</option>
-                                                <option>Women's</option>
-                                                <option>Men 's</option>
+                                                <% categoryData.forEach(function(category) { %>
+                                                    <option><%= category.name %></option>
+                                                <% }); %>
                                             </select>
                                         </div>
+                                        
                                         <div class="form-group">
                                             <label>File upload</label>
                                             <!-- <input type="file" name="img[]" class="file-upload-default"> -->

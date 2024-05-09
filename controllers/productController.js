@@ -2,12 +2,16 @@ const Products=require('../models/product_model');
 
 const Category=require('../models/category_model');
 
+const Offer = require('../models/offer_modal')
+
 
 // load admin product
 const loadProduct=async(req,res)=>{
     try {
 
         const productData=await Products.find({})
+        
+
 
         res.render('product',{product:productData})
 
@@ -20,7 +24,9 @@ const loadProduct=async(req,res)=>{
 const addProduct=async(req,res)=>{
     try {
 
-        res.render('addproduct')
+        const categoryData=await Category.find({is_Listed:true})
+        
+        res.render('addproduct',{categoryData})
 
     } catch (error) {
 
@@ -67,11 +73,13 @@ const loadEditProduct=async(req,res)=>{
     try {
         const proid=req.query.id
 
+        const categoryData=await Category.find({is_Listed:true})
+
         const productData=await Products.findById(proid)
 
         const msg=req.flash('msg')
 
-        res.render('editproduct',{productData,msg})
+        res.render('editproduct',{productData,msg,categoryData})
 
     } catch (error) {
 
@@ -99,7 +107,7 @@ const verifyEditProduct=async(req,res)=>{
 
         }else{
                 
-            const newproducts= await Products.findByIdAndUpdate({_id:productId},{$set:{name:name,price:price,category:Category,stock:stock,description:Description,images:images}})
+            const newproducts= await Products.findByIdAndUpdate({_id:productId},{$set:{name:name,price:price,category:Category,stock:stock,description:Description,images:images,offerPrice:null}})
 
             await newproducts.save();
 
@@ -159,7 +167,35 @@ const loadProducts=async(req,res)=>{
 
         const products=await Products.find({status: true,is_Listed:true})
 
-        res.render('product',{categoryData:category,products,user})
+        const offerData=await Offer.find().populate('category')
+            
+        console.log(offerData,'bavuuuuu2');
+   
+       
+        for (let i = 0; i < offerData.length; i++) {
+            for (let j = 0; j < products.length; j++) {
+                
+                const category = await Category.findOne({ name: products[j].category });
+
+                if (category) {
+
+                    if (offerData[i].category.equals(category._id)) {
+
+                        const offerPrice = parseInt(products[j].price/100 * (100 -offerData[i].offer))
+
+                        console.log(offerPrice,products[j].name);
+                        
+                        products[j].offerPrice = offerPrice; 
+
+                        await products[j].save(); 
+
+                    }
+                } else {
+                    console.log(`Category not found for product with ID ${products[j]._id}`);
+                }
+            }
+        }
+        res.render('product',{categoryData:category,products,user,offerData})
 
     } catch (error) {
 
@@ -178,6 +214,32 @@ const loadProductDetails = async(req,res)=>{
 
         const category = await Category.find({is_Listed : true})
 
+        const offerData=await Offer.find().populate('category')
+
+        for (let i = 0; i < offerData.length; i++) {
+            for (let j = 0; j < products.length; j++) {
+                
+                const category = await Category.findOne({ name: products[j].category });
+
+                if (category) {
+
+                    if (offerData[i].category.equals(category._id)) {
+
+                        const offerPrice = parseInt(products[j].price/100 * (100 -offerData[i].offer))
+
+                        console.log(offerPrice,products[j].name);
+                        
+                        products[j].offerPrice = offerPrice; 
+
+                        await products[j].save(); 
+
+                    }
+                } else {
+                    console.log(`Category not found for product with ID ${products[j]._id}`);
+                }
+            }
+        }
+
         res.render('productdetails',{categoryData : category,user,productDetails:products})
 
     } catch (error) {
@@ -186,6 +248,67 @@ const loadProductDetails = async(req,res)=>{
     }
 }
 
+
+// sort Product
+const sortProduct = async(req,res)=>{
+    try {
+      // console.log('working');
+      const { criteria } = req.params;
+       console.log('awfsd'+criteria);
+      let productDAta;
+      switch (criteria) {
+        case 'priceLow-High':
+          productDAta = await Products.find().sort({ price: 1 });
+          break;
+        case 'priceHigh-Low':
+          productDAta = await Products.find().sort({ price: -1 });
+          break;
+        case 'nameA-Z':
+          productDAta = await Products.find().collation({ locale: "en" }).sort({ name: 1 });
+          break;
+        case 'nameZ-A':
+          productDAta = await Products.find().collation({ locale: "en" }).sort({ name: -1 });
+          break;
+        case 'newArrivals':
+          productDAta = await Products.find().sort({ createdAt: -1 });
+          break;
+        
+        
+        default:
+          res.status(400).json({ error: 'Invalid sorting criteria' });
+          return;
+      }
+     
+      
+         res.json({ productDAta });
+
+    } catch (error) {
+
+      console.error(error);
+      
+    }
+  }
+
+  // search product
+
+const searchName = async (req,res)=>{
+    const input = req.body.q;
+    console.log('ghgh'+input);
+    if(!input){
+      return res.status(400).send('Search Name is Required...!')
+    }
+    try {
+      const productFound = await Products.find({ name : {$regex : input , $options:'i'}})
+     
+     if(productFound === 0){
+      return res.status(200).json({ message : "No product found matching your Search query"})
+     }
+    
+      res.json(productFound)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
 module.exports={
@@ -197,5 +320,7 @@ module.exports={
     unlistProducts,
     loadProducts,
     loadProductDetails,
-    verifyEditProduct
+    verifyEditProduct,
+    sortProduct,
+    searchName
 }

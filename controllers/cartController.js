@@ -25,7 +25,9 @@ const loadCart=async(req,res)=>{
 
                 const total = cartData.products.reduce((acc, product) => {
 
-                    const price = Number(product.price);
+                    let price1=product.offerPrice?product.offerPrice:product.price
+
+                    const price = Number(price1);
 
                     return isNaN(price) ? acc : acc + price;
                 }, 0);
@@ -65,7 +67,9 @@ const addToCart=async(req,res)=>{
         
          if(!exist){
 
-            const proPrice  = productData.price * qty
+            const price=productData.offerPrice?productData.offerPrice:productData.price
+            
+            const proPrice  = price * qty
 
             const newCart = await Cart.findOneAndUpdate({userId : userIdd} , {$addToSet : {products : {productId : proId , quantity : qty , price : proPrice}}} , {upsert : true , new : true});
 
@@ -123,9 +127,10 @@ const cartupdate=async(req,res)=>{
         const quantity = req.body.quantity
         
         const product = await Products.findOne({ _id: productId });
+
+        const price=product.offerPrice?product.offerPrice:product.price
         
-        
-        const newValue = product.price * quantity;
+        const newValue = price * quantity;
   
         const updatedCart = await Cart.findOneAndUpdate({ _id: cartId, "products.productId": productId }, { $set: { "products.$.price": newValue, "products.$.quantity": quantity, }, }, { new: true });
        

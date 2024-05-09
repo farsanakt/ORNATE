@@ -105,7 +105,7 @@
 
                                             <td><%= val?._id %></td>
 
-                                            <td class="<%= val?.orderStatus == 'cancelled' ? 'text-danger' : (val?.orderStatus == 'delivered' ? 'text-success' : 'text-primary') %>"><%= val?.orderStatus %></td>
+                                            <td class="<%= val?.products[0].orderProStatus == 'cancelled' ? 'text-danger' : (val?.products[0].orderProStatus == 'delivered' ? 'text-success' : 'text-primary') %>"><%= val?.products[0].orderProStatus   %></td>
 
                                             <td class=""><%= val?.payment %></td>
 

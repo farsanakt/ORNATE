@@ -51,16 +51,49 @@ const addcategory=async(req,res)=>{
 }
 
 // edit category
-const editcategory=async(req,res)=>{
+// const editcategory=async(req,res)=>{
    
-    const id=req.query.id
+//     const id=req.query.id
 
-    const value=req.query.value
+//     const value=req.query.value
 
-    const edited=await Category.findOneAndUpdate({_id:id},{$set:{name:value}})
+//     const edited=await Category.findOneAndUpdate({_id:id},{$set:{name:value}})
     
-    res.send({set:true})
-}
+//     res.send({set:true})
+// }
+
+
+const editcategory = async (req, res ) => {
+    
+    try {
+
+        const cateId = req.query.id;
+        const newName = req.query.value
+
+        //  Valifation For Edit Category :-
+
+        const dataCheck = await Category.findOne({ name: { $regex: new RegExp('^' + newName + '$', 'i') } });
+
+        if (dataCheck) {
+            
+            res.send({ error: "Category already exist" });
+
+        } else {
+
+            const categoryDataa = await Category.findByIdAndUpdate({ _id: cateId }, { $set: { name: newName } });
+
+            categoryDataa.save();
+            res.send(true);
+
+        }
+        
+    } catch (error) {
+
+        console.log('s');
+        
+    }
+
+};
 
 const categoryAction = async (req, res) => {
 

@@ -67,12 +67,18 @@ const user_route=express();
 
   // verify forgot pass otp
   user_route.post('/otp',userController.verifiyPassOtp)
+
+  //Resend OTP
+  user_route.get('/resendotp',userController.resendotp)
  
   // load new password
   user_route.get('/newpassword',userController.loadnewpassword);
  
   // update password
   user_route.post('/passwordVerify',userController.updatepassword);
+
+  //  wallet
+  user_route.get('/wallet', userController.loadWallet);
 
 
 
@@ -153,6 +159,8 @@ user_route.post('/addWishlist', wishlistController.addWishlist);
 // remove wishlist
 user_route.put('/removeWishlist', wishlistController.removeWishlist);
 
+
+
 // ******** ORDERS *******
 
 // load Oreders
@@ -167,6 +175,13 @@ user_route.get('/orderDetails',orderController.loadOrderDetails);
 // load Coupen
 user_route.get('/userCoupen',coupenController.loadCoupens);
 
+// cancel order
+user_route.post('/cancelOrder',orderController.cancelOrder);
+
+// return order
+user_route.post('/returnOrder',orderController.returnOrder)
+
+
 
 // ******** PROFILE ADDRESS *******
 user_route.get('/profileaddress',addressController.loadAddress);
@@ -180,10 +195,13 @@ user_route.post('/addAddress',addressController.verifyProfileAddAddess);
  user_route.put('/editAddress',addressController.editprofileaddress);
  
  // verifyEditAddress
- user_route.post('/verifyEditAddress',addressController.verifyEditAddress)
+ user_route.post('/verifyEditAddress',addressController.verifyEditAddress);
 
+// sort
+ user_route.get('/sort/:criteria',productController.sortProduct);
 
-
+ // search
+ user_route.post('/search',productController.searchName)
 
 
   module.exports=user_route;

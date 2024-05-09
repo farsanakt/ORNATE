@@ -72,13 +72,13 @@
 
 											</td>
 
-											<td class="price-col"><%= val.productId.price %></td>
+											<td class="price-col"><%= val.productId.offerPrice?val.productId.offerPrice:val.productId.price; %></td>
 
 											<td class="quantity-col">
 
                                                 <div class="cart-product-quantity">
-
-                                                    <input type="number" oninput="cartUpdate(this,'<%= val.productId.price %>','<%=val.productId._id %>','<%= locals.cartData._id%>')"  class="form-control" value="<%=val.
+<% const price=  val.productId.offerPrice?val.productId.offerPrice:val.productId.price;%>
+                                                    <input type="number" oninput="cartUpdate(this,'<%=price %>','<%=val.productId._id %>','<%= locals.cartData._id%>')"  class="form-control" value="<%=val.
 													quantity  %>" min="1" max='<%= val.productId.stock  %>' step="1" data-decimals="0" required>
 
                                                 </div><!-- End .cart-product-quantity -->     
