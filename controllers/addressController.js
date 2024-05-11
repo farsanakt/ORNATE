@@ -3,12 +3,13 @@ const Address=require('../models/address_model');
 
 const Category=require('../models/category_model');
 
-const User=require('../models/user_model')
+const User=require('../models/user_model');
 
+
+// load address
 const loadAddress=async(req,res)=>{
     try {
   
-
         const user=req.session.user
 
         const msgg=req.flash('msg')
@@ -22,11 +23,13 @@ const loadAddress=async(req,res)=>{
         const address=await Address.find({userId:userIdd})
 
         res.render('profileaddress',{categoryData,address,msgg,userData,user})
+
     } catch (error) {
+
         console.log(error.message);
+
     }
 }
-
 
 // profile add address
 const verifyProfileAddAddess = async(req , res)=>{
@@ -107,7 +110,6 @@ const editprofileaddress=async(req,res)=>{
     }
 }
 
-
 //  Verify Edit Address (Post Method) :-
 
 const verifyEditAddress = async (req, res) => {
@@ -134,8 +136,6 @@ const verifyEditAddress = async (req, res) => {
     }
 
 };
-
-
 
 
 module.exports={

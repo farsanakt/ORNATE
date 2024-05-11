@@ -3,11 +3,14 @@ const Category=require('../models/category_model');
 // load category
 const loadCategory=async(req,res)=>{
     try {
-        
         const categoryData= await Category.find({})
+
         res.render('category',{category:categoryData})
+
     } catch (error) {
+
         console.log(error.message);
+
     }
 }
 
@@ -15,11 +18,11 @@ const loadCategory=async(req,res)=>{
 // add category
 const addcategory=async(req,res)=>{
     try {
-        console.log('kkoop');
         console.log(req.query.inp);
+
         if(req.query.inp){
 
-            const catecheck = await Category.findOne({ name: { $regex: new RegExp('^' + req.query.inp + '$', 'i') } });
+            const catecheck = await Category.findOne({ name: req.query.inp  });
             
             if (catecheck) {
                 
@@ -50,17 +53,7 @@ const addcategory=async(req,res)=>{
     }
 }
 
-// edit category
-// const editcategory=async(req,res)=>{
-   
-//     const id=req.query.id
 
-//     const value=req.query.value
-
-//     const edited=await Category.findOneAndUpdate({_id:id},{$set:{name:value}})
-    
-//     res.send({set:true})
-// }
 
 
 const editcategory = async (req, res ) => {
@@ -73,6 +66,7 @@ const editcategory = async (req, res ) => {
         //  Valifation For Edit Category :-
 
         const dataCheck = await Category.findOne({ name: { $regex: new RegExp('^' + newName + '$', 'i') } });
+        
 
         if (dataCheck) {
             

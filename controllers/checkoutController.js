@@ -140,9 +140,33 @@ const addCoupen=async(req,res)=>{
     }
 }
 
+// choose address
+const chooseAddress=async(req,res)=>{
+    try {
+        const userId=req.session.user
+        const adId=req.query.id
+        console.log(adId);
+        await Address.updateMany(
+            { userId: userId, 'addresss.status': true },
+            { $set: { 'addresss.$.status': false } }
+        );
+
+        const changeAddress = await Address.findOneAndUpdate({userId:userId,'addresss._id':adId},{$set:{'addresss.$.status':true}});
+        console.log(changeAddress);
+        if(changeAddress){
+            res.send({response:ok})
+        }
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports={
     loadCheckout,
     addAddress,
     addCoupen,
-    razor
+    razor,
+    chooseAddress
 }

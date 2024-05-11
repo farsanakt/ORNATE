@@ -11,7 +11,9 @@ const loadOffer = async (req, res) => {
 
     const offer = await Offer.find();
 
-    res.render("offer", { category, offer });
+    const msg=req.flash('msg')
+
+    res.render("offer", { category, offer,msg });
 
   } catch (error) {
 
@@ -28,25 +30,43 @@ const loadOffer = async (req, res) => {
 
       const { offname, category, offer } = req.body;
 
-      const newOffr=new Offer({
+      const existingOffr=await Offer.findOne({category:category})
+      console.log(existingOffr);
+      if(existingOffr){
 
-        name: offname,
-        category,
-        offer,
+        req.flash('msg','this category offer is already existing')
+        res.redirect('/admin/offer')
 
+      }else{
+        const newOffr=new Offer({
 
-      })
-
-      
-      await newOffr.save();
-      const catName=await Catogory.findOne({_id:category});
-      const produ=await Product.find({category:catName.name})
-      for(const key of produ){
-        const offerPrice=parseInt(key.price/100*(100-offer))
-        await Product.findOneAndUpdate({_id:key._id},{$set:{offerPrice}})
+          name: offname,
+          category,
+          offer,
+  
+  
+        })
+  
+        
+        await newOffr.save();
+  
+        const catName=await Catogory.findOne({_id:category});
+  
+        const produ=await Product.find({category:catName.name})
+  
+        for(const key of produ){
+  
+          const offerPrice=parseInt(key.price/100*(100-offer))
+  
+          await Product.findOneAndUpdate({_id:key._id},{$set:{offerPrice}})
+          
+        }
+  
+        res.redirect("/admin/offer");
+        
       }
 
-      res.redirect("/admin/offer");
+    
 
     } catch (error) {
 

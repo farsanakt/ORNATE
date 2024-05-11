@@ -10,6 +10,8 @@ const categorySchema=new mongoose.Schema({
         required: true,
         default:true,
     }
+    
+    
 })
  
 module.exports=mongoose.model("Category",categorySchema)

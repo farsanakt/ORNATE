@@ -11,51 +11,58 @@ const User=require('../models/user_model');
 // load coupen
 const loadCoupen=async(req,res)=>{
     try {
- 
+         const msg=req.flash('msg')
         const coupenData=await Coupen.find()
-        res.render('coupen',{coupenData})
+        res.render('coupen',{coupenData,msg})
     } catch (error) {
         console.log(error.message);
     }
 }
 
-const addCoupen=async(req,res)=>{
+
+// add coupen
+const addCoupen = async (req, res) => {
     try {
-        const {coupon,above,discount,couponid}=req.body
+        const { coupon, above, discount, couponid } = req.body;
 
-        const newId = generateCoupenId()
+        const existingCoupon = await Coupen.findOne({ name:   coupon  });
 
-        const coupenCreating=new Coupen({
-            name:coupon,
-            discount:discount,
-            above:above,
-            couponId:couponid
-        })
+        if (existingCoupon) {
 
-        if(coupenCreating){
+            req.flash('msg', 'This coupon already exists')
 
-            coupenCreating.save()
-           
-            .then(savedCoupen => {
-
-                
-                res.redirect("/admin/coupen");
-  
-              })
-              .catch(error => {
-  
-                console.error('Error saving coupen:', error);
-  
-              });
+            return res.redirect('/admin/coupen')
 
         }
-        
+
+        // Create a new coupon
+        const newCoupon = new Coupen({
+            name: coupon,
+            discount: discount,
+            above: above,
+            couponId: couponid
+        });
+
+        const savedCoupon = await newCoupon.save()
+
+        if (savedCoupon) {
+
+            return res.redirect("/admin/coupen")
+
+        } else {
+
+            req.flash('msg', 'Failed to save coupon')
+
+            return res.redirect('/admin/coupen');
+        }
     } catch (error) {
+       
+        req.flash('msg', 'An error occurred while saving the coupon')
 
-        console.log(error.message);
-
+        return res.redirect('/admin/coupen');
     }
-}
+};
+
 
 //  generateCoupenId :-
 

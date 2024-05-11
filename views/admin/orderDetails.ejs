@@ -173,11 +173,11 @@
     
                                                                             <td><img src="<%= product.productId.images[0] %>" height="100" alt=""><br><br><span><%= product.productId.name%></span></td>
     
-                                                                            <td>$<%= product.productId.price %>.00</td>
+                                                                            <td>₹<%= product.productId.price %>.00</td>
                                                                             <td><%= product.quantity %></td>
-                                                                            <td>$<%= product.price %>.00
+                                                                            <td>₹<%= product.price %>.00
                                                                             
-                                                                                <p style="font-size: 10px;" class="mt-1 <%= ordDettails.coupenDis <= 0 ? '' : 'text-success' %>"><%= ordDettails.coupenDis <= 0 ? '' : 'Coupen Applied' %></p>
+                                                          
 
                                                                             </td>
 
@@ -216,7 +216,7 @@
                                                                 <td></td>
                                                                 <td></td>
                                                                 <td>Total</td>
-                                                                <td>$<%= ordDettails.orderAmount %>.00</td>
+                                                                <td>₹<%= ordDettails.orderAmount %>.00</td>
 
                                                             </tr>
 

@@ -87,14 +87,14 @@
                                                                     
                                                                 <div class="row">
                                                                   <%= //console.log(userData,'lllllllooooooppppp'); %>
-                                                                  <% userData.coupen.forEach(val => { %>
+                                                                  <% userData.coupen?.forEach(val => { %>
                                               
                                                                       <% console.log(val); %>
                                                                       <div class="card bg-dark text-white">
                                                                           <div class="card-body">
-                                                                            <p><%= val.coupenId.name %></p>
-                                                                            <h6 class="text-danger" style="font-weight: bold;"><%= val.coupenId.discount %>% OFF</h6>
-                                                                            <p onclick="copy('<%= val._id %>')" class="text-white">Coupon Code: <%= val.coupenId.couponId %></p>
+                                                                            <p><%= val.coupenId?.name %></p>
+                                                                            <h6 class="text-danger" style="font-weight: bold;"><%= val.coupenId?.discount %>% OFF</h6>
+                                                                            <p onclick="copy('<%= val._id %>')" class="text-white">Coupon Code: <%= val.coupenId?.couponId %></p>
                                                                             
                                                                           </div>
                                                                         </div>

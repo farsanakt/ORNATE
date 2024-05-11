@@ -21,70 +21,58 @@
 
                 Add Coupon
 
+
+
               </button>
+
+              <div class="text-center">
+                <p class="text-danger">
+                    <% if(locals.msg) { %>
+                        <%= msg %>
+                    <% } %>
+                </p>
+            </div>
 
                     <!-- Modal -->
 
                     <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
-
                       <div class="modal-dialog modal-dialog-centered">
-
-                        <div class="modal-content">
-
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="couponModalLabel">Add Coupon</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="couponModalLabel">Add Coupon</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                              </div>
+                              <div class="modal-body">
+                                  <form action="/admin/addCoupen" id="couponForm" method="post" onsubmit="return validateForm()">
+                                      
+                                      <div class="mb-3">
+                                          <label for="couponName" class="form-label">Name</label>
+                                          <input type="text" class="form-control" id="couponName" name="coupon" placeholder="Enter coupon name">
+                                      </div>
+                                      <div class="mb-3 d-flex">
+                                          <div class="ms-3">
+                                              <label for="max" class="form-label">above </label>
+                                              <input type="number" class="form-control w-50 ms-3" min="1" name="above" id="max" placeholder="max">
+                                          </div>
+                                      </div>
+                                      <div class="mb-3">
+                                          <label for="discount" class="form-label">Discount</label>
+                                          <input type="number" class="form-control" name="discount" min="1" max="70" id="discount">
+                                      </div>
+                                      <div class="mb-3">
+                                          <label for="coupon" class="form-label">Coupon Id</label>
+                                          <input type="text" class="form-control" name="couponid" min="1" id="couponid">
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                          <button type="submit" class="btn btn-outline-success" id="submitBtn">Add Coupon</button>
+                                      </div>
+                                  </form>
+                              </div>
                           </div>
-
-                          <div class="modal-body">
-
-                       <form action="/admin/addCoupen" id="couponForm" method="post"  onsubmit="return validateForm()">
-
-                          <p id="msg" hidden class="text-danger "></p>
-
-                          <div class="mb-3">
-                            <label for="couponName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="couponName" name="coupon" placeholder="Enter coupon name">
-                          </div>
-
-                          <!-- <div class="mb-3">
-                            <label for="couponImage" class="form-label">Image</label>
-                            <input type="file" class="form-control" id="couponImage" name="image" accept="image/*">
-                          </div> -->
-
-                          <div class="mb-3 d-flex">
-                           
-
-                            <div class="ms-3">
-                              <label for="max" class="form-label">above </label>
-                              <input type="number" class="form-control w-50 ms-3" min="1" name="above" id="max" placeholder="max">
-                            </div>
-                          </div>
-
-                          <div class="mb-3">
-                            <label for="discount" class="form-label">Discount</label>
-                            <input type="number" class="form-control" name="discount" min="1" max="70" id="discount">
-                        </div>
-                        
-
-                          <div class="mb-3">
-                            <label for="coupon" class="form-label">Coupon Id</label>
-                            <input type="text" class="form-control" name="couponid" min="1" id="couponid">
-                          </div>
-
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-outline-success" id="submitBtn">Add Coupon</button>
-                          </div>
-                        </form>
-
-                          </div>
-
-                        </div>
-
                       </div>
-                      
-                    </div>
+                  </div>
+                  
 
                     <!--modal end-->
 

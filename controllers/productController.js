@@ -11,11 +11,10 @@ const loadProduct=async(req,res)=>{
 
         const productData=await Products.find({})
         
-
-
         res.render('product',{product:productData})
 
     } catch (error) {
+
         console.log(error.message);
     }
 }
@@ -217,6 +216,7 @@ const loadProductDetails = async(req,res)=>{
         const offerData=await Offer.find().populate('category')
 
         for (let i = 0; i < offerData.length; i++) {
+
             for (let j = 0; j < products.length; j++) {
                 
                 const category = await Category.findOne({ name: products[j].category });
@@ -252,25 +252,29 @@ const loadProductDetails = async(req,res)=>{
 // sort Product
 const sortProduct = async(req,res)=>{
     try {
-      // console.log('working');
+     
       const { criteria } = req.params;
-       console.log('awfsd'+criteria);
-      let productDAta;
+
+      console.log('awfsd'+criteria);
+
+      let productDAta
+
       switch (criteria) {
+
         case 'priceLow-High':
-          productDAta = await Products.find().sort({ price: 1 });
+          productDAta = await Products.find({is_Listed:true}).sort({ price: 1 });
           break;
         case 'priceHigh-Low':
-          productDAta = await Products.find().sort({ price: -1 });
+          productDAta = await Products.find({is_Listed:true}).sort({ price: -1 });
           break;
         case 'nameA-Z':
-          productDAta = await Products.find().collation({ locale: "en" }).sort({ name: 1 });
+          productDAta = await Products.find({is_Listed:true}).sort({ name: 1 });
           break;
         case 'nameZ-A':
-          productDAta = await Products.find().collation({ locale: "en" }).sort({ name: -1 });
+          productDAta = await Products.find({is_Listed:true}).sort({ name: -1 });
           break;
         case 'newArrivals':
-          productDAta = await Products.find().sort({ createdAt: -1 });
+          productDAta = await Products.find({is_Listed:true}).sort({ createdAt: -1 });
           break;
         
         
@@ -279,7 +283,6 @@ const sortProduct = async(req,res)=>{
           return;
       }
      
-      
          res.json({ productDAta });
 
     } catch (error) {
@@ -292,24 +295,73 @@ const sortProduct = async(req,res)=>{
   // search product
 
 const searchName = async (req,res)=>{
+
     const input = req.body.q;
+
     console.log('ghgh'+input);
+    
     if(!input){
+
       return res.status(400).send('Search Name is Required...!')
+
     }
+
     try {
+
       const productFound = await Products.find({ name : {$regex : input , $options:'i'}})
+
      
      if(productFound === 0){
+
       return res.status(200).json({ message : "No product found matching your Search query"})
+
      }
     
       res.json(productFound)
+
     } catch (error) {
+
       console.log(error);
+
     }
   }
 
+
+  // filerProducts
+const filterProducts = async (req,res)=>{
+    try {
+      const {categories} = req.body
+
+      console.log('cat'+categories)
+
+      const allproduct=await Products.find({is_Listed:true})
+
+      const productsFound = await Products.find({
+
+        is_Listed:true,category : {
+
+          $in : categories
+
+        }
+      })
+
+      console.log('productsFound',productsFound);
+
+      if(productsFound.length === 0){
+
+        res.json(allproduct)
+
+      } else{
+
+        res.json(productsFound)
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  }
 
 module.exports={
     loadProduct,
@@ -322,5 +374,6 @@ module.exports={
     loadProductDetails,
     verifyEditProduct,
     sortProduct,
-    searchName
+    searchName,
+    filterProducts
 }

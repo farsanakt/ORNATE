@@ -150,7 +150,7 @@
 													<div class="product-body">
 														<div class="product-cat">
 															<a href="#">
-																<%= products[i].brand %>
+																<%= products[i].category %>
 															</a>
 														</div><!-- End .product-cat -->
 														<h3 class="product-title"><a href="product.html">
@@ -270,75 +270,28 @@
 										<div class="collapse show" id="widget-1">
 											<div class="widget-body">
 												<div class="filter-items filter-items-count">
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="cat-1">
-															<label class="custom-control-label"
-																for="cat-1">Men's</label>
-														</div><!-- End .custom-checkbox -->
-														<span class="item-count">3</span>
-													</div><!-- End .filter-item -->
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="cat-2">
-															<label class="custom-control-label"
-																for="cat-2">Women's</label>
-														</div><!-- End .custom-checkbox -->
-														<span class="item-count">0</span>
-													</div><!-- End .filter-item -->
+													<% categoryData.forEach(category => { %>
+														<% if (category.is_Listed) { %>
+															<div class="filter-item">
+																<div class="custom-control custom-checkbox">
+																	<input type="checkbox" class="custom-control-input" id="<%= category._id %>" name="<%= category.name %>">
+																	<label class="custom-control-label" for="<%= category._id %>"><%= category.name %></label>
+																</div>
+																<span class="item-count">3</span>
+															</div>
+														<% } %>
+													<% }); %>
 												</div><!-- End .filter-items -->
 											</div><!-- End .widget-body -->
 										</div><!-- End .collapse -->
-									</div><!-- End .widget -->
-
-									<div class="widget widget-collapsible">
-										<h3 class="widget-title">
-											<a data-toggle="collapse" href="#widget-2" role="button"
-												aria-expanded="true" aria-controls="widget-2">
-												Size
-											</a>
-										</h3><!-- End .widget-title -->
-
-										<div class="collapse show" id="widget-2">
-											<div class="widget-body">
-												<div class="filter-items">
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input" checked
-																id="size-3">
-															<label class="custom-control-label" for="size-3">6</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input" checked
-																id="size-4">
-															<label class="custom-control-label" for="size-4">7</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="size-5">
-															<label class="custom-control-label" for="size-5">8</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="size-6">
-															<label class="custom-control-label" for="size-6">9</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-												</div><!-- End .filter-items -->
+										
+												
 											</div><!-- End .widget-body -->
 										</div><!-- End .collapse -->
+										
+										
 									</div><!-- End .widget -->
+
 
 									<!-- <div class="widget widget-collapsible">
     								<h3 class="widget-title">
@@ -628,7 +581,7 @@
             <div class="col-6 col-md-4 col-lg-4">
                 <div class="product product-7 text-center">
                     <figure class="product-media">
-                        <span class="product-label label-new">New</span>
+                       
                         <a href="/productdetails?id=${product._id}">
                             <img src="${product.images[0]}"
                                 alt="Product image xxxxxxx" class="product-image">
@@ -649,15 +602,25 @@
                     <div class="product-body">
                         <div class="product-cat">
                             <a href="#">
-                                ${product.brand}
+                                ${product.category}
                             </a>
                         </div><!-- End.product-cat -->
                         <h3 class="product-title"><a href="product.html">
                                 ${product.name}
                             </a></h3><!-- End.product-title -->
-                        <div class="product-price">
+							${product.offerPrice ? 
+                        `<div class="product-price">
+                            <div style="text-decoration: line-through;" class="original-price">
+                                ${product.price}
+                            </div>
+                            <div class="discounted-price">
+                                ${product.offerPrice}
+                            </div>
+                        </div>` :
+                        `<div class="product-price">
                             ${product.price}
-                        </div><!-- End.product-price -->
+                        </div>`}
+                            
                         <div class="ratings-container">
                             <div class="ratings">
                                 <div class="ratings-val" style="width: 20%;"></div>
@@ -715,59 +678,180 @@
 		searchList.innerHTML = '';
 
 
-    data.forEach(product => { // Iterate over each product in the data array
-        const productItem = `
-            <div class="col-6 col-md-4 col-lg-4">
-                <div class="product product-7 text-center">
-                    <figure class="product-media">
-                        <span class="product-label label-new">New</span>
-                        <a href="/productdetails?id=${product._id}">
-                            <img src="${product.images[0]}"
-                                alt="Product image xxxxxxx" class="product-image">
+		data.forEach(product => { // Iterate over each product in the data array
+    const productItem = `
+        <div class="col-6 col-md-4 col-lg-4">
+            <div class="product product-7 text-center">
+                <figure class="product-media">
+           
+                    <a href="/productdetails?id=${product._id}">
+                        <img src="${product.images[0]}"
+                            alt="Product image ${product.name}" class="product-image">
+                    </a>
+
+                    <div class="product-action-vertical">
+                        <a onclick="addWishlist('${product._id}')"
+                            class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                to wishlist</span></a>
+                    </div><!-- End.product-action-vertical -->
+
+                    <div class="product-action">
+                        <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
+                    </div><!-- End.product-action -->
+
+                </figure><!-- End.product-media -->
+
+                <div class="product-body">
+                    <div class="product-cat">
+                        <a href="#">
+                            ${product.category}
                         </a>
+                    </div><!-- End.product-cat -->
+                    <h3 class="product-title"><a href="product.html">
+                            ${product.name}
+                        </a></h3><!-- End.product-title -->
 
-                        <div class="product-action-vertical">
-                            <a onclick="addWishlist('${product._id}')"
-                                class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                    to wishlist</span></a>
-                        </div><!-- End.product-action-vertical -->
-
-                        <div class="product-action">
-                            <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
-                        </div><!-- End.product-action -->
-
-                    </figure><!-- End.product-media -->
-
-                    <div class="product-body">
-                        <div class="product-cat">
-                            <a href="#">
-                                ${product.brand}
-                            </a>
-                        </div><!-- End.product-cat -->
-                        <h3 class="product-title"><a href="product.html">
-                                ${product.name}
-                            </a></h3><!-- End.product-title -->
-                        <div class="product-price">
+                    ${product.offerPrice ? 
+                        `<div class="product-price">
+                            <div style="text-decoration: line-through;" class="original-price">
+                                ${product.price}
+                            </div>
+                            <div class="discounted-price">
+                                ${product.offerPrice}
+                            </div>
+                        </div>` :
+                        `<div class="product-price">
                             ${product.price}
-                        </div><!-- End.product-price -->
-                        <div class="ratings-container">
-                            <div class="ratings">
-                                <div class="ratings-val" style="width: 20%;"></div>
-                                <!-- End.ratings-val -->
-                            </div><!-- End.ratings -->
-                            <span class="ratings-text">( 2 Reviews )</span>
-                        </div><!-- End.rating-container -->
+                        </div>`}
+                                                    
+                    <div class="ratings-container">
+                        <div class="ratings">
+                            <div class="ratings-val" style="width: 20%;"></div>
+                            <!-- End.ratings-val -->
+                        </div><!-- End.ratings -->
+                        <span class="ratings-text">(2 Reviews)</span>
+                    </div><!-- End.rating-container -->
 
-                    </div><!-- End.product-body -->
-                </div><!-- End.product -->
-            </div><!-- End.col-sm-6 col-lg-4 -->
-        `;
-        productList.insertAdjacentHTML('beforeend', productItem) ; // Append the generated HTML to the productList
+                </div><!-- End.product-body -->
+            </div><!-- End.product -->
+        </div><!-- End.col-sm-6 col-lg-4 -->
+    `;
+    productList.insertAdjacentHTML('beforeend', productItem); // Append the generated HTML to the productList
+});
 
-    });
 }
 
+
+
 </script>
+
+<!-- filtering product by categories -->
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		function handleCheckboxChange() {
+			const checkboxes = document.querySelectorAll('.custom-control-input');
+			let selectedCategories = [];
+	
+			checkboxes.forEach(checkbox => {
+				if (checkbox.checked) {
+					selectedCategories.push(checkbox.name);
+				}
+			});
+			sendSelectedCategoriesToBackend(selectedCategories);
+		}
+	
+		function sendSelectedCategoriesToBackend(selectedCategories) {
+			const url = '/filterproducts';
+			const data = {
+				categories: selectedCategories
+			};
+			
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+		   .then(response => response.json())
+		   .then(data => {
+				filterProductList(data);
+			})
+		   .catch((error) => {
+				console.error('Error:', error);
+			});
+		}
+		const checkboxes = document.querySelectorAll('.custom-control-input');
+		checkboxes.forEach(checkbox => {
+			checkbox.addEventListener('change', handleCheckboxChange);
+		});
+		function filterProductList(data){
+			let filterList = document.getElementById('productList');
+			filterList.innerHTML = '';
+			data.forEach(product => {
+				const productItem = `
+        <div class="col-6 col-md-4 col-lg-4">
+            <div class="product product-7 text-center">
+                <figure class="product-media">
+               
+                    <a href="/productdetails?id=${product._id}">
+                        <img src="${product.images[0]}"
+                            alt="Product image ${product.name}" class="product-image">
+                    </a>
+
+                    <div class="product-action-vertical">
+                        <a onclick="addWishlist('${product._id}')"
+                            class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                to wishlist</span></a>
+                    </div><!-- End.product-action-vertical -->
+
+                    <div class="product-action">
+                        <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
+                    </div><!-- End.product-action -->
+
+                </figure><!-- End.product-media -->
+
+                <div class="product-body">
+                    <div class="product-cat">
+                        <a href="#">
+                            ${product.category}
+                        </a>
+                    </div><!-- End.product-cat -->
+                    <h3 class="product-title"><a href="product.html">
+                            ${product.name}
+                        </a></h3><!-- End.product-title -->
+
+                    ${product.offerPrice ? 
+                        `<div class="product-price">
+                            <div style="text-decoration: line-through;" class="original-price">
+                                ${product.price}
+                            </div>
+                            <div class="discounted-price">
+                                ${product.offerPrice}
+                            </div>
+                        </div>` :
+                        `<div class="product-price">
+                            ${product.price}
+                        </div>`}
+                                                    
+                    <div class="ratings-container">
+                        <div class="ratings">
+                            <div class="ratings-val" style="width: 20%;"></div>
+                            <!-- End.ratings-val -->
+                        </div><!-- End.ratings -->
+                        <span class="ratings-text">(2 Reviews)</span>
+                    </div><!-- End.rating-container -->
+
+                </div><!-- End.product-body -->
+            </div><!-- End.product -->
+        </div><!-- End.col-sm-6 col-lg-4 -->
+    `;
+  		filterList.insertAdjacentHTML('beforeend',productItem)
+			})
+		}
+	});
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
 
 

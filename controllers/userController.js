@@ -327,7 +327,7 @@ const loadAboutUs=async(req,res)=>{
 
         const category = await Category.find({is_Listed : true})
 
-        res.render('aboutUs',{user,categoryData:category,cartData})
+        res.render('aboutUs',{user,categoryData:category})
 
     } catch (error) {
 

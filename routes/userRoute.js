@@ -144,7 +144,10 @@ const user_route=express();
  user_route.post('/addcoupen',checkoutController.addCoupen)
 
   // razor
-  user_route.post('/razor',checkoutController.razor)
+  user_route.post('/razor',checkoutController.razor);
+
+  // choose address
+  user_route.post('/chooseAddress',checkoutController.chooseAddress)
 
 
 
@@ -202,6 +205,8 @@ user_route.post('/addAddress',addressController.verifyProfileAddAddess);
 
  // search
  user_route.post('/search',productController.searchName)
+
+ user_route.post('/filterproducts',productController.filterProducts)
 
 
   module.exports=user_route;

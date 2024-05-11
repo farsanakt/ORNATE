@@ -94,7 +94,6 @@ const removeCart = async(req , res)=>{
 
         const proIdd = req.query.id
         
-
         const removeCart = await Cart.findOneAndUpdate({userId : req.session.user} , {$pull : {products : {productId : proIdd}}});
 
         if(removeCart){

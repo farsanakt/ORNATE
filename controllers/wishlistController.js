@@ -55,7 +55,6 @@ const loadWishlist=async(req,res)=>{
     }
 }
 
-
 // add wishlist
 const addWishlist = async (req, res) => {
     
@@ -132,13 +131,15 @@ const addCart = async (req, res) => {
         
         const exist = await Cart.findOne({ userId: userIddd, products: { $elemMatch: { productId: proIdd } } });
 
-        const pricee = proData.price;
+        const price=proData.offerPrice?proData.offerPrice:proData.price
+            
+    
 
         const qty = 1
 
         if (!exist) {
             
-            await Cart.findOneAndUpdate({ userId: userIddd }, { $addToSet: { products: { productId: proIdd, price: pricee, quantity: qty } } }, { upsert: true, new: true });
+            await Cart.findOneAndUpdate({ userId: userIddd }, { $addToSet: { products: { productId: proIdd, price: price, quantity: qty } } }, { upsert: true, new: true });
             
             await Wishlist.findOneAndUpdate({ userId: userIddd }, { $pull: { products: { productId: proIdd } } }, { new: true });
 
@@ -157,10 +158,6 @@ const addCart = async (req, res) => {
     }
 
 };
-
-
-
-
 
 
 module.exports={

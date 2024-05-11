@@ -298,10 +298,12 @@ const orderStatus=async(req,res)=>{
         );
         
         if (changeStatus) {
+
             res.json({success:true})
         }
 
     } catch (error) {
+        
         console.log(error.message);
     }
 }
@@ -326,6 +328,7 @@ const approveReturn=async(req,res)=>{
                 if(approvedData.payment=="online payment"){
 
                 const walletData=await Wallet.findOneAndUpdate({userId:userIdd},{$set:{balance:approvedData.orderAmount},$push:{transaction:{amount:approvedData.orderAmount,creditOrDebit:'credit'}}},{new:true,upsert:true})
+               
                 console.log(walletData);
                 }
 

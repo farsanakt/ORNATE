@@ -138,7 +138,7 @@
 
                         <div class="mb-3">
 
-                          <label class="form-label"> state:-&nbsp;<%= order?.deliveryAddress?.state %></label>
+                          <label class="form-label"> state:-&nbsp;<%= order?.deliveryAddress?.states %></label>
 
                         </div>
 
@@ -217,8 +217,8 @@
                                   <!-- End .product -->
                                 </td>
 
-                                <td class="stock-col ms-3 " style="text-decoration:line-through;">$<%=
-                                    order.orderAmount %>
+                                <td class="stock-col ms-3 " style="text-decoration:line-through;">₹<%=
+                                     product?.productId?.price %>
                                 </td>
 
                                 <td class="stock-col">
@@ -242,7 +242,7 @@
 
                                 <td class="price-col" style="text-decoration:line-through;">
 
-                                  $<%=  order.orderAmount %>
+                                  ₹<%=  order.orderAmount %>
 
                                 </td>
 
@@ -278,7 +278,7 @@
                                     <!-- End .product -->
                                   </td>
 
-                                  <td class="stock-col ms-3 ">$<%= order.orderAmount %>
+                                  <td class="stock-col ms-3 ">₹<%= order.orderAmount %>
                                   </td>
 
                                   <td class="stock-col">
@@ -302,7 +302,7 @@
 
                                   <td class="price-col">
 
-                                    $<%=  order.orderAmount %>
+                                    ₹ <%=  order.orderAmount %>
  
                                     
 
@@ -370,7 +370,7 @@
 
                           <label class="social-label">Total:</label>
 
-                          $<%= locals.order.orderAmount %>
+                          ₹<%= locals.order.orderAmount %>
 
                         </div><!-- End .soial-icons -->
 

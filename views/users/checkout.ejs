@@ -28,116 +28,55 @@
 			</button> -->
 
 				<!--Modal Choose Address-->
+
+
+				<div class="modal fade" id="changeAddressModal" tabindex="-1" aria-labelledby="changeAddressModal" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">Choose Address</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<% for (let i=0; i < addres?.addresss?.length; i++) { %>
+										<% if (addres.addresss[i].status == false) { %>
+											<div data-bs-dismiss="modal" class="col-lg-5" style="margin: auto;">
+												<div class="card card-dashboard mt-2 style" style="width: 100;box-shadow:1px 1px 4px 0px#888888;" onclick="addresChoose('<%= addres.addresss[i]._id %>')">
+													<div class="card-body" style="cursor: pointer;">
+														<h3 class="card-title">Address</h3>
+														<p><span style="font-size: 1vw;"><%= addres.addresss[i].name %></span></p>
+														<p>
+															<span><%= addres.addresss[i].address %></span>,
+															<br><span><%= addres.addresss[i].locality %>,</span>
+															<span><%= addres.addresss[i].city %>,</span>
+															<span><%= addres.addresss[i].state %>,</span>
+															<span><%= addres.addresss[i].pincode %></span>
+															<br>
+															<span>Phone: <%= addres.addresss[i].phone %></span>
+														</p>
+														<a href="#" style="cursor: pointer; color: rgb(207, 149, 77);" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editAddress('<%= addres.addresss[i]._id %>')">Edit<i class="icon-edit"></i></a>
+													</div><!-- End .card-body -->
+												</div><!-- End .card-dashboard -->
+											</div><!-- End .col-lg-5 -->
+										<% } %>
+									<% } %>
+								</div><!-- End .row -->
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+
 				<div class="page-content">
 					<div class="checkout">
 						<div class="container">
 							<div class="row">
 								<aside class="col-lg-9">
-									<div class="modal fade" id="changeAddressModal" tabindex="-1"
-										aria-labelledby="changeAddressModal" aria-hidden="true">
-
-										<div class="modal-dialog">
-
-											<div class="modal-content">
-
-												<d iv class="modal-header">
-													<h1 class="modal-title fs-5" id="exampleModalLabel">Choose Address
-													</h1>
-													<button type="button" class="btn-close" data-bs-dismiss="modal"
-														aria-label="Close"></button>
-											</div>
-
-											<div class="modal-body">
-
-
-
-												<div class="row">
-
-													<% for (let i=0; i < addres?.addresss?.length; i++) { %>
-
-														<% if (addres.addresss[i].status==false) { %>
-
-															<div class="col-lg-5" style="margin: auto;">
-
-																<div class="card card-dashboard mt-2 style"
-																	style="width: 100;box-shadow:1px 1px 4px 0px#888888;"
-																	onclick="addresChoose('<%=// addres.addresss[i]._id %>')">
-
-																	<div class="card-body" style="cursor: pointer;">
-
-																		<!-- <input type="checkbox" class="card-checkbox"> -->
-
-																		<!-- <button type="button" class="close" aria-label="Close"  style="font-size: 23px;padding-bottom: 20px;" onclick="deleteAdd('<%=// userData._id %>' , '<%=// addres.addresss[i]._id %>')">
-																		<span aria-hidden="true">&times;</span>
-																	</button> -->
-
-																		<!-- <span style="cursor: pointer; display: flex; justify-content: end;" data-bs-toggle="modal" data-bs-target="#changeAddressModal">Change</span> -->
-
-																		<h3 class="card-title">Address</h3>
-																		<!-- End .card-title -->
-
-																		<p><span style="font-size: 1vw;">
-																				<%= // addres.addresss[i].name %>
-																			</span></p>
-																		<p><span>
-																				<%=addres.addresss[i].address %>
-																			</span>,
-																			<br><span>
-																				<%= addres.addresss[i].locality %>,
-																			</span>
-																			<span>
-																				<%= addres.addresss[i].city %>,
-																			</span>
-																			<span>
-																				<%= addres.addresss[i].state %>,
-																			</span>
-																			<span>
-																				<%= addres.addresss[i].pincode %>
-																			</span>
-																			<br>
-																			<span>Phone: <%= addres.addresss[i].phone %>
-																			</span>
-																		</p>
-
-																		<a herf="#"
-																			style="cursor: pointer; color: rgb(207, 149, 77);"
-																			data-bs-toggle="modal"
-																			data-bs-target="#exampleModal"
-																			onclick="editAddress('<%= addres.addresss[i]._id %>')">Edit<i
-																				class="icon-edit"></i></a>
-
-																	</div><!-- End .card-body -->
-
-																</div><!-- End .card-dashboard -->
-
-															</div><!-- End .col-lg-6 -->
-
-															<% // } else if(addres.addresss.length <=1) { %>
-
-																<div class="p-3">
-
-																	<p class="text-center ">Add Another Address To
-																		Change <a href="/address">Click Here</a></p>
-
-																</div>
-
-																<% } %>
-
-																	<%} %>
-
-												</div>
-
-												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary"
-														data-bs-dismiss="modal">Close</button>
-													<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-												</div>
-
-											</div>
-
-										</div>
-
-									</div>
+									
 
 									<div class="cart-bottom">
 										<div class="cart-discount">
@@ -1055,22 +994,35 @@
 
 				};
 
+				</script>
+
 				//	Address Choose :-
 
-				function addresChoose(id) {
-
-					fetch(`/chooseAddress?id=${id}`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					});
-
-
-					window.location.href = '/checkout'
-
-				}
-
+				<script>
+					function addresChoose(id) {
+						console.log('kjjhh');
+						fetch(`/chooseAddress?id=${id}`, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						}).then(response => {
+							if (response.ok) {
+								console.log("Address chosen successfully.");
+								window.location.href = '/checkout';
+							} else {
+								console.error("Error choosing address:", response.status);
+							}
+						}).catch(error => {
+							console.error("Error:", error);
+						}).finally(() => {
+							window.location.reload(); // Reload the page
+						});
+					}
+				</script>
+				
+				
+<script>
 				//	Sweet Alert For Edit Address :-
 
 				const msg = document.getElementById('msg');
