@@ -1,5 +1,233 @@
 <%- include('../layouts/adminheader') %>
+<style>
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0 0;
+    max-height: 150px;
+    object-fit: cover;
+}
+
+.product-card h2 {
+    font-size: 1.2em;
+    color: #333;
+    margin: 10px 0;
+}
+
+.product-card .price {
+    color: #4CAF50;
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.product-card button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.product-card button:hover {
+    background-color: #45a049;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.category-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+.category-card h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.grid-margin {
+    flex: 1 1 30%;
+}
+
+.card {
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    padding: 20px;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-body h5 {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.card-body h2 {
+    font-size: 2.8em;
+    margin: 10px 0;
+    color: #4CAF50;
+}
+
+.card-body h6 {
+    font-size: 1em;
+    color: #888;
+}
+
+.icon-lg {
+    font-size: 3.5em;
+    margin-top: 10px;
+}
+
+/* Add specific styles for each card type */
+.revenue-card {
+    background-color: #e3f2fd;
+}
+
+.sales-card {
+    background-color: #ffebee;
+}
+
+.product-card {
+    background-color: #e8f5e9;
+}
+
+.text-primary {
+    color: #007bff !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-success {
+    color: #28a745 !important;
+}
+.button-container {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+}
+
+
+</style>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
       <%- include('../layouts/adminsidebar') %>
@@ -245,12 +473,15 @@
       
         <div class="main-panel">
           
-          <div class="content-wrapper">
-            <div  > 
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#salesReportModal">
-              Sales Report
-            </button>
-          </div>
+          <div class="content-wrapper" >
+            <div class="col-lg-10"> 
+            
+            </div>
+            <div class="col-lg-2"> 
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#salesReportModal">
+                Sales Report
+              </button>
+              </div>
             
             <div class="row">
 
@@ -259,65 +490,65 @@
                 <div class="content-wrapper">
                
            
-                  <div class="row">
-                    <div class="col-sm-4 grid-margin">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5>Revenue</h5>
-                          <div class="row">
-                            <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                              <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0">₹<%= orderAmount  %></h2>
-                               
-                              </div>
-                              <h6 class="text-muted font-weight-normal"> last month</h6>
+                  <div class="container">
+                    <h1>Dashboard</h1>
+                    <div class="row">
+                        <div class="col-sm-4 grid-margin">
+                            <div class="card revenue-card">
+                                <div class="card-body " style="height: 150px;">
+                                    <h5>Revenue</h5>
+                                    <div class="row">
+                                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                                            <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                                <h2 class="mb-0">₹<%= orderAmount %></h2>
+                                            </div>
+                                            <h6 class="text-muted font-weight-normal">Last month</h6> <br>
+                                        </div>
+                                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                            <i class="fas fa-dollar-sign icon-lg text-primary ml-auto"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                              <i class="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
-                            </div>
-                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-4 grid-margin">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5>Sales Count</h5>
-                          <div class="row">
-                            <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                              <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0"><%= orderData.length %></h2>
-                              
-                              </div>
-                              <h6 class="text-muted font-weight-normal"> Since last month</h6>
+                        <div class="col-sm-4 grid-margin">
+                            <div class="card sales-card">
+                                <div class="card-body"  style="height: 150px;">
+                                    <h5>Sales Count</h5>
+                                    <div class="row">
+                                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                                            <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                                <h2 class="mb-0"><%= orderData.length %></h2>
+                                            </div>
+                                            <h6 class="text-muted font-weight-normal">Last month</h6>
+                                        </div>
+                                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                            <i class="fas fa-shopping-cart icon-lg text-danger ml-auto"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                              <i class="icon-lg mdi mdi-wallet-travel text-danger ml-auto"></i>
-                            </div>
-                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-4 grid-margin">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5>Products count</h5>
-                          <div class="row">
-                            <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                              <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0"><%= productCount %></h2>
-                             
-                              </div>
-                              <h6 class="text-muted font-weight-normal">last month</h6>
+                        <div class="col-sm-4 grid-margin">
+                            <div class="card product-card" >
+                                <div class="card-body"  style="height: 150px;">
+                                    <h5>Product Count</h5>
+                                    <div class="row">
+                                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                                            <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                                <h2 class="mb-0"><%= productCount %></h2>
+                                            </div>
+                                            <h6 class="text-muted font-weight-normal">Last month</h6>
+                                        </div>
+                                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                            <i class="fas fa-boxes icon-lg text-success ml-auto"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                              <i class="icon-lg mdi mdi-monitor text-success ml-auto"></i>
-                            </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
 
             </div>
            
@@ -326,125 +557,45 @@
            
             </div>
            
-            <div class="row ">
-              <div class="col-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Order Status</h4>
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </th>
-                            <th> Client Name </th>
-                            <th> Order No </th>
-                            <th> Product Cost </th>
-                            <th> Project </th>
-                            <th> Payment Mode </th>
-                            <th> Start Date </th>
-                            <th> Payment Status </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </td>
-                            <td>
-                              <img src="assets/images/faces/face1.jpg" alt="image" />
-                              <span class="pl-2">Henry Klein</span>
-                            </td>
-                            <td> 02312 </td>
-                            <td> $14,500 </td>
-                            <td> Dashboard </td>
-                            <td> Credit card </td>
-                            <td> 04 Dec 2019 </td>
-                            <td>
-                              <div class="badge badge-outline-success">Approved</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </td>
-                            <td>
-                              <img src="assets/images/faces/face2.jpg" alt="image" />
-                              <span class="pl-2">Estella Bryan</span>
-                            </td>
-                            <td> 02312 </td>
-                            <td> $14,500 </td>
-                            <td> Website </td>
-                            <td> Cash on delivered </td>
-                            <td> 04 Dec 2019 </td>
-                            <td>
-                              <div class="badge badge-outline-warning">Pending</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </td>
-                            <td>
-                              <img src="assets/images/faces/face5.jpg" alt="image" />
-                              <span class="pl-2">Lucy Abbott</span>
-                            </td>
-                            <td> 02312 </td>
-                            <td> $14,500 </td>
-                            <td> App design </td>
-                            <td> Credit card </td>
-                            <td> 04 Dec 2019 </td>
-                            <td>
-                              <div class="badge badge-outline-danger">Rejected</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </td>
-                            <td>
-                              <img src="assets/images/faces/face3.jpg" alt="image" />
-                              <span class="pl-2">Peter Gill</span>
-                            </td>
-                            <td> 02312 </td>
-                            <td> $14,500 </td>
-                            <td> Development </td>
-                            <td> Online Payment </td>
-                            <td> 04 Dec 2019 </td>
-                            <td>
-                              <div class="badge badge-outline-success">Approved</div>
-                            </td>
-                          </tr>
-                         
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
+            <div class="container">
+              <h1>Best Selling Products</h1>
+              <div class="product-grid">
+                  <% bestProducts.forEach(product => { %>
+                      <div class="product-card">
+                          <img src="<%= product.images[0] %>" alt="<%= product.name %>">
+                          <h2><%= product.name %></h2>
+                          <p class="price">$<%= product.price %></p>
+                          <button><%= product.count %></button>
+                      </div>
+                  <% }) %>
               </div>
+          </div>
+          <div class="container">
+            <h1>Best Selling Categories</h1>
+            <div class="category-list">
+                <% bestCategories.forEach(category => { %>
+                    <div class="category-card">
+                        <h2><%= category.name %></h2>
+                    </div>
+                <% }) %>
             </div>
- 
+        </div>
+
+        <div class="card mb-4">
+          <article class="card-body">
+
+              <select id="selectBox" style="width: 100px; height: 30px;">
+                  <option value="week">Week</option>
+                  <option value="month">Month</option>
+                  <option value="year">Year</option>
+
+
+              </select>
+              <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+          </article>
+      </div>
+
+        
            
 
            
@@ -515,6 +666,68 @@
         document.getElementById("overall-discount-amount").textContent = "$" + discountAmount.toFixed(2);
       });
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+
+
+<script>
+  document.getElementById('selectBox').addEventListener('change', function () {
+      const timePeriod = this.value;
+
+      var xValues, yValues;
+      if (timePeriod == 'week') {
+          xValues = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+          yValues = <%= JSON.stringify(week) %>;
+      } else if (timePeriod == 'month') {
+          xValues = ["Week 1", "Week 2", "Week 3", "Week 4"];
+          yValues = <%= JSON.stringify(month) %>;
+      } else {
+          xValues = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          yValues = <%= JSON.stringify(year) %>;
+      }
+
+      updateChart(xValues, yValues);
+
+      var chart;
+
+      function updateChart(xValues, yValues) {
+          if (chart) {
+              chart.data.labels = xValues;
+              chart.data.datasets[0].data = yValues;
+              chart.update();
+          } else {
+              chart = new Chart("myChart", {
+                  type: "bar",
+                  data: {
+                      labels: xValues,
+                      datasets: [{
+                          backgroundColor: "blue",
+                          data: yValues
+                      }]
+                  },
+                  options: {
+                      legend: { display: false },
+                      title: {
+                          display: true,
+                          text: "Sales Data"
+                      }
+                  }
+              });
+          }
+      }
+
+      // Initialize the chart with the default value
+      updateChart(xValues, yValues);
+  });
+
+  // Trigger change event to initialize the chart
+  document.getElementById('selectBox').dispatchEvent(new Event('change'));
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 
     
     <!-- End custom js for this page -->

@@ -61,7 +61,8 @@
                       <div class="form-group">
                         <label for="exampleInputEmail3">Product Price ($):</label>
                         <input type="number" class="form-control text-white w-50" name="price" id="price" placeholder="Price" value="<%= productData.price %>" onchange="checkForNegative()">
-                        <small id="priceErrorMessage" class="text-danger" style="display: none;">Please enter a positive price.</small>
+                        <small id="priceErrorMessage" class="text-danger" style="display: none;"> Please enter a positive price.</small>
+                        <small id="priceAboveLimitMessage" class="text-danger" style="display: none;"> The price should be below $10,000.</small>
                     </div>
                     
 
@@ -124,6 +125,7 @@
                       <label for="exampleInputCity1">Stock:</label>
                       <input type="number" class="form-control text-white" name="stock" id="stock" value="<%= productData.stock %>" onchange="checkStock()">
                       <small id="stockErrorMessage" class="text-danger" style="display: none;">Please enter a non-negative value for stock.</small>
+                      <small id="stockAboveLimitMessage" class="text-danger" style="display: none;">The stock should be less than or equal to 200.</small>
                   </div>
 
                   <div class="form-group">
@@ -265,31 +267,46 @@
 </script>
 
 
+
 <script>
   function checkForNegative() {
-      const input = document.getElementById('price');
-      const errorMessage = document.getElementById('priceErrorMessage');
+      var priceInput = document.getElementById('price');
+      var price = parseFloat(priceInput.value);
+      var priceErrorMessage = document.getElementById('priceErrorMessage');
+      var priceAboveLimitMessage = document.getElementById('priceAboveLimitMessage');
 
-      if (input.value < 0) {
-          errorMessage.style.display = 'block';
+      if (price < 0) {
+          priceErrorMessage.style.display = 'block';
+          priceAboveLimitMessage.style.display = 'none';
+      } else if (price >= 10000) {
+          priceAboveLimitMessage.style.display = 'block';
+          priceErrorMessage.style.display = 'none';
       } else {
-          errorMessage.style.display = 'none';
+          priceErrorMessage.style.display = 'none';
+          priceAboveLimitMessage.style.display = 'none';
       }
   }
 </script>
 
 
 <script>
-    function checkStock() {
-        const input = document.getElementById('stock');
-        const errorMessage = document.getElementById('stockErrorMessage');
+  function checkStock() {
+      var stockInput = document.getElementById('stock');
+      var stock = parseFloat(stockInput.value);
+      var stockErrorMessage = document.getElementById('stockErrorMessage');
+      var stockAboveLimitMessage = document.getElementById('stockAboveLimitMessage');
 
-        if (input.value < 0) {
-            errorMessage.style.display = 'block';
-        } else {
-            errorMessage.style.display = 'none';
-        }
-    }
+      if (stock < 0) {
+          stockErrorMessage.style.display = 'block';
+          stockAboveLimitMessage.style.display = 'none';
+      } else if (stock > 200) {
+          stockAboveLimitMessage.style.display = 'block';
+          stockErrorMessage.style.display = 'none';
+      } else {
+          stockErrorMessage.style.display = 'none';
+          stockAboveLimitMessage.style.display = 'none';
+      }
+  }
 </script>
 
 

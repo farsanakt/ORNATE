@@ -75,13 +75,20 @@
 											<td class="price-col"><%= val.productId.offerPrice?val.productId.offerPrice:val.productId.price; %></td>
 
 											<td class="quantity-col">
-
-                                                <div class="cart-product-quantity">
-<% const price=  val.productId.offerPrice?val.productId.offerPrice:val.productId.price;%>
-                                                    <input type="number" oninput="cartUpdate(this,'<%=price %>','<%=val.productId._id %>','<%= locals.cartData._id%>')"  class="form-control" value="<%=val.
-													quantity  %>" min="1" max='<%= val.productId.stock  %>' step="1" data-decimals="0" required>
-
-                                                </div><!-- End .cart-product-quantity -->     
+												<div class="cart-product-quantity">
+													<% const price = val.productId.offerPrice ? val.productId.offerPrice : val.productId.price; %>
+													<button type="button" onclick="changeQuantity(this, -1, '<%= price %>', '<%= val.productId._id %>', '<%= locals.cartData._id %>')" class="btn btn-decrement">-</button>
+													<input readonly type="number" 
+														   oninput="cartUpdate(this, '<%= price %>', '<%= val.productId._id %>', '<%= locals.cartData._id %>')"  
+														   class="form-control" 
+														   value="<%= val.quantity %>" 
+														   min="1" 
+														   max="<%= val.productId.stock %>" 
+														   step="1" 
+														   data-decimals="0" 
+														   required>
+													<button type="button" onclick="changeQuantity(this, 1, '<%= price %>', '<%= val.productId._id %>', '<%= locals.cartData._id %>')" class="btn btn-increment">+</button>
+												</div>><!-- End .cart-product-quantity -->     
 
                                             </td>
 
@@ -261,6 +268,21 @@ function removeCart(id) {
 }
 
 
+
+    function changeQuantity(button, change, price, productId, cartId) {
+        const input = button.parentElement.querySelector('input[type="number"]');
+        let currentValue = parseInt(input.value);
+        const min = parseInt(input.min);
+        const max = parseInt(input.max);
+
+        if (!isNaN(currentValue)) {
+            let newValue = currentValue + change;
+            if (newValue >= min && newValue <= max) {
+                input.value = newValue;
+                cartUpdate(input, price, productId, cartId);
+            }
+        }
+    }
 
 		
 

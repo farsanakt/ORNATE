@@ -88,8 +88,17 @@ const Order = mongoose.Schema({
     apporved:{
         type:Number,
         default:0
+    },
+    discount:{
+        type:Number,
+        default:0
+    },
+    paymentStatus:{
+        type:String,
+        default:'success'
     }
 
-});
+
+}); 
 
 module.exports = mongoose.model("order", Order);

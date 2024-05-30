@@ -6,6 +6,8 @@ const Category=require('../models/category_model');
 
 const Coupen=require('../models/coupen_model')
 
+const User = require('../models/user_model')
+
 
 // load cart
 const loadCart=async(req,res)=>{
@@ -16,6 +18,9 @@ const loadCart=async(req,res)=>{
         const userIdd=req.session.user
 
         const category = await Category.find({is_Listed : true})
+
+        const userData=await User.findOne({_id:user})
+
       
         if(req.session.user){
            
@@ -34,11 +39,11 @@ const loadCart=async(req,res)=>{
 
                 const totalCartAmount = await Cart.findOneAndUpdate({userId:user},{$set:{totalCartPrice:total}},{new:true ,upsert:true});
 
-                res.render('cart',{login:req.session.user , categoryData:category , cartData:cartData ,user, totalCartPrice:totalCartAmount.totalCartPrice});
+                res.render('cart',{login:req.session.user , categoryData:category , userData, cartData:cartData ,user, totalCartPrice:totalCartAmount.totalCartPrice});
 
             } else {
 
-                res.render('cart',{login:req.session.user ,user, categoryData:category , totalCartPrice:0});
+                res.render('cart',{login:req.session.user ,user, userData, categoryData:category , totalCartPrice:0});
 
             }
         } else {

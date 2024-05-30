@@ -5,7 +5,7 @@ const loadSalesReport=async(req,res)=>{
 
         const order=await Order.find({})
 
-        res.render('salesReport',{order})
+        res.render('salesReport',{order,type:''})
         
     } catch (error) {
         console.log(error.message);
@@ -17,6 +17,9 @@ const loadSalesReport=async(req,res)=>{
 const LoadDailyReport=async(req,res)=>{
     try {
         
+
+        const type='daily'
+
         const startOfToday = new Date()
 
         startOfToday.setHours(0, 0, 0, 0)
@@ -34,7 +37,7 @@ const LoadDailyReport=async(req,res)=>{
             });
         
 
-        res.render('salesreport',{order:DailyReport})
+        res.render('salesreport',{order:DailyReport,type})
 
         console.log(DailyReport)
 
@@ -50,6 +53,9 @@ const LoadDailyReport=async(req,res)=>{
 const LoadWeeklyReport = async (req, res) => {
     try {
         
+
+        const type='weekly'
+
         const startOfWeek = new Date()
 
         startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
@@ -73,7 +79,7 @@ const LoadWeeklyReport = async (req, res) => {
         });
 
         
-        res.render('salesreport', { order: WeeklyReport });
+        res.render('salesreport', { order: WeeklyReport,type });
 
         console.log(weeklyOrders)
 
@@ -88,6 +94,9 @@ const LoadWeeklyReport = async (req, res) => {
 // load monthly report
 const LoadMonthlyReport = async (req, res) => {
     try {
+
+        const type='monthly'
+
         const currentDate = new Date()
 
       
@@ -106,7 +115,7 @@ const LoadMonthlyReport = async (req, res) => {
         })
 
         
-        res.render('salesreport', { order: monthlyOrders });
+        res.render('salesreport', { order: monthlyOrders ,type});
 
        
 
@@ -123,6 +132,7 @@ const LoadYearlyReport = async (req, res) => {
        
         const currentDate = new Date()
 
+        const type='yearly'
         
         const startOfYear = new Date(currentDate.getFullYear(), 0, 1)
 
@@ -137,7 +147,7 @@ const LoadYearlyReport = async (req, res) => {
         })
 
       
-        res.render('salesreport', { order: yearlyOrders })
+        res.render('salesreport', { order: yearlyOrders ,type})
 
     } catch (error) {
 
@@ -149,6 +159,8 @@ const LoadYearlyReport = async (req, res) => {
 const filerdate =    async (req, res) => {
         try {
             console.log('hello'+req.body)
+
+            const type='filerdate'
 
             const startDate = new Date(req.query.startDate)
 
@@ -165,7 +177,7 @@ const filerdate =    async (req, res) => {
                 orderDate: { $gte: startDate, $lte: endDate }
             });
     
-            res.render('salesreport', { order: salesReport })
+            res.render('salesreport', { order: salesReport,type })
 
         } catch (error) {
 

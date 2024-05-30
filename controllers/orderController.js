@@ -26,9 +26,11 @@ const loadOrders=async(req,res)=>{
 
         const category=await Category.find({is_Listed:true})
 
+        const userData=await User.findOne({_id:user})
+
         const orderData=await Order.find({userId:userIdd}).populate('products.productId')
 
-        res.render('orders',{user,categoryData:category,orderData})
+        res.render('orders',{user,categoryData:category,orderData,userData})
 
         
     } catch (error) {
@@ -49,7 +51,21 @@ const placeOrder=async(req,res)=>{
 
         let total=cartData.totalCartPrice;
 
-        if(req.session.offer)  total=parseInt(total/100*(100-req.session.offer));
+        let payment=req.body.paymentmethod
+
+        console.log(payment,'loop');
+
+        let discounts = 0;
+
+        console.log(discounts);
+        
+        if(req.session.offer)  {
+            
+            discounts=parseInt(total-(total*(req.session.offer/100)))
+
+            total=parseInt(total*(req.session.offer/100));
+            
+        }
 
         const addressData=await Address.findOne({userId:userIdd, 'addresss.status':true});
 
@@ -59,6 +75,15 @@ const placeOrder=async(req,res)=>{
 
             return res.status(400).send('No active address found for the user');
 
+        } 
+
+        if(payment=== 'cod' && total>=1000){
+
+            req.flash('err','cod is not availble for this order')
+
+            res.redirect('/checkout')
+
+            return
         }
 
         const newOrder = new Order({
@@ -68,6 +93,8 @@ const placeOrder=async(req,res)=>{
             orderAmount:total ,
 
             payment: req.body.paymentmethod,
+
+            discount:discounts,
 
             deliveryAddress: addressData.addresss[0],
 
@@ -81,9 +108,27 @@ const placeOrder=async(req,res)=>{
 
                 orderProStatus: 'pending' 
 
+               
+
             }))
 
         });
+
+        for(let sinPro of cartData.products){
+            
+            const countPro=await Product.findOne({_id:sinPro.productId._id})
+           
+            countPro.count+=sinPro.quantity
+
+            await countPro.save()
+
+            const countCat=await Category.findOne({name:countPro.category})
+            
+            countCat.count+=sinPro.quantity
+            
+            await countCat.save()
+        }
+
 
         //  For Wallet :-
 
@@ -157,13 +202,15 @@ const loadOrderDetails=async(req,res)=>{
 
         const userIdd=req.query.id
 
+        const userDataa=await Order.findOne({userId:user})
+
         const userData=await User.findById({_id:userIdd})
     
         const category=await Category.find({is_Listed:true})
 
         const order=await Order.findOne({_id:userIdd}).populate('products.productId')
 
-        res.render('orderDetails',{categoryData:category,order,user,userData})
+        res.render('orderDetails',{categoryData:category,order,user,userData,userDataa})
         
     } catch (error) {
         console.log(error.message);
@@ -236,6 +283,180 @@ const returnOrder= async (req,res)=>{
 
     } catch (error) {
 
+        console.log(error.message);
+    }
+}
+
+//razorpayement failed
+const failedPayment=async(req,res)=>{
+    try {
+        userIdd=req.session.user
+        
+        const category=await Category.find({is_Listed:true});
+
+        const cartData=await Cart.findOne({userId:userIdd});
+
+        let total=cartData.totalCartPrice;
+
+        let payment=req.body.paymentmethod
+
+        console.log(payment,'loop');
+
+        let discounts = 0;
+
+        console.log(discounts);
+        
+        if(req.session.offer)  {
+            
+            discounts=parseInt(total-(total*(req.session.offer/100)))
+
+            total=parseInt(total*(req.session.offer/100));
+            
+        }
+
+        const addressData=await Address.findOne({userId:userIdd, 'addresss.status':true});
+
+        console.log(addressData,'ithan ath');
+
+        if(!addressData){
+
+            return res.status(400).send('No active address found for the user');
+
+        } 
+
+        if(payment=== 'cod' && total>=1000){
+
+            req.flash('err','cod is not availble for this order')
+
+            res.redirect('/checkout')
+
+            return
+        }
+
+        const newOrder = new Order({
+
+            userId: userIdd,
+
+            orderAmount:total ,
+
+            payment: req.body.paymentmethod,
+
+            discount:discounts,
+
+            paymentStatus:'failed',
+
+            deliveryAddress: addressData.addresss[0],
+
+            products: cartData.products.map(product => ({
+
+                productId: product.productId,
+
+                quantity: product.quantity,
+
+                price: product.price,
+
+                orderProStatus: 'pending' 
+        
+               
+
+            }))
+
+        });
+
+        for(let sinPro of cartData.products){
+            
+            const countPro=await Product.findOne({_id:sinPro.productId._id})
+           
+            countPro.count+=sinPro.quantity
+
+            await countPro.save()
+
+            const countCat=await Category.findOne({name:countPro.category})
+            
+            countCat.count+=sinPro.quantity
+            
+            await countCat.save()
+        }
+
+
+        //  For Wallet :-
+
+        const wallett = await Wallet.findOne({userId : userIdd});
+
+        if(req.body.paymentmethod=='wallet' &&  total <= wallett.balance || null){
+
+            const walletData = await Wallet.findOneAndUpdate({userId:userIdd }, {$inc : {balance : -total} , $push : {transaction : {amount : total , creditOrDebit : 'debit'}}} , {new : true , upsert : true});
+            
+
+        }
+
+        const coupen= await Coupen.find({above:{$lte:cartData.totalCartPrice}})
+    
+        if(coupen.length>0 && !req.session.offer) {
+
+            coupen.forEach(async(e)=>{
+
+                const coupen1= await User.findOne({_id: userIdd ,coupen:{$elemMatch:{coupenId:e._id}}});
+
+                if(!coupen1){
+
+                    await User.findOneAndUpdate({_id: userIdd},{$addToSet:{coupen:{coupenId:e._id}}});
+
+                    return;
+                }
+
+            })
+       
+    }
+      
+        await newOrder.save();
+
+        if(req.session.offer){
+
+               delete req.session.offer;
+
+               const user=await User.findOne({_id: userIdd });
+
+                const removeCoupen=await User.findOneAndUpdate({_id: userIdd },{$pull:{coupen:{_id:req.session.coupen}}})
+
+               delete req.session.coupen;      
+        }
+
+        if(newOrder){
+
+            newOrder.products.forEach(async(e) => {
+
+                const productData=await Product.findOne({_id:e.productId});
+
+                productData.stock-=e.quantity;
+
+                await productData.save()
+                
+            });
+        }
+          await Cart.findOneAndDelete({userId:userIdd});
+
+         res.render('confirmation',{login:req.session.user,categoryData:category})
+
+    } catch (error) {
+
+        console.log(error.message);
+    }
+}
+
+// continuePayment(post method)
+const continuePayment=async(req,res)=>{
+    try {
+        const userId=req.session.user
+         
+        const ordId=req.body.orderid
+
+        const order=await Order.findOneAndUpdate({userId:userId,_id:ordId},{paymentStatus:'success'},{new:true})
+
+        if(order){
+            res.json({success:true})
+        }
+    } catch (error) {
         console.log(error.message);
     }
 }
@@ -398,6 +619,8 @@ module.exports={
     orderStatus,
     returnOrder,
     approveReturn,
-    decalinReturn
+    decalinReturn,
+    failedPayment,
+    continuePayment
     
 }

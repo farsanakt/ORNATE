@@ -91,9 +91,11 @@ const loadhome=async(req,res)=>{
     try {
         const user=req.session.user
 
+         const userData=await User.findOne({_id:user})
+        
         const category = await Category.find({is_Listed : true})
 
-        res.render('home',{categoryData : category,user})
+        res.render('home',{categoryData : category,user,userData})
 
     } catch (error) {
 
@@ -325,9 +327,11 @@ const loadAboutUs=async(req,res)=>{
     try {
         const user=req.session.user
 
+        const userData=await User.findOne({_id:user})
+
         const category = await Category.find({is_Listed : true})
 
-        res.render('aboutUs',{user,categoryData:category})
+        res.render('aboutUs',{user,categoryData:category,userData})
 
     } catch (error) {
 
@@ -342,8 +346,10 @@ const loadContactUs=async(req,res)=>{
         const category = await Category.find({is_Listed : true})
 
         const user=req.session.user
+
+        const userData=await User.findOne({_id:user})
         
-        res.render('contactUs',{user,categoryData:category})
+        res.render('contactUs',{user,categoryData:category,userData})
 
     } catch (error) {
 

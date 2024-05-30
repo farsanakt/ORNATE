@@ -9,7 +9,9 @@ const categorySchema=new mongoose.Schema({
         type:Boolean,
         required: true,
         default:true,
-    }
+    },
+    count:{type:Number,default:true}
+
     
     
 })

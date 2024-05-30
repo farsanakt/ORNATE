@@ -70,19 +70,24 @@
                             <button class="logout-button rounded-pill mt-1 text-white " style="background-color: gray;">Logout</button>
                         </div>
                         </div> -->
+                        
+                        <% if(locals.user){ %>
+                            
+                           
 
-                <% if(locals.user){ %>
-                    <div class="dropdown cart-dropdown">
-
-                        <a href="#" class="dropdown-toggle" style="padding-top: 5px;" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                            <i class="fa-solid fa-circle-user" style="font-size: 28px; padding-right: 25px; "></i>
-                        </a>
-
+                            <div class="dropdown cart-dropdown">
+                                
+                                <a href="#" class="dropdown-toggle" style="padding-top: 5px;" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <i class="fa-solid fa-circle-user" style="font-size: 28px; padding-right: 25px; "></i>
+                            </a>
+                            
                         <div class="dropdown-menu dropdown-menu-right text-center rounded-2"
                             style="display: flex; flex-direction: column; width: fit-content;">
-
+                 
                             <a href="/profile" style="font-size: 15px;">Profile</a>
+
+
                             <form action="/logout" method="post">
 
                                 <button type="submit" class="logout-button rounded-pill mt-1 text-white "
@@ -92,7 +97,8 @@
                         </div><!-- End .dropdown-menu -->
 
                     </div><!-- End .cart-dropdown -->
-
+                    
+                  
                     <% }else{ %>
 
                         <ul class="menu sf-arrows">
@@ -103,6 +109,7 @@
                             </li>
                         </ul>
                         <% } %>
+
                             <div class="header-search">
 
                                 <a href="#" class="search-toggle" role="button" title="Search"><i
@@ -155,3 +162,11 @@
         </div><!-- End .container -->
     </div><!-- End .header-middle -->
 </header><!-- End .header -->
+
+<script>
+
+    const p = document.getElementById('n')
+
+    console.log(p);
+
+</script>

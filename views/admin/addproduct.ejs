@@ -27,19 +27,18 @@
 >
                                     <div class="form-group">
                                         <label for="exampleInputName1">Product Name</label>
-                                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="name" onblur="checkForSpaces()">
+                                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="name" onblur="checkForSpaces()" required>
                                         <small id="nameErrorMessage" class="text-danger" style="display: none;">Please enter a valid product name.</small>
                                     </div>
 
-
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword4">Price</label>
-                                            <input type="number" class="form-control" id="exampleInputPassword4" placeholder="Price" name="price">
-                                            <div id="price-error-message" style="color: red;"></div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword4">Price</label>
+                                        <input type="number" class="form-control" id="exampleInputPassword4" placeholder="Price" name="price" oninput="validatePrice()" required>
+                                        <div id="price-error-message" style="color: red;"></div>
+                                    </div>
                                         <div class="form-group">
                                             <label for="exampleSelectGender">Category</label>
-                                            <select class="form-control" id="exampleSelectGender" name="Category">
+                                            <select class="form-control" id="exampleSelectGender" name="Category" required>
                                                 <% categoryData.forEach(function(category) { %>
                                                     <option><%= category.name %></option>
                                                 <% }); %>
@@ -66,10 +65,10 @@
 
                                                                     <input type="file" class="inp" accept="image/*"
                                                                         onchange='hello(this,"<%= i %>"); upload(this,"<%=i%>")'
-                                                                        name='image<%=i  %>' id="images<%=i  %>" hidden>
+                                                                        name='image<%=i  %>' id="images<%=i  %>" hidden >
 
                                                                     <input type="text" id="imageU<%=i  %>" name="images"
-                                                                        style="display: none;">
+                                                                        style="display: none;" >
 
                                                                     <p class="opacity-50  text-center text-capitalize w-100  "
                                                                         id="p<%= i %>" style="opacity: .7;"><i
@@ -120,13 +119,14 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputCity1">Stock</label>
-                                            <input type="number" class="form-control" id="exampleInputCity1" placeholder="Stock" name="Stock">
+                                            <input type="number" class="form-control" id="exampleInputCity1" placeholder="Stock" name="Stock" required>
                                             <div id="error-message" style="color: red;"></div>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleTextarea1">Description</label>
+                                      
                                             <textarea class="form-control" id="exampleTextarea1" rows="4"
-                                                name="Description"></textarea>
+                                                name="Description" ></textarea>
                                         </div>
                                         <button id="add" type="submit" class="btn btn-primary">Submit</button>
                                         <button class="btn btn-dark">Cancel</button>
@@ -229,17 +229,20 @@
     </script>
 
 <script>
-    document.getElementById("exampleInputCity1").addEventListener("input", function() {
-        var stockInput = document.getElementById("exampleInputCity1").value;
-        var errorMessage = document.getElementById("error-message");
-    
+    document.getElementById('exampleInputCity1').addEventListener('input', function() {
+        var stockInput = this.value;
+        var errorMessage = document.getElementById('error-message');
+        
         if (stockInput < 0) {
-            errorMessage.textContent = "Error: Stock cannot be negative";
+            errorMessage.innerText = "please enter a postive value  ";
+        } else if (stockInput > 200) {
+            errorMessage.innerText = "Stock should be less than or equal to 200.";
         } else {
-            errorMessage.textContent = "";
+            errorMessage.innerText = "";
         }
     });
-    </script>
+</script>
+
 
 <script>
     function checkForSpaces() {
@@ -262,18 +265,22 @@
     }
     
     // Function to validate price input
-    function validatePrice() {
-        var priceInput = document.getElementById("exampleInputPassword4").value;
-        var errorMessage = document.getElementById("price-error-message");
-    
-        if (priceInput < 0) {
-            errorMessage.textContent = "Error: Price cannot be negative";
-            disableButton(true); // Disable the button if price is negative
-        } else {
-            errorMessage.textContent = "";
-            disableButton(false); // Enable the button if price is valid
+   function validatePrice() {
+            var priceInput = document.getElementById("exampleInputPassword4").value;
+            var errorMessage = document.getElementById("price-error-message");
+            var submitButton = document.getElementById("submit-button");
+            
+            if (priceInput < 0) {
+                errorMessage.textContent = "Error: Price cannot be negative";
+                submitButton.disabled = true;
+            } else if (priceInput > 10000) {
+                errorMessage.textContent = "Error: Price cannot exceed 10,000";
+                submitButton.disabled = true;
+            } else {
+                errorMessage.textContent = "";
+                submitButton.disabled = false;
+            }
         }
-    }
     
     // Add event listener to price input
     document.getElementById("exampleInputPassword4").addEventListener("input", validatePrice);

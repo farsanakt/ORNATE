@@ -1,6 +1,9 @@
 const Cart=require('../models/cart_model');
+
 const Address=require('../models/address_model');
+
 const Category=require('../models/category_model');
+
 const instance=require('../config/razorPay');
 
 const Coupen=require('../models/coupen_model')
@@ -10,13 +13,23 @@ const User=require('../models/user_model')
 const loadCheckout=async(req,res)=>{
     try {
         const category = await Category.find({is_Listed : true})
+
+         const err=req.flash('err')
+
          const user=req.session.user
-         const msg=req.session.offer?'coupen applied':req.flash('msg'); 
+
+         const msg=req.session.offer?'coupen applied':req.flash('msg');
+
         const offer=req.session.offer
+
          if(req.session.user){
+
             const userIdd=req.session.user
+
             const cartData=await Cart.findOne({userId:userIdd}).populate('products.productId')
-            console.log(cartData,'ithhh');
+
+            console.log(cartData,'ithhh')
+
             const addres=await Address.findOne  ({userId:userIdd})
              
             const userData=await User.find({_id:userIdd})
@@ -24,7 +37,7 @@ const loadCheckout=async(req,res)=>{
             console.log(addres);
 
 
-            res.render('checkout',{categoryData:category,cartData,addres,userData,user,msg,offer})
+            res.render('checkout',{categoryData:category,cartData,addres,userData,user,msg,err,offer})
          }else{
                  res.redirect('/login')
          }
@@ -69,15 +82,21 @@ const  addAddress=async(req,res)=>{
 // razor
 const razor = async (req, res) => {
     try {
+        console.log('df');
 
         const user = await User.findOne({ _id: req.session.user })
+        console.log(user);
 
         let amount = req.body.amount * 100
+
         if(req.session.offer) amount=parseInt(amount/100*(100-req.session.offer))
+
         const options = {
+
             amount: amount,
             currency: "INR",
             receipt: 'ffarsanakt@gmail.com'
+            
         }
 
         instance.orders.create(options, (err, order) => {

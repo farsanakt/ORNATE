@@ -147,7 +147,9 @@ const user_route=express();
   user_route.post('/razor',checkoutController.razor);
 
   // choose address
-  user_route.post('/chooseAddress',checkoutController.chooseAddress)
+  user_route.post('/chooseAddress',checkoutController.chooseAddress);
+
+  user_route.post('/failedRazorpay',orderController.failedPayment)
 
 
 
@@ -182,7 +184,9 @@ user_route.get('/userCoupen',coupenController.loadCoupens);
 user_route.post('/cancelOrder',orderController.cancelOrder);
 
 // return order
-user_route.post('/returnOrder',orderController.returnOrder)
+user_route.post('/returnOrder',orderController.returnOrder);
+
+user_route.post('/continuePayment',orderController.continuePayment)
 
 
 

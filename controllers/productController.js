@@ -2,7 +2,9 @@ const Products=require('../models/product_model');
 
 const Category=require('../models/category_model');
 
-const Offer = require('../models/offer_modal')
+const Offer = require('../models/offer_modal');
+
+const User =require('../models/user_model')
 
 
 // load admin product
@@ -164,6 +166,8 @@ const loadProducts=async(req,res)=>{
 
         const user=req.session.user
 
+        const userData=await User.findOne({_id:user})
+
         const products=await Products.find({status: true,is_Listed:true})
 
         const offerData=await Offer.find().populate('category')
@@ -194,7 +198,7 @@ const loadProducts=async(req,res)=>{
                 }
             }
         }
-        res.render('product',{categoryData:category,products,user,offerData})
+        res.render('product',{categoryData:category,products,user,offerData,userData})
 
     } catch (error) {
 

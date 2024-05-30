@@ -3,74 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Confirmation</title>
-    <!-- External CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Custom CSS -->
+    <title>Confirmation</title>
     <style>
-        /* Custom styles */
         body {
-            background-color: #f8f9fa;
-        }
-        .page-wrapper {
-            position: relative;
-        }
-        .confetti {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1000;
+            height: 100vh;
+            background: linear-gradient(45deg, #f2b69f, #f2988e, #ea6e6b, #ff5e62);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
         }
-        .confetti-piece {
-            position: absolute;
-            width: 10px;
-            height: 30px;
-            background: #ffd300;
-            top: 0;
-            opacity: 0;
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
-        /* Add more styles for confetti-pieces here */
-        .thanks-note {
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-top: 100px;
+            background-color: rgba(255, 255, 255, 0.9);
+            animation: fadeIn 1s ease;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff5e62;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff7c80;
+        }
+
+        .btn-primary {
+            background-color: #ea6e6b;
+        }
+
+        .btn-primary:hover {
+            background-color: #f29b98;
+        }
+
+        .btn-success {
+            background-color: #f2988e;
+        }
+
+        .btn-success:hover {
+            background-color: #f9b2a4;
         }
     </style>
 </head>
 <body>
-
-<div class="page-wrapper">
-    <div class="confetti">
-        <!-- Confetti pieces -->
-        <div class="confetti-piece"></div>
-        <!-- Add more confetti pieces here -->
-    </div>
-    
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="thanks-note">
-                    <h1>Thank You!</h1>
-                    <p>Your order has been successfully placed.</p>
-                    <a href="/" class="btn btn-outline-success rounded-pill">Continue Shopping</a>
-                </div>
-            </div>
-        </div>
+        <h1>Confirmation</h1>
+        <p>Your order has been successfully placed. Thank you for shopping with us!</p>
+        <p>Order Number: <strong>#123456</strong></p>
+        <p>Estimated Delivery Date: <strong>June 5, 2024</strong></p>
+        <p>For any inquiries or issues, please contact our customer support.</p>
+        <p>
+            <a href="/orders" class="btn btn-primary">Track Order</a>
+            <a href="/product" class="btn btn-success">Shop More</a>
+        </p>
     </div>
-</div>
-
-<!-- JavaScript -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    // JavaScript for confetti animation
-    // Add animation logic here
-</script>
-
 </body>
 </html>

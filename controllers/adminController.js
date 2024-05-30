@@ -4,10 +4,20 @@ const bcrypt=require('bcrypt');
 
 const Order=require('../models/order_model');
 
+const Products=require('../models/product_model')
+
+const Category=require('../models/category_model')
+
 // load dashbord
 const loadDashbord = async (req, res) => {
     try {
         const orderData = await Order.find();
+
+        const bestProducts = await Products.find().sort({ count: -1 }).limit(4)
+
+        const bestCategories = await Category.find().sort({ sales: -1 }).limit(4);
+
+        console.log(bestProducts,'pro');
 
         const orderAmount = orderData.reduce((acc, order) => {
 
@@ -30,8 +40,25 @@ const loadDashbord = async (req, res) => {
             }
         }
         console.log(productCount,'faaaaa');
+
+        const weekSales = Array(7).fill(0);
+        const monthSales = Array(4).fill(0);
+        const yearSales = Array(12).fill(0);
+        console.log(weekSales,monthSales,yearSales,'ooppppppppppppp');
+
+        orderData.forEach(order => {
+            const date = new Date(order.orderDate);
+            const day = date.getDay(); // 0-6 (Sunday-Saturday)
+            const month = date.getMonth(); // 0-11 (Jan-Dec)
+            const week = Math.floor(date.getDate() / 7); // Week of the month
+            
+            // Calculate total amount per period
+            weekSales[day] += order.orderAmount;
+            monthSales[week] += order.orderAmount;
+            yearSales[month] += order.orderAmount;
+        });
         
-        res.render('dashbord', { orderData, orderAmount,productCount });
+        res.render('dashbord', { orderData, orderAmount,productCount ,bestProducts,bestCategories,week:weekSales,month:monthSales,year:yearSales});
 
     } catch (error) {
         console.log(error.message);
