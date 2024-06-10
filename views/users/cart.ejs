@@ -88,7 +88,7 @@
 														   data-decimals="0" 
 														   required>
 													<button type="button" onclick="changeQuantity(this, 1, '<%= price %>', '<%= val.productId._id %>', '<%= locals.cartData._id %>')" class="btn btn-increment">+</button>
-												</div>><!-- End .cart-product-quantity -->     
+												</div><!-- End .cart-product-quantity -->     
 
                                             </td>
 
@@ -155,7 +155,7 @@
 														<label class="custom-control-label" for="standart-shipping">Standart:</label>
 													</div><!-- End .custom-control -->
 	                							</td>
-	                							<td>₹.00</td>
+	                							<td>₹30.00</td>
 	                						</tr><!-- End .summary-shipping-row -->
 
 	                						<tr class="summary-shipping-row">
@@ -165,13 +165,13 @@
 														<label class="custom-control-label" for="express-shipping">Express:</label>
 													</div><!-- End .custom-control -->
 	                							</td>
-	                							<td>₹0.00</td>
+	                							<td>₹50.00</td>
 	                						</tr><!-- End .summary-shipping-row -->
 
-	                						<tr class="summary-shipping-estimate">
+	                				<!-- 		<tr class="summary-shipping-estimate">
 	                							<td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
 	                							<td>&nbsp;</td>
-	                						</tr><!-- End .summary-shipping-estimate -->
+	                						</tr> -->
 
 	                						<tr class="summary-total">
 	                							<td>Total:</td>
@@ -286,32 +286,9 @@ function removeCart(id) {
 
 		
 
-		// 		function cartUpdate(e,price,proId,cartId){
+		
 
-		// console.log(proId + "pro");
-		// console.log(cartId + "cart");
-
-		// const Tprice= document.getElementById(`price${proId}`)
-		// const Total= document.getElementById(`total`)
-		// const sub_total= document.getElementById(`sub-total`)
-				
-		// fetch('/cartUpdate',{
-
-		// 	method: 'PUT',
-		// 	headers: { "Content-Type": "application/json" },
-		// 	body: JSON.stringify({ quantity: e.value,cartId,proId })
-
-		// }).then(res=>res.json()).then(data=>{
-
-		// 	if(data.success){
-
-		// 		Tprice.textContent=`$${e.value * price}`;
-		// 		Total.textContent=`$${data.success}`;
-		// 		sub_total.textContent=`$${data.success}`;
-						
-		// 	}
-		// })
-		// };
+		
 
 	async function cartUpdate(input, price, productId, cartId) {
     var quantity = input.value;

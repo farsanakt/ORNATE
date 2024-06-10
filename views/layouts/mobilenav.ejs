@@ -1,0 +1,62 @@
+<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+<div class="mobile-menu-container mobile-menu-light">
+    <div class="mobile-menu-wrapper">
+        <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+        <form action="#" method="get" class="mobile-search">
+            <label for="mobile-search" class="sr-only">Search</label>
+            <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+            <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+        </form>
+
+        <nav class="mobile-nav">
+            <ul class="mobile-menu">
+                <li class="active">
+                    <a href="/">Home</a>
+
+                </li>
+                <li>
+                    <a href="/allproducts" class="sf-with-ul">All Product</a>
+
+                </li>
+
+                <li>
+                    <a href="/profile">Profile</a>
+
+                </li>
+                <li>
+                    <a href="#" onclick="confirmLogout()">logout</a>
+
+                </li>
+            </ul>
+        </nav><!-- End .mobile-nav -->
+
+
+    </div><!-- End .mobile-menu-wrapper -->
+</div><!-- End .mobile-menu-container -->
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script>
+    function confirmLogout() {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure you want to log out?",
+      icon: "warning",
+      buttons: {
+        cancel: "Cancel",
+        confirm: "Yes, log out"
+      },
+      dangerMode: true,
+    })
+    .then((willLogout) => {
+      if (willLogout) {
+        window.location.href = "/logout"; // Redirect to logout page
+      } else {
+        swal("Cancelled", "You are still logged in :)", "info");
+      }
+    });
+  }
+</script>

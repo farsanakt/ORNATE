@@ -3,7 +3,7 @@ const Order=require('../models/order_model');
 const loadSalesReport=async(req,res)=>{
     try {
 
-        const order=await Order.find({})
+        const order=await Order.find({}).populate('products.productId')
 
         res.render('salesReport',{order,type:''})
         

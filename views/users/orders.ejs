@@ -3,6 +3,40 @@
 <div class="page-wrapper">
 
   <%- include('../layouts/navbar-2.ejs') %>
+  <style>
+
+    .pagination {
+        margin-top: 20px;
+    }
+    
+    .pagination.page-item.page-link {
+        border-radius: 5px;
+        padding: 8px 15px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    
+    .pagination.page-item.active.page-link {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    
+    .pagination.page-item:first-child.page-link,
+    .pagination.page-item:last-child.page-link {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    
+    .pagination.page-item:first-child.page-link,
+    .pagination.page-item:first-child.page-link:hover,
+    .pagination.page-item:first-child.page-link:focus {
+        border-top-left-radius: 5px;
+    }
+    
+        </style>
 
   <main class="main">
 
@@ -54,8 +88,8 @@
                                       <a class="nav-link" id="tab-wallet-link" href="/wallet">Wallet</a>
                                   </li>
 
-                                  <li class="nav-item">
-                                      <a class="nav-link" id="tab-coupons-link" href="/coupon">Coupons</a>
+                                 <li class="nav-item">
+                                      <a class="nav-link" id="tab-userCoupen-link" href="/userCoupen" role="tab">Coupons</a>
                                   </li>
                                   
                                   <li class="nav-item">
@@ -79,6 +113,8 @@
                                     <div class="container">
 
                     <% if (orderData.find(obj => 'products' in obj)) { %>
+                       
+  
                                 
                         <table class="table table-wishlist table-mobile text-center " style="width: 920px">
 
@@ -103,7 +139,7 @@
 
                                             <td><%= ind + 1 %></td>
 
-                                            <td><%= val?._id %></td>
+                                            <td><%= val?.orderId %></td>
 
                                             <td class="<%= val?.products[0].orderProStatus == 'cancelled' ? 'text-danger' : (val?.products[0].orderProStatus == 'delivered' ? 'text-success' : 'text-primary') %>"><%= val?.products[0].orderProStatus   %></td>
 
@@ -133,6 +169,20 @@
                             <% }); %>
 
                         </table>
+
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                              <% if (currentPage > 1) { %>
+                                <li class="page-item"><a class="page-link" href="?page=<%= currentPage - 1 %>">&laquo; Previous</a></li>
+                              <% } %>
+                              <% for (let i = 1; i <= totalPages; i++) { %>
+                                <li class="page-item <%= currentPage == i? 'active' : '' %>"><a class="page-link" href="?page=<%= i %>"><%= i %></a></li>
+                              <% } %>
+                              <% if (currentPage < totalPages) { %>
+                                <li class="page-item"><a class="page-link" href="?page=<%= currentPage + 1 %>">Next &raquo;</a></li>
+                              <% } %>
+                            </ul>
+                          </nav>
 
                     <% } else {  %>
 

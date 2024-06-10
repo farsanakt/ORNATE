@@ -85,6 +85,7 @@ const razor = async (req, res) => {
         console.log('df');
 
         const user = await User.findOne({ _id: req.session.user })
+
         console.log(user);
 
         let amount = req.body.amount * 100
@@ -132,6 +133,7 @@ const addCoupen=async(req,res)=>{
         const cpId=req.body.couponId
 
         const findCoupon=await User.findOne({_id:req.session.user,'coupen._id':cpId},{'coupen.$':1}).populate('coupen.coupenId').catch((err)=>{
+
             req.flash('msg','coupen not existing')
       
             res.redirect('/checkout')
@@ -145,9 +147,13 @@ const addCoupen=async(req,res)=>{
 
        }else{
         const currentCoupen=await Coupen.findOne({_id:findCoupon.coupen[0].coupenId._id})
+
         req.session.offer=currentCoupen.discount;
+
         console.log(currentCoupen.discount,'jjjjjjjj');
+
         req.session.coupen=cpId
+        
         req.flash('msg','coupen applied')
       
         res.redirect('/checkout')

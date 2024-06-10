@@ -8,18 +8,37 @@ const User =require('../models/user_model')
 
 
 // load admin product
-const loadProduct=async(req,res)=>{
-    try {
+const loadProduct = async (req, res) => {
+  try { 
 
-        const productData=await Products.find({})
-        
-        res.render('product',{product:productData})
+     let limit =4
 
-    } catch (error) {
+      const productData = await Products.find({})
 
-        console.log(error.message);
-    }
-}
+      const totalPages = Math.ceil(productData.length / limit)
+
+      let currentPage = req.query.page? Number(req.query.page) : 1
+
+      // Validate page number
+
+      if (currentPage < 1 || currentPage > totalPages) {
+          currentPage = 1;
+      }
+      
+      const startIndex = (currentPage - 1) * limit
+
+      const endIndex = startIndex + limit
+
+      const paginatedProducts = productData.slice(startIndex, endIndex)
+
+      res.render('product', { product: paginatedProducts, totalPages, currentPage })
+
+  } catch (error) {
+
+      console.log(error.message)
+      
+  }
+};
 
 // load addProduct
 const addProduct=async(req,res)=>{
@@ -159,52 +178,44 @@ const unlistProducts = async(req,res)=>{
 
 // **** USER SIDE ****
 
-const loadProducts=async(req,res)=>{
+const loadProducts = async (req, res) => {
     try {
 
-        const category = await Category.find({is_Listed : true})
+        const category = await Category.find({ is_Listed: true })
 
-        const user=req.session.user
+        const user = req.session.user;
 
-        const userData=await User.findOne({_id:user})
+        const userData = await User.findOne({ _id: user })
 
-        const products=await Products.find({status: true,is_Listed:true})
+        const products = await Products.find({ status: true, is_Listed: true })
 
-        const offerData=await Offer.find().populate('category')
-            
-        console.log(offerData,'bavuuuuu2');
-   
-       
-        for (let i = 0; i < offerData.length; i++) {
-            for (let j = 0; j < products.length; j++) {
-                
-                const category = await Category.findOne({ name: products[j].category });
+        const offerData = await Offer.find().populate('category')
 
-                if (category) {
+        let limit=6
+        
+        const totalPages = Math.ceil(products.length / limit)
+    
+        let currentPage = req.query.page? Number(req.query.page) : 1;
 
-                    if (offerData[i].category.equals(category._id)) {
+        // Validate page number
 
-                        const offerPrice = parseInt(products[j].price/100 * (100 -offerData[i].offer))
+        if (currentPage < 1 || currentPage > totalPages) {
 
-                        console.log(offerPrice,products[j].name);
-                        
-                        products[j].offerPrice = offerPrice; 
-
-                        await products[j].save(); 
-
-                    }
-                } else {
-                    console.log(`Category not found for product with ID ${products[j]._id}`);
-                }
-            }
+            currentPage = 1;
         }
-        res.render('product',{categoryData:category,products,user,offerData,userData})
+
+        // thisfor  Slice products array based on current page
+
+        const paginatedProducts = products.slice((currentPage - 1) * limit, currentPage * limit)
+
+        res.render('product', { categoryData: category, products: paginatedProducts, user, offerData, userData, totalPages, currentPage })
 
     } catch (error) {
 
         console.log(error.message);
+        
     }
-}
+};
 
 //load product details
 const loadProductDetails = async(req,res)=>{

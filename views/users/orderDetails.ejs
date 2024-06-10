@@ -100,49 +100,26 @@
 
                
 
-                    <div class="card"
-                      style="border:.1rem solid #ebebeb !important; border-radius: 8px; padding-left: 20px;">
-
-                      <div class="card-body">
-
-                        <div class="hedaer d-flex align-items-center justify-content-center w-100">
-
-                          <h5 class="card-title mb-2">
-
-                            address
-
-                          </h5>
-
-                        </div>
-
-                        <div class="mb-3">
-
-                          <label class="form-label"> name:-&nbsp;<%= order?.deliveryAddress?.name %></label>
-
-                        </div>
-
-                        <div class="mb-3">
-
-                          <label class="form-label"> city:-&nbsp;<%= order?.deliveryAddress?.city %></label>
-
-                        </div>
-
-                        <div class="mb-3">
-
-                          <label class="form-label"> state:-&nbsp;<%= order?.deliveryAddress?.states %></label>
-
-                        </div>
-
-                        <div class="mb-3">
-
-                          <label class="form-label"> pincode:-&nbsp;<%= order?.deliveryAddress?.pincode %></label>
-
-                        </div>
-
-
-                      </div>
-
+                <div class="card" style="border: 1px solid #ebebeb; border-radius: 8px; padding: 20px;">
+                  <div class="card-body">
+                    <div class="header text-center">
+                      <h5 class="card-title mb-2">Address</h5>
                     </div>
+                    <div class="mb-3">
+                      <label class="form-label">Name: <span><%= order?.deliveryAddress?.name %></span></label>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">City: <span><%= order?.deliveryAddress?.city %></span></label>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">State: <span><%= order?.deliveryAddress?.state %></span></label>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Pincode: <span><%= order?.deliveryAddress?.pincode %></span></label>
+                    </div>
+                  </div>
+                </div>
+                
 
               </aside>
 
@@ -161,9 +138,13 @@
                               <th>Quantity</th>
                               <th>Delivery</th>
                               <th>Total Price</th>
-                              <th class="<%= order.products[0].orderProStatus == 'canceled' ? 'disabled' : '' %>">
-                                  <%= order.products[0].orderProStatus == 'canceled' ? '' : 'Options' %>
-                              </th>
+                              <th class="<%= order.products[0].orderProStatus === 'canceled' ? 'disabled' : '' %>">
+                                <% if (order.products[0].orderProStatus !== 'canceled' && order.paymentStatus !== 'failed') { %>
+                                  Options
+                                <% }   %>
+                                 
+                            </th>
+                            
                               <th class="<%= order.paymentStatus == 'success' ? 'disabled' : '' %>">
                                 <%= order.paymentStatus == 'failed' ? 'Re Payment' : '' %>
                               </th>
@@ -203,7 +184,7 @@
                                       </td>
                                       <td class="price-col"
                                           style="<%= product.orderProStatus == 'canceled' ? 'text-decoration: line-through;' : '' %>">
-                                          ₹<%= order.orderAmount %>
+                                          ₹<%= product?.productId?.price*product?.quantity %>
                                       </td>
                                       <td>
                                           <% if (product.orderProStatus == 'payment pending') { %>
@@ -212,8 +193,8 @@
                                                   <span>Place Order</span>
                                               </button>
                                           <% } else { %>
-                                              <% if (product.orderProStatus != 'canceled' && product.orderProStatus != 'delivered' && product.orderProStatus != 'returned' && order.paymentStatus!='failed ') { %>
-                                                  <button class="btn btn-danger openModalBtn" type="button"
+                                              <% if (product.orderProStatus != 'canceled' && product.orderProStatus != 'delivered' && product.orderProStatus != 'returned' && order.paymentStatus!='failed') { %>
+                                                  <button   style="margin-right: 20px ;"  class="btn btn-danger openModalBtn" type="button"
                                                       data-order-id='<%= order._id %>'
                                                       data-product-id="<%= product.productId._id %>">
                                                       Cancel

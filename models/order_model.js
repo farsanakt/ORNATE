@@ -96,6 +96,10 @@ const Order = mongoose.Schema({
     paymentStatus:{
         type:String,
         default:'success'
+    },
+    orderId:{
+        type:String
+    
     }
 
 

@@ -12,7 +12,7 @@
 
  //  securely hash passwords :-
 const bcrypt = require('bcrypt');
-const { deleteMany } = require('../models/offer_modal');
+
 const securePassword = async (password) => {
     
     try {

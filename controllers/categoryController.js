@@ -22,7 +22,7 @@ const addcategory=async(req,res)=>{
 
         if(req.query.inp){
 
-            const catecheck = await Category.findOne({ name: req.query.inp  });
+            const catecheck = await Category.findOne({ name: { $regex: new RegExp('^' + req.query.inp + '$', 'i') } });
             
             if (catecheck) {
                 
@@ -52,9 +52,6 @@ const addcategory=async(req,res)=>{
         console.log(error.message);
     }
 }
-
-
-
 
 const editcategory = async (req, res ) => {
     

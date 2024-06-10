@@ -50,16 +50,20 @@
                                   </li>
 
                                   <li class="nav-item">
-                                      <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="/wallet" role="tab">Wallet</a>
-                                  </li>
+                                    <a class="nav-link" id="tab-wallet-link" href="/wallet">Wallet</a>
+                                </li>
 
                                   <li class="nav-item">
-                                      <a class="nav-link" id="tab-coupons-link" href="/userCoupen" role="tab">Coupons</a>
+                                      <a class="nav-link" id="tab-userCoupen-link" href="/userCoupen" role="tab">Coupons</a>
                                   </li>
                                   
                                   <li class="nav-item">
                                     
-                                    <a class="nav-link " href="">Sigout</a>
+                                    <form action="/logout" method="post">
+
+                                      <button type="submit" class="logout-button rounded-pill mt-1 text-white "
+                                          style="background-color: gray; width: fit-content;">Logout</button>
+                                  </form>
 
                                   </li>
                                   

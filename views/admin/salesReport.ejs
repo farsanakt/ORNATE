@@ -16,7 +16,7 @@
           <table class="table custom-table">
             <thead>
               <tr>
-                <th class="text-center bold-red">Product ID</th>
+                <th class="text-center bold-red">Product Name</th>
                 <th class="text-center bold-red">Quantity</th>
                 <th class="text-center bold-red">Price</th>
                 <!-- <th class="text-center">Discount</th> -->
@@ -33,7 +33,7 @@
             <% discount +=orders?.discount %>
                 <% orders.products.forEach(product => { %>
                   <tr>
-                    <td class="text-center"><%= product.productId %></td>
+                    <td class="text-center"><%= product.productId.name %></td>
                     <td class="text-center"><%= product.quantity %></td>
                     <td class="text-center">$<%= product.price %></td>
                      
@@ -108,7 +108,7 @@
             doc.setFontSize(25);
             doc.text("ORNATE", pageCenter, 10, { align: 'center' });
             doc.setFontSize(15);
-            doc.text(`${reportType}'s Sales Report`, pageCenter, 20, { align: 'center' });
+            doc.text(`${reportType} Sales Report`, pageCenter, 20, { align: 'center' });
 
             let table = document.querySelector(".table");
 

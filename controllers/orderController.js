@@ -15,29 +15,75 @@ const Coupen=require('../models/coupen_model');
 const Wallet=require('../models/wallet_model')
 
 
+// generate orderId
+function generateOrdId() {
+    
+    const chars = 'ABCDEFGTUVWXYZ'
+    
+    const randomIndex = Math.floor(Math.random() * chars.length)
+    
+    const randomChar = chars[randomIndex]
+
+    const min = 10000000
+    const max = 99999999
+
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min
+    
+    const orderId = randomChar + randomNumber.toString();
+    
+    return orderId.toUpperCase(); 
+}
+
+
 // ******* USER ******
 
 // load order (profile)
-const loadOrders=async(req,res)=>{
+const loadOrders = async (req, res) => {
     try {
-        const user=req.session.user
 
-        const userIdd=req.session.user
+        const user = req.session.user
 
-        const category=await Category.find({is_Listed:true})
+        const userIdd = req.session.user
 
-        const userData=await User.findOne({_id:user})
+        const category = await Category.find({ is_Listed: true })
 
-        const orderData=await Order.find({userId:userIdd}).populate('products.productId')
-
-        res.render('orders',{user,categoryData:category,orderData,userData})
-
+        const userData = await User.findOne({ _id: user })
         
+        const orderDat = await Order.find({ userId: userIdd }).populate('products.productId')
+        const orderData = [...orderDat].reverse()
+
+        const limit = 5
+
+        const max = 5
+
+        const totalPages = Math.ceil(orderData.length / limit)
+
+        let currentPage = req.query.page? Number(req.query.page) : 1
+
+        if (currentPage < 1 || currentPage > totalPages) {
+
+            currentPage = 1
+        }
+
+        const startIndex = (currentPage - 1) * limit
+
+        const endIndex = startIndex + limit
+
+        const paginatedOrders = orderData.slice(startIndex, endIndex)
+        
+        const startPage = Math.max(currentPage - Math.floor(max / 2), 1)
+
+        const endPage = Math.min(startPage + max - 1, totalPages);
+
+        res.render('orders', { user, categoryData: category, orderData: paginatedOrders, totalPages, currentPage, startPage, endPage })
+
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error.message)
+
     }
-}
+};
+
 
 
 // placing order(checkout)
@@ -96,6 +142,8 @@ const placeOrder=async(req,res)=>{
 
             discount:discounts,
 
+            orderId:generateOrdId(),
+
             deliveryAddress: addressData.addresss[0],
 
             products: cartData.products.map(product => ({
@@ -117,14 +165,18 @@ const placeOrder=async(req,res)=>{
         for(let sinPro of cartData.products){
             
             const countPro=await Product.findOne({_id:sinPro.productId._id})
+            console.log(countPro,'faadi');
            
             countPro.count+=sinPro.quantity
+            console.log(countPro.count,'oppp');
 
             await countPro.save()
 
             const countCat=await Category.findOne({name:countPro.category})
+            console.log(countCat,'opp');
             
             countCat.count+=sinPro.quantity
+            console.log(countCat.count,'kk');
             
             await countCat.save()
         }
@@ -234,6 +286,7 @@ const cancelOrder = async (req, res) => {
             },
             { new: true }
         )
+        console.log(cancelData,'poooo')
        
         if(cancelData){
 
@@ -246,6 +299,45 @@ const cancelOrder = async (req, res) => {
             product.stock += canceledQuantity;
            
             await product.save();
+
+            if(cancelData.payment=='online payment' || cancelData.payment=='walle' ){
+
+                let singlePrice=product.price*canceledQuantity
+
+                const wallettData=await Wallet.findOne({userId:req.session.user})
+
+                if(wallettData){
+
+                    wallettData.balance+=singlePrice
+
+                    wallettData.transaction.push({
+
+                        amount:singlePrice,
+
+                        creditOrDebit:'credit'
+
+                    })
+
+                    await wallettData.save()
+
+                }else{
+
+                    const walWallet=new Wallet({
+
+                        userId:req.session.user,
+
+                        balance :singlePrice,
+
+                        transaction:[{
+
+                            amount:singlePrice,
+
+                            creditOrDebit:'credit'
+                        }]
+                    }) 
+                    await walWallet.save()
+                }
+            }
 
             res.json({ success: true });
         }
@@ -342,6 +434,8 @@ const failedPayment=async(req,res)=>{
             payment: req.body.paymentmethod,
 
             discount:discounts,
+
+            orderId:generateOrdId(),
 
             paymentStatus:'failed',
 
@@ -464,18 +558,43 @@ const continuePayment=async(req,res)=>{
 
 
 // ********* ADMIN SIDE *******
-const loadOrderss=async(req,res)=>{
+const loadOrderss = async (req, res) => {
     try {
+        const limit = 7
 
-        const orderData=await Order.find({})
+        const max = 5 
 
-        res.render('order',{orderData})
+        const orderDat = await Order.find({})
+
+        const orderData=[...orderDat].reverse()
+
+        const totalPages = Math.ceil(orderData.length / limit)
+
+        let currentPage = req.query.page? Number(req.query.page) : 1
+
+        if (currentPage < 1 || currentPage > totalPages) {
+            currentPage = 1
+        }
+
+        const startIndex = (currentPage - 1) * limit
+
+        const endIndex = startIndex + limit
+
+        const paginatedOrders = orderData.slice(startIndex, endIndex)
+
+        const startPage = Math.max(currentPage - Math.floor(max / 2), 1)
+
+        const endPage = Math.min(startPage + max - 1, totalPages)
+        
+        res.render('order', { orderData: paginatedOrders, totalPages, currentPage, startPage, endPage })
 
     } catch (error) {
 
-        console.log(error.message);
+        console.log(error.message)
+
     }
-}
+};
+
 
 // load orderdetails
 const loadOrderDetaills=async(req,res)=>{

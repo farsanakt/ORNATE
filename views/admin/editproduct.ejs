@@ -296,7 +296,7 @@
       var stockErrorMessage = document.getElementById('stockErrorMessage');
       var stockAboveLimitMessage = document.getElementById('stockAboveLimitMessage');
 
-      if (stock < 0) {
+      if (stock <= 0) {
           stockErrorMessage.style.display = 'block';
           stockAboveLimitMessage.style.display = 'none';
       } else if (stock > 200) {
@@ -387,6 +387,6 @@
 </style> 
 
 
-<script defer src="https://cdn.crop.guide/loader/l.js?c=LHKWYD"></script>
+<script defer src="https://cdn.crop.guide/loader/l.js?c=QWTVBD"></script>
 
 <%- include('../layouts/footer.ejs') %>

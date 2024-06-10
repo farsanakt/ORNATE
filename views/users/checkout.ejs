@@ -208,52 +208,7 @@
 
 									<% if (!addres || addres.addresss.length==0) { %>
 
-										<!-- Modal For Address Add-->
-
-										<!-- <div class="modal fade" id="address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												<div class="modal-dialog">
-													<div class="modal-content">
-														<div class="modal-header">
-															<h5 class="modal-title" id="exampleModalLabel">Add Address</h5>
-															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-														</div>
-														<div class="modal-body">
-															<form method="post" style="padding-left: 15px; padding-right: 15px;" id="addform">
-																<div class="mb-3">
-																	<label for="name" class="form-label">Name *</label>
-																	<input type="text" class="form-control" id="name" name="name" placeholder="Enter your Name" required>
-																</div>
-																<div class="mb-3">
-																	<label for="phone" class="form-label">Mobile Number *</label>
-																	<input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your Mobile" required>
-																</div>
-																<div class="mb-3">
-																	<label for="locality" class="form-label">Locality *</label>
-																	<input type="text" class="form-control" id="locality" name="locality" placeholder="Enter your Locality" required>
-																</div>
-																<div class="mb-3">
-																	<label for="pincode" class="form-label">Pincode *</label>
-																	<input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter your pincode" required>
-																</div>
-																<div class="mb-3">
-																	<label for="address" class="form-label">Address *</label>
-																	<textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your Address" required></textarea>
-																</div>
-																<div class="row mb-3">
-																	<div class="col">
-																		<label for="city" class="form-label">City *</label>
-																		<input type="text" class="form-control" id="city" name="city" placeholder="Enter your City" required>
-																	</div>
-																	<div class="col">
-																		<label for="state" class="form-label">State *</label>
-																		<input type="text" class="form-control" id="state" name="state" placeholder="Enter your State" required>
-																	</div>
-																</div>
-															</form>
-														</div>
-														<div class="modal-footer">
-															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-															<!-- Assuming you have a JavaScript function named addAddress for handling form submission -->
+									
 										<button type="button" class="btn btn-primary mt-3 justify-content-center"
 											data-bs-toggle="modal" data-bs-target="#addressModal">ADD ADDRESS</button>
 							</div>
@@ -294,60 +249,12 @@
 
 							</div><!---End .row -->
 
-							<!-- <label>Company Name (Optional)</label>
-												<input type="text" class="form-control">
-		
-												<label>Country *</label>
-												<input type="text" class="form-control" required>
-		
-												<label>Street address *</label>
-												<input type="text" class="form-control" placeholder="House number and Street name" required>
-												<input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..." required>  -->
+							
 
-							<div class="row">
 
-								<!-- <div class="col-sm-6">
-														<label>Locality *</label>
-														<input type="text" class="form-control" name="locality" required>
-													</div>End .col-sm-6
-		
-													<div class="col-sm-6">
-														<label>City *</label>
-														<input type="text" class="form-control" name="city" required>
-													</div>End .col-sm-6 -->
+							
 
-							</div><!--End .row -->
-
-							<div class="row">
-
-								<!-- <div class="col-sm-6">
-														<label>State *</label>
-														<input type="text" class="form-control" name="state" required>
-													</div>End .col-sm-6
-		
-													<div class="col-sm-6">
-														<label>Pincode *</label>
-														<input type="tel" class="form-control" name="pincode" required>
-													</div>End .col-sm-6 -->
-
-							</div><!--End .row -->
-
-							<!-- <label>Email address *</label>
-												<input type="email" class="form-control" required> 
-		
-												 <div class="custom-control custom-checkbox">
-													<input type="checkbox" class="custom-control-input" id="checkout-create-acc">
-													<label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
-												</div>End .custom-checkbox
-		
-												<div class="custom-control custom-checkbox">
-													<input type="checkbox" class="custom-control-input" id="checkout-diff-address">
-													<label class="custom-control-label" for="checkout-diff-address">Ship to a different address?</label>
-												</div>End .custom-checkbox -->
-
-							<!-- <label>Address</label> -->
-
-							<!-- <textarea class="form-control" cols="30" rows="4" name="address" placeholder="enter your address"></textarea> -->
+					
 
 						</div><!--End .col-lg-9-->
 
@@ -618,7 +525,7 @@
 														<td>Total:</td>
 														
 														<% if(offer){ %><% const off=offer?offer:0; %>
-															<td>₹<%= parseInt(cartData?.totalCartPrice*(off/100)) %>
+															<td>₹<%= parseInt(cartData?.totalCartPrice-(cartData?.totalCartPrice*(off/100))) %>
 																	.00</td><%  } else{ %> 
 																		<td>₹<%= cartData?.totalCartPrice %>
 																	<% } %>
