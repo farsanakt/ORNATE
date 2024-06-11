@@ -5,7 +5,7 @@ const app = express()
 
 const CLIENT_ID = '26056937881-aod6bi13lkng8d2ei06dc0d5t3d3ndco.apps.googleusercontent.com'
 const CLIENT_SECRET = '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'
-const REDIRECT_URI = 'http://localhost:4000/auth/google/callback'
+const REDIRECT_URI = 'http://ornate.site/auth/google/callback'
 
 app.get('/auth/google',(req,res)=>{
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile email`;

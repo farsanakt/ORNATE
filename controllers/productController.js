@@ -196,7 +196,7 @@ const loadProducts = async (req, res) => {
         const totalPages = Math.ceil(products.length / limit)
     
         let currentPage = req.query.page? Number(req.query.page) : 1;
-
+        
 
         if (currentPage < 1 || currentPage > totalPages) {
 
