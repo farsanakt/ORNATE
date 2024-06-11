@@ -129,6 +129,8 @@ const user_route=express();
  // logout
  user_route.post('/logout',userController.logout);
 
+//  shipping change
+user_route.put('/shippingUpdate',checkoutController.shippingChange)
 
 
 

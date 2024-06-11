@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
      
 
     },
+    refferalcode:{
+        type:String
+    },
+    refferedcode:{
+        type:String
+    },
 
     password: {
         

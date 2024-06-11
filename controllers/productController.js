@@ -197,14 +197,12 @@ const loadProducts = async (req, res) => {
     
         let currentPage = req.query.page? Number(req.query.page) : 1;
 
-        // Validate page number
 
         if (currentPage < 1 || currentPage > totalPages) {
 
             currentPage = 1;
         }
 
-        // thisfor  Slice products array based on current page
 
         const paginatedProducts = products.slice((currentPage - 1) * limit, currentPage * limit)
 

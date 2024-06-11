@@ -84,6 +84,19 @@ const sendmail = async(fullname,email,sendotp,res) =>{
     console.log(error.message);
 }
  }
+// function =generate referal code
+ function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    let result = '';
+    const charactersLength = characters.length;
+    
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    
+    return result;
+}
+
 
 // load home
 const loadhome=async(req,res)=>{
@@ -109,6 +122,10 @@ const loadSignUp=async(req,res)=>{
 
         const category = await Category.find({is_Listed : true})
 
+        let {refcode}=req.query
+
+         req.session.refcode=refcode
+       
         const msg=req.flash('msg')
 
         res.render('signUp',{categoryData:category,msg:msg})
@@ -202,7 +219,8 @@ const loadotp=async(req,res)=>{
 const verifyotp = async (req, res) => {
 
     try {
-
+          
+        console.log(req.session.refcode,'lll');
         console.log(req.session.userData.email);
 
         const { inp1, inp2, inp3, inp4, email } = req.body;
@@ -220,7 +238,10 @@ const verifyotp = async (req, res) => {
                 fullname: req.session.userData.fullname, 
                 email: req.session.userData.email,
                 phone: req.session.userData.phone,
-                password: hashedpassword
+                password: hashedpassword,
+                refferalcode:generateRandomString(8),
+                refferedcode:req.session.refcode
+
             });
 
             const data = await user.save();
@@ -557,13 +578,15 @@ const loadWallet = async (req, res , next) => {
 
         const categoryData = await Category.find({ is_Listed: true });
 
+        const user=req.session.user
+
         if (req.session.user) {
 
             const walletData = await Wallet.findOne({ userId: req.session.user });
 
             console.log(walletData,'wallet');
 
-            res.render('wallet', { login: req.session.user, categoryData, walletData });
+            res.render('wallet', { login: req.session.user, categoryData, walletData ,user});
 
         } else {
 
@@ -579,6 +602,7 @@ const loadWallet = async (req, res , next) => {
     }
 
 };
+
 
 module.exports={
     loadhome,
@@ -597,6 +621,7 @@ module.exports={
     loadnewpassword,
     updatepassword,
     verifiyPassOtp,
-    loadWallet
+    loadWallet,
+    
 
 }

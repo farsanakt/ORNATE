@@ -514,20 +514,20 @@
 													</tr><!-- End .summary-subtotal -->
 													<tr>
 														<td>Shipping:</td>
-														<td>Free shipping</td>
+														<td><%=ship  %> ₹	<%=shipped  %></td>
 													</tr>
 													<tr class="d-none">
 														
 														<% const offr=offer?offer:0; %>
-														<td><%= parseInt(cartData?.totalCartPrice-(cartData?.totalCartPrice*offr/100)) %>  </td></tr>
+														<td><%= parseInt((cartData?.totalCartPrice)-(cartData?.totalCartPrice*offr/100)) %>  </td></tr>
 
 													<tr class="summary-total">
 														<td>Total:</td>
 														
 														<% if(offer){ %><% const off=offer?offer:0; %>
-															<td>₹<%= parseInt(cartData?.totalCartPrice-(cartData?.totalCartPrice*(off/100))) %>
+															<td>₹<%= parseInt(cartData?.totalCartPrice-(cartData?.totalCartPrice*(off/100)))+Number(shipped) %>
 																	.00</td><%  } else{ %> 
-																		<td>₹<%= cartData?.totalCartPrice %>
+																		<td>₹<%= cartData?.totalCartPrice+Number(shipped) %>
 																	<% } %>
 													</tr><!-- End .summary-total -->
 
@@ -575,8 +575,8 @@
 													CART</a>
 
 												<% } else { %>
-
-													<button onclick="submit1('<%= cartData?.totalCartPrice %>')"
+<%const shippingPrice=Number(shipped)|| 0 %>
+													<button onclick="submit1('<%= cartData?.totalCartPrice+shippingPrice %>')"
 														type="button"
 														class="btn btn-outline-primary-2 btn-order btn-block">
 														<span class="btn-text">Place Order</span>

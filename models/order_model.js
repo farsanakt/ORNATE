@@ -100,6 +100,9 @@ const Order = mongoose.Schema({
     orderId:{
         type:String
     
+    },shipped:{
+        type:Number,
+        default:0
     }
 
 

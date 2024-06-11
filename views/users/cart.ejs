@@ -141,7 +141,7 @@
 	                						<tr class="summary-shipping-row">
 	                							<td>
 													<div class="custom-control custom-radio">
-														<input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+														<input checked="true" onchange="shipped(this,'<%=locals.totalCartPrice%>')" value="0"  type="radio" id="free-shipping" name="shipping" class="custom-control-input">
 														<label class="custom-control-label" for="free-shipping">Free Shipping</label>
 													</div><!-- End .custom-control -->
 	                							</td>
@@ -151,7 +151,7 @@
 	                						<tr class="summary-shipping-row">
 	                							<td>
 	                								<div class="custom-control custom-radio">
-														<input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
+														<input onchange="shipped(this,'<%=locals.totalCartPrice%>')" value="30"  type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
 														<label class="custom-control-label" for="standart-shipping">Standart:</label>
 													</div><!-- End .custom-control -->
 	                							</td>
@@ -161,7 +161,7 @@
 	                						<tr class="summary-shipping-row">
 	                							<td>
 	                								<div class="custom-control custom-radio">
-														<input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
+														<input onchange="shipped(this,'<%=locals.totalCartPrice%>')" value="50" type="radio" id="express-shipping" name="shipping" class="custom-control-input">
 														<label class="custom-control-label" for="express-shipping">Express:</label>
 													</div><!-- End .custom-control -->
 	                							</td>
@@ -220,8 +220,19 @@
     <script src="assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js" integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+async function shipped(e,tt){
+	await axios.put('/shippingUpdate',{val:e.value})
+	
+	const t=Number(tt)+Number(e.value)
+	total.textContent="₹"+t+".00"
+
+}
+
+
+
+
 function removeCart(id) {
     // Ask for confirmation using SweetAlert
     Swal.fire({

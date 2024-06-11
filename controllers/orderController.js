@@ -94,9 +94,9 @@ const placeOrder=async(req,res)=>{
         const category=await Category.find({is_Listed:true});
 
         const cartData=await Cart.findOne({userId:userIdd});
-
-        let total=cartData.totalCartPrice;
-
+        const shipped=Number(req.session.shipped) || 0
+        let total=cartData.totalCartPrice+shipped;
+        delete req.session.shipped;
         let payment=req.body.paymentmethod
 
         console.log(payment,'loop');
@@ -131,7 +131,7 @@ const placeOrder=async(req,res)=>{
 
             return
         }
-
+        
         const newOrder = new Order({
 
             userId: userIdd,
@@ -143,7 +143,7 @@ const placeOrder=async(req,res)=>{
             discount:discounts,
 
             orderId:generateOrdId(),
-
+            shipped,
             deliveryAddress: addressData.addresss[0],
 
             products: cartData.products.map(product => ({
@@ -211,7 +211,85 @@ const placeOrder=async(req,res)=>{
             })
        
     }
-      
+
+    // refferal offer
+
+      let firstOdr=await Order.find({userId:userIdd})
+
+      console.log(firstOdr,'1');
+
+      let Userr=await User.findById(userIdd)
+
+      let refeCode=Userr.refferedcode
+
+      console.log(refeCode,'lll');
+
+      if( refeCode && firstOdr.length == 0){
+
+        console.log('1');
+        const userWallet=await Wallet.findOne({userId:userIdd})
+
+        if(userWallet){
+            console.log('2');
+
+            userWallet.balance+=50
+
+            userWallet.transaction.push({
+
+                amount:50,
+
+                creditOrDebit:'credit'
+            })
+            
+        }else{
+            console.log('3');
+              const wallet=new Wallet({
+                userId:userIdd,
+                balance:50,
+                transaction:[{
+
+                    amount:50,
+
+                    creditOrDebit:'credit'
+                }]
+              })
+              await wallet.save()
+        }
+        let referedUser=await User.findOne({refferalcode:refeCode})
+        console.log(referedUser,'ppp');
+        
+        let refUserWal=await Wallet.findOne({userId:referedUser._id})
+        console.log(referedUser._id,'pooo');
+
+        if(refUserWal){
+            console.log('4');
+
+            refUserWal.balance+=40
+
+            refUserWal.transaction.push({
+
+                amount:40,
+
+                creditOrDebit:'credit'
+            })
+            
+        }else{
+            console.log('5');
+              const wallett=new Wallet({
+                userId:referedUser._id,
+                balance:40,
+                transaction:[{
+
+                    amount:40,
+
+                    creditOrDebit:'credit'
+                }]
+              })
+              await wallett.save()
+        }
+
+    }
+
         await newOrder.save();
 
         if(req.session.offer){

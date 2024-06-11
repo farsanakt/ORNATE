@@ -12,10 +12,13 @@ const User=require('../models/user_model')
 
 const loadCheckout=async(req,res)=>{
     try {
+        const shipped=req.session.shipped || 0;
+        let ship="free shipping"
+        if(shipped==30) ship="Standart" 
+        if(shipped==50) ship="expresss"
         const category = await Category.find({is_Listed : true})
 
-         const err=req.flash('err')
-
+         const err=req.flash('err');
          const user=req.session.user
 
          const msg=req.session.offer?'coupen applied':req.flash('msg');
@@ -37,7 +40,7 @@ const loadCheckout=async(req,res)=>{
             console.log(addres);
 
 
-            res.render('checkout',{categoryData:category,cartData,addres,userData,user,msg,err,offer})
+            res.render('checkout',{categoryData:category,cartData,addres,userData,user,msg,err,offer,ship,shipped})
          }else{
                  res.redirect('/login')
          }
@@ -188,10 +191,24 @@ const chooseAddress=async(req,res)=>{
     }
 }
 
+
+const shippingChange=async(req,res)=>{
+    try{
+        req.session.shipped=req.body.val
+        console.log(req.session.shipped,req.body.val)
+        res.status(200).send({session:req.session})
+        
+    }catch(err){
+        console.log(err.mesage)
+        res.status(400).send({err:err.message})
+    }
+}
+
 module.exports={
     loadCheckout,
     addAddress,
     addCoupen,
     razor,
-    chooseAddress
+    chooseAddress,
+    shippingChange
 }
