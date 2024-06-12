@@ -169,7 +169,7 @@
                                       </td>
                                       <td class="stock-col ms-3"
                                           style="<%= product.orderProStatus == 'canceled' ? 'text-decoration: line-through;' : '' %>">
-                                          ₹<%= product?.productId?.price %>
+                                          ₹<%= product?.price/product.quantity %>
                                       </td>
                                       <td class="stock-col">
                                           <span class="in-stock"
@@ -184,7 +184,7 @@
                                       </td>
                                       <td class="price-col"
                                           style="<%= product.orderProStatus == 'canceled' ? 'text-decoration: line-through;' : '' %>">
-                                          ₹<%= product?.productId?.price*product?.quantity %>
+                                          ₹<%= product?.price %>
                                       </td>
                                       <td>
                                           <% if (product.orderProStatus == 'payment pending') { %>

@@ -48,13 +48,13 @@
 
 									<div class="form-group">
 										<label for="register-email-2">Email Address *</label>
-										<input type="email" class="form-control" id="register-email-2" name="email" oninput="hello(this)" required>
+										<input type="email" class="form-control" id="register-email-2" name="email" required pattern=".+@gmail\.com$" title="Please enter a Gmail address">
 									</div><!-- End .form-group -->
 									
 
 									<div class="form-group">
-										<label for="register-phone">Phone Number *</label> 
-										<input type="text" class="form-control" id="register-phone" minlength="10" pattern="[0-9]{10,}" name="phone" oninput="hello(this)" required>
+										<label for="register-phone">Phone Number *</label>
+										<input type="text" class="form-control" id="register-phone" name="phone" required pattern="\d{10}" title="Please enter a valid 10 digit phone number">
 									</div><!-- End .form-group -->
 
 									<div class="form-group">
@@ -85,23 +85,7 @@
 								</form>
 									
 
-							    	<div class="form-choice">
-								    	<p class="text-center">or sign in with</p>
-								    	<div class="row">
-								    		<div class="col-sm-6">
-								    			<a href="#" class="btn btn-login btn-g">
-								    				<i class="icon-google"></i>
-								    				Login With Google
-								    			</a>
-								    		</div><!-- End .col-6 -->
-								    		<div class="col-sm-6">
-								    			<a href="#" class="btn btn-login  btn-f">
-								    				<i class="icon-facebook-f"></i>
-								    				Login With Facebook
-								    			</a>
-								    		</div><!-- End .col-6 -->
-								    	</div><!-- End .row -->
-							    	</div><!-- End .form-choice -->
+							    	
 							    </div><!-- .End .tab-pane -->
                             </div><!-- End .tab-content -->
 						</div><!-- End .form-tab -->

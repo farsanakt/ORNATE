@@ -25,7 +25,7 @@ const loadWishlist=async(req,res)=>{
             console.log(wishlistData,'loop');
 
             if(wishlistData){
-
+                console.log('akkka')
                 const productStatus=wishlistData.products.filter(val=>val.productId.status==false);
                 
                 if(productStatus.length > 1){
@@ -38,10 +38,11 @@ const loadWishlist=async(req,res)=>{
 
                     res.render('wishlist',{login:req.session.user,wishlistData:newData,categoryData:category,user})
 
-                }else{
-
-                    res.render("wishlist", { login: req.session.user, wishlistData ,categoryData:category,user});
                 }
+            }else{
+                    
+
+                res.render("wishlist", { login: req.session.user, wishlistData ,categoryData:category,user});
             }
 
         }else{
