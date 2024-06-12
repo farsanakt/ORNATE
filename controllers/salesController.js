@@ -5,10 +5,10 @@ const loadSalesReport=async(req,res)=>{
 
         const order=await Order.find({}).populate('products.productId')
 
-        res.render('salesReport',{order,type:''})
+        res.render('salesreport',{order,type:''})
         
     } catch (error) {
-        
+
         console.log(error.message);
     }
 }
