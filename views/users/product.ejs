@@ -1,8 +1,11 @@
 <%- include('../layouts/header') %>
 
+
 	<div class="page-wrapper">
+		
 
 		<%- include('../layouts/navbar-2.ejs') %>
+
 
 
 			<main class="main">
@@ -20,17 +23,31 @@
 							<li class="breadcrumb-item active" aria-current="page">All Products</li>
 						</ol>
 					</div>
+
+					<div class="search-container">
+						<div class="row">
+							<div class="header-search-wrapper" style="margin-left: 450px;">
+								<label for="q" class="sr-only">Search</label>
+								<input style="width: 700px;" type="text" class="form-control" name="q" id="search" placeholder="Search in...">
+							</div>
+							<a href="#" class="search-toggle" style="font-size: 30px;" role="button" title="Search"><i class="icon-search"></i></a>
+						</div>
+					</div>
+				
+
+					
+					
 					<div class="toolbox-right">
-									
+							
 						<div class="toolbox-sort">
 							<label for="sortby">Sort by: price</label>
 							<div class="select-custom">
 								<select name="sortby" id="sortby" class="form-control">
-									<option value="popularity" id="priceLow-High" >Low-High</option>
-									<option value="rating" id="priceHigh-Low">High-Low</option>
-									<option value="rating" id="nameA-Z">A - Z</option>
-									<option value="rating" id="nameZ-A">Z - A</option>
-									<option value="rating" id="newArrivals">New Arrivals</option>
+									<option value="priceLow-High" id="priceLow-High" <% if (sortQuery==='priceLow-High' ) { %>selected<% } %>>Low-High</option>
+									<option value="priceHigh-Low" id="priceHigh-Low" <% if (sortQuery==='priceHigh-Low' ) { %>selected<% } %>>High-Low</option>
+									<option value="nameA-Z" id="nameA-Z" <% if (sortQuery==='nameA-Z' ) { %>selected<% } %>>A - Z</option>
+									<option value="nameZ-A" id="nameZ-A" <% if (sortQuery==='nameZ-A' ) { %>selected<% } %>>Z - A</option>
+									<option value="newArrivals" id="newArrivals" <% if (sortQuery==='newArrivals' ) { %>selected<% } %>>New Arrivals</option>
 
 								</select>
 							</div>
@@ -50,7 +67,7 @@
 
 
 										<% for (let i=0; i < products.length; i++) { %>
-<% console.log(products[i]); %>
+
 
 
 
@@ -164,13 +181,13 @@
 								<nav aria-label="Page navigation">
 									<ul class="pagination justify-content-center">
 										<% if (currentPage > 1) { %>
-											<li class="page-item"><a class="page-link" href="?page=<%= currentPage - 1 %>">&laquo; Previous</a></li>
+											<li class="page-item"><a class="page-link" href="?page=<%= currentPage - 1 %>&search<%= search %>&category=<%= selectCategories.join(',') %>&sortBy=<%= sortQuery %>">&laquo; Previous</a></li>
 										<% } %>
 										<% for (let i = 1; i <= totalPages; i++) { %>
-											<li class="page-item <%= currentPage == i? 'active' : '' %>"><a class="page-link" href="?page=<%= i %>"><%= i %></a></li>
+											<li class="page-item <%= currentPage == i? 'active' : '' %>"><a class="page-link" href="?page=<%= i %>&search<%= search %>&category=<%= selectCategories.join(',') %>&sortBy=<%= sortQuery %>"><%= i %></a></li>
 										<% } %>
 										<% if (currentPage < totalPages) { %>
-											<li class="page-item"><a class="page-link" href="?page=<%= currentPage + 1 %>">Next &raquo;</a></li>
+											<li class="page-item"><a class="page-link" href="?page=<%= currentPage + 1 %>&search<%= search %>&category=<%= selectCategories.join(',') %>&sortBy=<%= sortQuery %>">Next &raquo;</a></li>
 										<% } %>
 									</ul>
 								</nav>
@@ -179,7 +196,7 @@
 								<div class="sidebar sidebar-shop">
 									<div class="widget widget-clean">
 										<label>Filters:</label>
-										<a href="#" class="sidebar-filter-clear">Clean All</a>
+										<a href="#" id="clear" onclick="clearFilter()" class="sidebar-filter-clear">Clean All</a>
 									</div><!-- End .widget widget-clean -->
 
 									<div class="widget widget-collapsible">
@@ -196,17 +213,23 @@
 														<% if (category.is_Listed) { %>
 															<div class="filter-item">
 																<div class="custom-control custom-checkbox">
-																	<input type="checkbox" class="custom-control-input" id="<%= category._id %>" name="<%= category.name %>">
+																	<input type="checkbox" name="category" class="custom-control-input" value="<%= category.name %>"  id="<%= category._id %>" name="<%= category.name %>" 
+																	<%
+																	if(selectCategories.includes(String(category.name))) { %> checked
+																	<% } %>
+																	>
 																	<label class="custom-control-label" for="<%= category._id %>"><%= category.name %></label>
 																</div>
-																<span class="item-count">3</span>
+																<span class="item-count"></span>
 															</div>
 														<% } %>
 													<% }); %>
 												</div><!-- End .filter-items -->
 											</div><!-- End .widget-body -->
 										</div><!-- End .collapse -->
-										
+										<div style="margin-top: 30px; margin-left: 30px;">
+											<button id="apply" class="btn btn-success">Apply</button>
+										</div>
 										
 												
 											</div><!-- End .widget-body -->
@@ -214,97 +237,7 @@
 										
 										
 									</div><!-- End .widget -->
-
-
-								
-
-									<div class="widget widget-collapsible">
-										<h3 class="widget-title">
-											<a data-toggle="collapse" href="#widget-4" role="button"
-												aria-expanded="true" aria-controls="widget-4">
-												Brand
-											</a>
-										</h3><!-- End .widget-title -->
-
-										<div class="collapse show" id="widget-4">
-											<div class="widget-body">
-												<div class="filter-items">
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="brand-1">
-															<label class="custom-control-label"
-																for="brand-1">Nike</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="brand-2">
-															<label class="custom-control-label"
-																for="brand-2">Addidas</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="brand-3">
-															<label class="custom-control-label"
-																for="brand-3">Puma</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-
-													<div class="filter-item">
-														<div class="custom-control custom-checkbox">
-															<input type="checkbox" class="custom-control-input"
-																id="brand-4">
-															<label class="custom-control-label" for="brand-4">New
-																Balance</label>
-														</div><!-- End .custom-checkbox -->
-													</div><!-- End .filter-item -->
-												</div><!-- End .filter-items -->
-											</div><!-- End .widget-body -->
-										</div><!-- End .collapse -->
-									</div><!-- End .widget -->
-
-									<div class="widget widget-collapsible">
-										<h3 class="widget-title">
-											<a data-toggle="collapse" href="#widget-5" role="button"
-												aria-expanded="true" aria-controls="widget-5">
-												Price
-											</a>
-										</h3><!-- End .widget-title -->
-
-										<div class="collapse show" id="widget-5">
-											<div class="widget-body">
-												<div class="filter-price">
-													<div class="filter-price-text">
-														Price Range:
-														<span id="filter-price-range"></span>
-													</div><!-- End .filter-price-text -->
-
-													<div class="price-inputs">
-														<input type="number" id="min-price" name="min-price"
-															placeholder="Min Price" style="border-radius: 5px;"
-															class="my-1 ">
-														<input type="number" id="max-price" name="max-price"
-															placeholder="Max Price" style="border-radius: 5px;"
-															class="my-1 ">
-													</div><!-- End .price-inputs -->
-
-													<div id="price-slider"></div><!-- End #price-slider -->
-												</div><!-- End .filter-price -->
-
-												<div class="submit-button">
-													<button type="submit"
-														class="rounded-pill bg-dark  border-0 px-4 text-white">Apply</button>
-												</div><!-- End .submit-button -->
-
-											</div><!-- End .widget-body -->
-										</div><!-- End .collapse -->
-									</div><!-- End .widget -->
+									
 								</div><!-- End .sidebar sidebar-shop -->
 							</aside><!-- End .col-lg-3 -->
 						</div><!-- End .row -->
@@ -454,308 +387,60 @@
 	</script>
 
 
-<!-- sorting by criterias fucntionality -->
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
-        var dropdown = document.getElementById('sortby');
-
-        dropdown.addEventListener('change', handleSortChange);
-
-        function handleSortChange() {
-            var selectedOption = dropdown.options[dropdown.selectedIndex];
-            var criteria = selectedOption.id;
-			
-            fetch(`/sort/${criteria}`)
-                .then(response => response.json())
-                .then(data => {
-					console.log('fetch'+data);
-                    updateProductList(data.productDAta);
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-		function updateProductList(data) {
-    var productList = document.getElementById('productList');
-    productList.innerHTML = ''; // Clear the existing content
-
-    data.forEach(product => { // Iterate over each product in the data array
-        const productItem = `
-            <div class="col-6 col-md-4 col-lg-4">
-                <div class="product product-7 text-center">
-                    <figure class="product-media">
-                       
-                        <a href="/productdetails?id=${product._id}">
-                            <img src="${product.images[0]}"
-                                alt="Product image xxxxxxx" class="product-image">
-                        </a>
-
-                        <div class="product-action-vertical">
-                            <a onclick="addWishlist('${product._id}')"
-                                class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                    to wishlist</span></a>
-                        </div><!-- End.product-action-vertical -->
-
-                        <div class="product-action">
-                            <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
-                        </div><!-- End.product-action -->
-
-                    </figure><!-- End.product-media -->
-
-                    <div class="product-body">
-                        <div class="product-cat">
-                            <a href="#">
-                                ${product.category}
-                            </a>
-                        </div><!-- End.product-cat -->
-                        <h3 class="product-title"><a href="product.html">
-                                ${product.name}
-                            </a></h3><!-- End.product-title -->
-							${product.offerPrice ? 
-                        `<div class="product-price">
-                            <div style="text-decoration: line-through;" class="original-price">
-                                ${product.price}
-                            </div>
-                            <div class="discounted-price">
-                                ${product.offerPrice}
-                            </div>
-                        </div>` :
-                        `<div class="product-price">
-                            ${product.price}
-                        </div>`}
-                            
-                        <div class="ratings-container">
-                            <div class="ratings">
-                                <div class="ratings-val" style="width: 20%;"></div>
-                                <!-- End.ratings-val -->
-                            </div><!-- End.ratings -->
-                            <span class="ratings-text">( 2 Reviews )</span>
-                        </div><!-- End.rating-container -->
-
-                    </div><!-- End.product-body -->
-                </div><!-- End.product -->
-            </div><!-- End.col-sm-6 col-lg-4 -->
-        `;
-        productList.innerHTML += productItem; // Append the generated HTML to the productList
-    });
-}
-
-
-       
-    });
-</script>
-	
-
-<!-- searching product by names -->
-<script>
-	document.getElementById('searchForm').addEventListener('submit', function(event) {
-		event.preventDefault(); 
-		const query = document.getElementById('q').value; 
-		searchproducts(query); 
-	});
-	
-	function searchproducts(query) {
-		fetch('/search', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ q: query }),
-		})
-	   .then(response => response.json()) 
-	   .then(data => {
-			if (data.message === "No product found matching your Search query") {
-				console.log("No product found");
-			} else {
-				
-				searchProductList(data);
-				
-			}
-		})
-	   .catch(error => console.error('Error:', error));
-	}
-	
-
-	function searchProductList(data){
-		var searchList = document.getElementById('productList');
-		searchList.innerHTML = '';
-
-
-		data.forEach(product => { // Iterate over each product in the data array
-    const productItem = `
-        <div class="col-6 col-md-4 col-lg-4">
-            <div class="product product-7 text-center">
-                <figure class="product-media">
+    const fetchFilteredProducts = async () => {
+        try {
+            const search = document.getElementById('search').value.trim()
            
-                    <a href="/productdetails?id=${product._id}">
-                        <img src="${product.images[0]}"
-                            alt="Product image ${product.name}" class="product-image">
-                    </a>
 
-                    <div class="product-action-vertical">
-                        <a onclick="addWishlist('${product._id}')"
-                            class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                to wishlist</span></a>
-                    </div><!-- End.product-action-vertical -->
-
-                    <div class="product-action">
-                        <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
-                    </div><!-- End.product-action -->
-
-                </figure><!-- End.product-media -->
-
-                <div class="product-body">
-                    <div class="product-cat">
-                        <a href="#">
-                            ${product.category}
-                        </a>
-                    </div><!-- End.product-cat -->
-                    <h3 class="product-title"><a href="product.html">
-                            ${product.name}
-                        </a></h3><!-- End.product-title -->
-
-                    ${product.offerPrice ? 
-                        `<div class="product-price">
-                            <div style="text-decoration: line-through;" class="original-price">
-                                ${product.price}
-                            </div>
-                            <div class="discounted-price">
-                                ${product.offerPrice}
-                            </div>
-                        </div>` :
-                        `<div class="product-price">
-                            ${product.price}
-                        </div>`}
-                                                    
-                    <div class="ratings-container">
-                        <div class="ratings">
-                            <div class="ratings-val" style="width: 20%;"></div>
-                            <!-- End.ratings-val -->
-                        </div><!-- End.ratings -->
-                        <span class="ratings-text">(2 Reviews)</span>
-                    </div><!-- End.rating-container -->
-
-                </div><!-- End.product-body -->
-            </div><!-- End.product -->
-        </div><!-- End.col-sm-6 col-lg-4 -->
-    `;
-    productList.insertAdjacentHTML('beforeend', productItem); // Append the generated HTML to the productList
-});
-
-}
+             const categoryFilters = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(input => input.value).join(',');
+             const sortBy = document.getElementById('sortby').value.trim()
+			 console.log(sortBy,'Search value');
 
 
+            const queryParams = new URLSearchParams({
+                search: search,
+                category: categoryFilters,
+                sortBy: sortBy
+            });
 
+             window.location.href = `/product?${queryParams}`;
+        } catch (error) {
+            console.error('Error filtered products:', error);
+        }
+    };
+
+    document.getElementById('apply').addEventListener('click', fetchFilteredProducts);
 </script>
 
-<!-- filtering product by categories -->
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-		function handleCheckboxChange() {
-			const checkboxes = document.querySelectorAll('.custom-control-input');
-			let selectedCategories = [];
-	
-			checkboxes.forEach(checkbox => {
-				if (checkbox.checked) {
-					selectedCategories.push(checkbox.name);
-				}
-			});
-			sendSelectedCategoriesToBackend(selectedCategories);
-		}
-	
-		function sendSelectedCategoriesToBackend(selectedCategories) {
-			const url = '/filterproducts';
-			const data = {
-				categories: selectedCategories
-			};
-			
-			fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data)
-			})
-		   .then(response => response.json())
-		   .then(data => {
-				filterProductList(data);
-			})
-		   .catch((error) => {
-				console.error('Error:', error);
-			});
-		}
-		const checkboxes = document.querySelectorAll('.custom-control-input');
-		checkboxes.forEach(checkbox => {
-			checkbox.addEventListener('change', handleCheckboxChange);
-		});
-		function filterProductList(data){
-			let filterList = document.getElementById('productList');
-			filterList.innerHTML = '';
-			data.forEach(product => {
-				const productItem = `
-        <div class="col-6 col-md-4 col-lg-4">
-            <div class="product product-7 text-center">
-                <figure class="product-media">
-               
-                    <a href="/productdetails?id=${product._id}">
-                        <img src="${product.images[0]}"
-                            alt="Product image ${product.name}" class="product-image">
-                    </a>
 
-                    <div class="product-action-vertical">
-                        <a onclick="addWishlist('${product._id}')"
-                            class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                to wishlist</span></a>
-                    </div><!-- End.product-action-vertical -->
+let s = window.location.pathname;
+let queryString = window.location.search;
 
-                    <div class="product-action">
-                        <a onclick="addCart('${product._id}')" class="btn-product btn-cart"><span>add to cart</span></a>
-                    </div><!-- End.product-action -->
+let clear = document.getElementById('clear');
 
-                </figure><!-- End.product-media -->
 
-                <div class="product-body">
-                    <div class="product-cat">
-                        <a href="#">
-                            ${product.category}
-                        </a>
-                    </div><!-- End.product-cat -->
-                    <h3 class="product-title"><a href="product.html">
-                            ${product.name}
-                        </a></h3><!-- End.product-title -->
-
-                    ${product.offerPrice ? 
-                        `<div class="product-price">
-                            <div style="text-decoration: line-through;" class="original-price">
-                                ${product.price}
-                            </div>
-                            <div class="discounted-price">
-                                ${product.offerPrice}
-                            </div>
-                        </div>` :
-                        `<div class="product-price">
-                            ${product.price}
-                        </div>`}
-                                                    
-                    <div class="ratings-container">
-                        <div class="ratings">
-                            <div class="ratings-val" style="width: 20%;"></div>
-                            <!-- End.ratings-val -->
-                        </div><!-- End.ratings -->
-                        <span class="ratings-text">(2 Reviews)</span>
-                    </div><!-- End.rating-container -->
-
-                </div><!-- End.product-body -->
-            </div><!-- End.product -->
-        </div><!-- End.col-sm-6 col-lg-4 -->
-    `;
-  		filterList.insertAdjacentHTML('beforeend',productItem)
-			})
-		}
-	});
+if (queryString) {
+	clear.style.display = 'block'
+} else {
+	clear.style.display = 'none'
+}  
 </script>
+
+
+<script>
+
+function clearFilter() {
+	window.location.href = '/product'
+}
+</script>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert@2"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6en8XCp+HHAAK5GSLf2xlYtvJ8U2Q4U+9cuEnJoa3" crossorigin="anonymous">
 
 
 	<%- include('../layouts/footer') %>

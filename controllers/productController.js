@@ -187,26 +187,79 @@ const loadProducts = async (req, res) => {
 
         const userData = await User.findOne({ _id: user })
 
-        const products = await Products.find({ status: true, is_Listed: true })
+        //const products = await Products.find({ status: true, is_Listed: true })
 
-        const offerData = await Offer.find().populate('category')
+        const page = parseInt(req.query.page) || 1
+        const limit = 6;
+        const skip = (page -1) * limit;
 
-        let limit=6
-        
-        const totalPages = Math.ceil(products.length / limit)
+        const searchQuery=req.query.search;
+
+        const categoryy = req.query.category? req.query.category.split(','):[]
+
+        const sortQuery=req.query.sortBy
+
+        const filter = {
+          is_Listed: true,
+          name: { $regex: new RegExp(searchQuery, "i") }
+        };
     
-        let currentPage = req.query.page? Number(req.query.page) : 1;
-        
-
-        if (currentPage < 1 || currentPage > totalPages) {
-
-            currentPage = 1;
+        if (categoryy.length > 0) {
+          filter.category = { $in: categoryy };
         }
 
+        console.log(filter);
+       
+    
+        
+            let sortOption = {};
+            if (sortQuery === 'priceLow-High') {
+    
+                sortOption = { price: 1 };
+    
+            } else if (sortQuery === 'priceHigh-Low') {
+    
+                sortOption = { price: -1 };
+    
+            } else if (sortQuery === 'nameA-Z') {
+    
+                sortOption = { name: 1 };
+    
+            } else  if(sortQuery == 'nameZ-A'){
+    
+                sortOption = { name: -1 }; 
+    
+            }else{
+              sortOption = {createdAt:-1}
+            }
 
-        const paginatedProducts = products.slice((currentPage - 1) * limit, currentPage * limit)
+    
+             let productsData = await Products.find(filter).populate('category').sort(sortOption).skip(skip).limit(limit);
+             console.log(productsData);
+        
+            const totalproducts = await Products.countDocuments(filter);
+        
+            const totalPages = Math.ceil(totalproducts / limit)
 
-        res.render('product', { categoryData: category, products: paginatedProducts, user, offerData, userData, totalPages, currentPage })
+          
+        const offerData = await Offer.find().populate('category')
+
+        // let limit=6
+        
+        // const totalPages = Math.ceil(productsData.length / limit)
+    
+        // let currentPage = req.query.page? Number(req.query.page) : 1;
+        
+
+        // if (currentPage < 1 || currentPage > totalPages) {
+
+        //     currentPage = 1;
+        // }
+
+
+        // const paginatedProducts = productsData.slice((currentPage - 1) * limit, currentPage * limit)
+
+        res.render('product', { categoryData: category, products: productsData, user, offerData, userData, totalPages, currentPage:page,selectCategories:categoryy,search:searchQuery,sortQuery })
 
     } catch (error) {
 

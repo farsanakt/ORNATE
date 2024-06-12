@@ -8,6 +8,7 @@ const loadSalesReport=async(req,res)=>{
         res.render('salesReport',{order,type:''})
         
     } catch (error) {
+        
         console.log(error.message);
     }
 }
@@ -34,7 +35,7 @@ const LoadDailyReport=async(req,res)=>{
         
             orderDate: { $gte: startOfToday, $lte: endOfToday } 
     
-            });
+            }).populate('products.productId')
         
 
         res.render('salesreport',{order:DailyReport,type})
@@ -76,7 +77,7 @@ const LoadWeeklyReport = async (req, res) => {
 
             orderDate: { $gte: startOfWeek, $lte: endOfWeek }
             
-        });
+        }).populate('products.productId')
 
         
         res.render('salesreport', { order: WeeklyReport,type });
@@ -112,7 +113,7 @@ const LoadMonthlyReport = async (req, res) => {
             'products.orderProStatus': 'delivered',
 
             orderDate: { $gte: startOfMonth, $lte: endOfMonth }
-        })
+        }).populate('products.productId')
 
         
         res.render('salesreport', { order: monthlyOrders ,type});
@@ -144,7 +145,7 @@ const LoadYearlyReport = async (req, res) => {
             'products.orderProStatus': 'delivered',
 
             orderDate: { $gte: startOfYear, $lte: endOfYear }
-        })
+        }).populate('products.productId')
 
       
         res.render('salesreport', { order: yearlyOrders ,type})
@@ -175,7 +176,7 @@ const filerdate =    async (req, res) => {
                 'products.orderProStatus': 'delivered',
 
                 orderDate: { $gte: startDate, $lte: endDate }
-            });
+            }).populate('products.productId')
     
             res.render('salesreport', { order: salesReport,type })
 
